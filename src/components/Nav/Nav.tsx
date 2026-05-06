@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { id: 'services', label: 'inPractice' },
   { id: 'process',  label: 'inAction' },
   { id: 'clients',  label: 'inEvolution' },
+  { id: 'projects', label: 'inWork' },
 ]
 
 export default function Nav({ activeSection, scrollTo }: NavProps) {

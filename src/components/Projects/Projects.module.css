@@ -1,24 +1,40 @@
+/* ── Section: total scroll height ───────────────────────────────────── */
 .section {
+  height: calc((var(--card-count) + 1) * 100vh);
   position: relative;
-  background: var(--navy);
+}
+
+/* ── Sticky viewport ─────────────────────────────────────────────────── */
+.sticky {
+  position: sticky;
+  top: 0;
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  align-items: center;
+  background: var(--navy);
 }
 
-/* ── Header (left column, stays fixed while track scrolls) ── */
-.header {
+/* ── Film-grain overlay (SVG fractal noise) ──────────────────────────── */
+.grain {
   position: absolute;
-  left: 48px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 220px;
-  flex-shrink: 0;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.038;
+  pointer-events: none;
+  z-index: 60;
 }
 
-.label {
+/* ── Title screen (sits at z-index 0, behind all cards) ──────────────── */
+.titleScreen {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(24px, 14vw, 200px);
+}
+
+.titleLabel {
   display: block;
   font-family: var(--font-body);
   font-size: 11px;
@@ -26,106 +42,193 @@
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   color: var(--orange);
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 
-.title {
+.titleHeading {
   font-family: var(--font-display);
-  font-size: clamp(40px, 4vw, 60px);
+  font-size: clamp(52px, 8.5vw, 120px);
   font-weight: 900;
   text-transform: uppercase;
-  line-height: var(--leading-tight);
+  line-height: 0.88;
   letter-spacing: var(--tracking-tight);
   color: var(--white);
-  margin: 0 0 16px;
+  margin: 0 0 24px;
 }
 
 .titleAccent { color: var(--orange); }
 
-.sub {
-  font-family: var(--font-body);
+.titleSub {
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--mid-grey);
   letter-spacing: var(--tracking-wide);
-  margin: 0 0 20px;
+  margin: 0 0 28px;
 }
 
-.scrollArrow {
+.titleArrow {
   color: var(--orange);
-  animation: nudge 2s ease-in-out infinite;
+  animation: bounce 2s ease-in-out infinite;
 }
 
-@keyframes nudge {
-  0%, 100% { transform: translateX(0); }
-  50%       { transform: translateX(6px); }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
 }
 
-/* ── Scrolling viewport ──────────────────────── */
-.viewport {
+/* ── Left flank ──────────────────────────────────────────────────────── */
+.leftFlank {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(60px, 11vw, 148px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  pointer-events: none;
+}
+
+.counterBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.counterNum {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 900;
+  color: var(--orange);
+  letter-spacing: -0.03em;
+  display: block;
+}
+
+.counterTotal {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.06em;
+  display: block;
+  margin-top: 4px;
+}
+
+.flankLabel {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* ── Right flank ─────────────────────────────────────────────────────── */
+.rightFlank {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(60px, 11vw, 148px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pips {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pip {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  /* height and background are set by JS */
+  transition: background 0.3s ease, height 0.25s ease;
+}
+
+/* ── Card wrappers (one per project, stacked by z-index) ─────────────── */
+.cardWrapper {
   position: absolute;
   inset: 0;
-  left: 310px; /* offset for header column */
-  overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  pointer-events: none;
 }
 
-.track {
-  display: flex;
-  gap: 20px;
-  padding: 0 48px 0 0;
-  will-change: transform;
-  align-items: center;
-}
-
-/* ── Cards ───────────────────────────────────── */
+/* ── The physical card ───────────────────────────────────────────────── */
 .card {
   position: relative;
-  flex-shrink: 0;
-  width: clamp(300px, 28vw, 440px);
-  height: 70vh;
-  border-radius: var(--r-md);
+  width: clamp(300px, 68vw, 840px);
+  height: clamp(380px, 84vh, 860px);
+  border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
+  pointer-events: auto;
+  will-change: transform, filter;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 2px  6px  rgba(0, 0, 0, 0.18),
+    0 10px 28px  rgba(0, 0, 0, 0.30),
+    0 28px 64px  rgba(0, 0, 0, 0.40),
+    0 48px 96px  rgba(0, 0, 0, 0.28);
 }
 
-.card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 30%,
-    rgba(10, 22, 40, 0.7) 70%,
-    rgba(10, 22, 40, 0.95) 100%
-  );
-  transition: opacity var(--dur-slow);
-}
-
-.card:hover::after {
-  opacity: 0.75;
-}
-
+/* ── Card image ──────────────────────────────────────────────────────── */
 .cardImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: block;
+  pointer-events: none;
 }
 
-.card:hover .cardImg {
-  transform: scale(1.05);
+/* ── Bottom gradient for text legibility ─────────────────────────────── */
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 22, 40, 0.18)  0%,
+    transparent              22%,
+    transparent              42%,
+    rgba(10, 22, 40, 0.52)   65%,
+    rgba(10, 22, 40, 0.90)   100%
+  );
+  pointer-events: none;
 }
 
-/* ── Card text overlay ───────────────────────── */
-.cardOverlay {
+/* ── Card content layout ─────────────────────────────────────────────── */
+.cardContent {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 28px;
+  justify-content: space-between;
+  padding: clamp(18px, 3vh, 40px) clamp(20px, 3.5vw, 48px);
+  pointer-events: none;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .cardTag {
@@ -136,81 +239,102 @@
   text-transform: uppercase;
   color: var(--orange);
   background: rgba(245, 130, 32, 0.12);
-  border: 1px solid rgba(245, 130, 32, 0.25);
-  padding: 4px 10px;
+  border: 1px solid rgba(245, 130, 32, 0.30);
+  padding: 5px 12px;
   border-radius: 40px;
-  display: inline-block;
-  margin-bottom: 10px;
-  align-self: flex-start;
+}
+
+.cardCount {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.08em;
+}
+
+.cardBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .cardTitle {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(28px, 4.8vw, 72px);
   font-weight: 900;
   text-transform: uppercase;
   color: var(--white);
   letter-spacing: var(--tracking-tight);
-  line-height: 1.1;
+  line-height: 0.88;
   margin: 0;
 }
 
-.cardIndex {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
-  letter-spacing: 0.06em;
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.1vw, 15px);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 420px;
 }
 
-/* ── Progress dots ───────────────────────────── */
-.progressBar {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.progressTrack {
-  display: flex;
+.cardCta {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  pointer-events: auto;
 }
 
-.progressDot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+/* ── Dim overlay: GSAP sets opacity as next card enters ──────────────── */
+.dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  border-radius: 18px;
 }
 
-/* ── Responsive ──────────────────────────────── */
-@media (max-width: 960px) {
-  .header {
-    position: static;
-    transform: none;
-    width: 100%;
-    left: auto;
-    padding: 48px 24px 24px;
-  }
-
-  .viewport {
-    position: relative;
-    left: 0;
-    inset: auto;
-    height: 60vh;
-  }
-
-  .section {
-    flex-direction: column;
-    height: auto;
-    padding-bottom: 48px;
-  }
+/* ── Bottom progress bar ─────────────────────────────────────────────── */
+.progressTrack {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  z-index: 40;
 }
 
+.progressFill {
+  height: 100%;
+  width: 0%;
+  background: var(--orange);
+  border-radius: 1px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .card { width: 75vw; height: 55vh; }
-  .track { padding: 0 24px; }
+  .leftFlank,
+  .rightFlank {
+    width: 48px;
+  }
+
+  .counterNum  { font-size: 28px; }
+  .counterTotal,
+  .flankLabel  { display: none; }
+
+  .card {
+    width: 86vw;
+    height: 76vh;
+  }
+
+  .cardTitle { font-size: clamp(24px, 7vw, 40px); }
+  .cardDesc  { display: none; }
 }
