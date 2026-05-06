@@ -1,0 +1,131 @@
+/* ================================================================
+   inRebus Design System — Tokens
+   Source: inrebus-design-system/project/colors_and_type.css
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Darks ─────────────────────────────────────────── */
+  --navy:         #0A1628;
+  --navy-80:      rgba(10, 22, 40, 0.80);
+  --navy-40:      rgba(10, 22, 40, 0.40);
+  --charcoal:     #202020;
+  --charcoal-60:  rgba(32, 32, 32, 0.60);
+
+  /* ── Lights ────────────────────────────────────────── */
+  --white:        #FFFFFF;
+  --off-white:    #F7F7F7;
+  --light-border: #E5E5E5;
+  --mid-grey:     #6B7480;
+  --light-grey:   #A8ADB5;
+
+  /* ── Brand accents ─────────────────────────────────── */
+  --orange:       #F58220;
+  --orange-light: #FFA04D;
+  --orange-dark:  #C8620A;
+  --orange-muted: rgba(245, 130, 32, 0.15);
+  --orange-glow:  rgba(245, 130, 32, 0.40);
+
+  --spicy:        #E8451A;
+  --spicy-light:  #FF6644;
+  --spicy-dark:   #BB2800;
+  --spicy-muted:  rgba(232, 69, 26, 0.15);
+  --spicy-glow:   rgba(232, 69, 26, 0.35);
+
+  /* ── Semantic tokens ───────────────────────────────── */
+  --bg-primary:    var(--navy);
+  --bg-secondary:  var(--charcoal);
+  --bg-light:      var(--off-white);
+  --bg-card-dark:  var(--charcoal);
+  --bg-card-light: var(--white);
+  --bg-glass:      rgba(255, 255, 255, 0.06);
+
+  --fg-primary:    var(--white);
+  --fg-secondary:  var(--light-grey);
+  --fg-muted:      var(--mid-grey);
+  --fg-on-light:   var(--navy);
+
+  --accent:        var(--orange);
+  --accent-hover:  var(--orange-light);
+  --accent-press:  var(--orange-dark);
+
+  --border-dark:   rgba(255, 255, 255, 0.08);
+  --border-light:  var(--light-border);
+  --border-accent: var(--orange);
+
+  /* ── Shadows ───────────────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.24);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.32);
+  --glow-orange: 0 0 32px rgba(245, 130, 32, 0.40);
+  --glow-spicy:  0 0 24px rgba(232, 69, 26, 0.35);
+
+  /* ── Spacing ───────────────────────────────────────── */
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+
+  /* ── Border radius ─────────────────────────────────── */
+  --r-xs:   2px;
+  --r-sm:   6px;
+  --r-md:  12px;
+  --r-lg:  24px;
+  --r-xl:  40px;
+  --r-full: 999px;
+
+  /* ── Typography ────────────────────────────────────── */
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Lexend', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* ── Type scale ────────────────────────────────────── */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   20px;
+  --text-lg:   24px;
+  --text-xl:   32px;
+  --text-2xl:  48px;
+  --text-3xl:  64px;
+  --text-4xl:  80px;
+  --text-5xl: 120px;
+
+  /* ── Line heights ──────────────────────────────────── */
+  --leading-tight:   1.05;
+  --leading-snug:    1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.7;
+
+  /* ── Letter spacing ────────────────────────────────── */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.04em;
+  --tracking-wider:    0.08em;
+  --tracking-widest:   0.16em;
+
+  /* ── Easing ────────────────────────────────────────── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Durations ─────────────────────────────────────── */
+  --dur-fast:   150ms;
+  --dur-base:   250ms;
+  --dur-slow:   500ms;
+  --dur-reveal: 700ms;
+
+  /* ── Nav height ────────────────────────────────────── */
+  --nav-h: 68px;
+}

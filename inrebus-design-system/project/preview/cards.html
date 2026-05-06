@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0A1628;padding:20px;font-family:'Lexend',sans-serif}
+  .label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#333333;margin-bottom:10px;margin-top:14px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+
+  /* Dark card */
+  .card-dark{background:#202020;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;flex:1;min-width:160px}
+  .card-dark .tag{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#F58220;margin-bottom:8px}
+  .card-dark h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;color:#fff;line-height:1.1;margin-bottom:6px}
+  .card-dark p{font-size:12px;color:#6B7480;line-height:1.6}
+
+  /* Glass card */
+  .card-glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:20px;flex:1;min-width:160px;box-shadow:0 0 32px rgba(245,130,32,0.2)}
+  .card-glass h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:6px}
+  .card-glass p{font-size:12px;color:#A8ADB5;line-height:1.6}
+
+  /* Light card */
+  .card-light{background:#fff;border:1px solid #E5E5E5;border-radius:12px;padding:20px;flex:1;min-width:160px;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+  .card-light .tag{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#F58220;margin-bottom:8px}
+  .card-light h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;color:#0A1628;margin-bottom:6px}
+  .card-light p{font-size:12px;color:#6B7480;line-height:1.6}
+  .card-light .footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #E5E5E5}
+  .card-light .footer span{font-size:11px;color:#A8ADB5}
+  .card-light .btn{background:#F58220;color:#fff;border:none;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer}
+</style></head>
+<body>
+  <div class="label">Dark Cards</div>
+  <div class="row">
+    <div class="card-dark"><div class="tag">inPractice</div><h3>Custom LMS</h3><p>Standard or tailor-made LMS in SaaS modality with professional help desk support.</p></div>
+    <div class="card-dark"><div class="tag">Smart Video</div><h3>Interactive Video</h3><p>SV line sets the standard in creation of interactive video learning experiences.</p></div>
+  </div>
+  <div class="label">Glass Cards</div>
+  <div class="row">
+    <div class="card-glass"><h3>Gamification</h3><p>Serious games and assessment apps designed for engagement and measurable outcomes.</p></div>
+    <div class="card-glass"><h3>Multilingual</h3><p>We speak several languages. Training solutions available across European markets.</p></div>
+  </div>
+  <div class="label">Light Cards</div>
+  <div class="row">
+    <div class="card-light"><div class="tag">Educational Projects</div><h3>Tailor-Made</h3><p>Fully customized digital learning designed to meet your specific training requirements.</p><div class="footer"><span>Turin, since 2003</span><button class="btn">Learn more</button></div></div>
+  </div>
+</body></html>

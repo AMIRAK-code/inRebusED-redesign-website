@@ -1,0 +1,263 @@
+/* ============================================================
+   inRebus Design System — Colors & Typography Tokens
+   Source: https://www.inrebus.education/ + editorial redesign brief
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── BASE COLOR PALETTE ─────────────────────────────────── */
+:root {
+  /* Darks */
+  --navy:            #0A1628;
+  --navy-80:         rgba(10, 22, 40, 0.80);
+  --navy-40:         rgba(10, 22, 40, 0.40);
+  --charcoal:        #202020;
+  --charcoal-60:     rgba(32, 32, 32, 0.60);
+
+  /* Lights */
+  --white:           #FFFFFF;
+  --off-white:       #F7F7F7;
+  --light-border:    #E5E5E5;
+  --mid-grey:        #6B7480;
+  --light-grey:      #A8ADB5;
+
+  /* Brand accents */
+  --orange:          #F58220;
+  --orange-light:    #FFA04D;
+  --orange-dark:     #C8620A;
+  --orange-muted:    rgba(245, 130, 32, 0.15);
+  --orange-glow:     rgba(245, 130, 32, 0.40);
+
+  --red:             #CC2200;
+  --red-light:       #FF4422;
+  --red-dark:        #991900;
+  --red-muted:       rgba(204, 34, 0, 0.15);
+  --red-glow:        rgba(204, 34, 0, 0.35);
+
+  /* ─── SEMANTIC / UI TOKENS ─────────────────────────────── */
+  --bg-primary:      var(--navy);
+  --bg-secondary:    var(--charcoal);
+  --bg-light:        var(--off-white);
+  --bg-card-dark:    var(--charcoal);
+  --bg-card-light:   var(--white);
+  --bg-glass:        rgba(255, 255, 255, 0.06);
+
+  --fg-primary:      var(--white);
+  --fg-secondary:    var(--light-grey);
+  --fg-muted:        var(--mid-grey);
+  --fg-on-light:     var(--navy);
+  --fg-on-light-2:   var(--charcoal);
+
+  --accent:          var(--orange);
+  --accent-hover:    var(--orange-light);
+  --accent-press:    var(--orange-dark);
+  --accent-2:        var(--spicy);
+  --accent-2-hover:  var(--spicy-light);
+
+  --border-dark:     rgba(255, 255, 255, 0.08);
+  --border-light:    var(--light-border);
+  --border-accent:   var(--orange);
+
+  --focus-ring:      var(--orange);
+
+  /* ─── SHADOWS ───────────────────────────────────────────── */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.16);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.24);
+  --shadow-xl:    0 24px 64px rgba(0,0,0,0.32);
+  --glow-orange:  0 0 32px rgba(123, 47, 224, 0.40);
+  --glow-spicy:   0 0 24px rgba(232, 69, 26, 0.35);
+
+  /* ─── SPACING SCALE ─────────────────────────────────────── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ─── BORDER RADIUS ─────────────────────────────────────── */
+  --radius-xs:   2px;
+  --radius-sm:   6px;
+  --radius-md:  12px;
+  --radius-lg:  24px;
+  --radius-xl:  40px;
+  --radius-full: 999px;
+
+  /* ─── TYPOGRAPHY FAMILIES ───────────────────────────────── */
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Lexend', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* ─── TYPE SCALE ────────────────────────────────────────── */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   20px;
+  --text-lg:   24px;
+  --text-xl:   32px;
+  --text-2xl:  48px;
+  --text-3xl:  64px;
+  --text-4xl:  80px;
+  --text-5xl: 120px;
+
+  /* ─── LINE HEIGHTS ──────────────────────────────────────── */
+  --leading-tight:  1.05;
+  --leading-snug:   1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.7;
+
+  /* ─── LETTER SPACING ────────────────────────────────────── */
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
+  --tracking-widest:  0.16em;
+
+  /* ─── TRANSITIONS ───────────────────────────────────────── */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:   cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   500ms;
+  --duration-reveal: 700ms;
+}
+
+/* ─── SEMANTIC HTML ELEMENT STYLES ─────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display / Hero */
+.display-1 {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: 900;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+}
+.display-2 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 900;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+}
+
+/* Headings */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-6);
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-5);
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+  margin: 0 0 var(--space-4);
+}
+h4, .h4 {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  margin: 0 0 var(--space-3);
+}
+h5, .h5 {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
+}
+
+/* Body */
+p, .body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--fg-secondary);
+  margin: 0 0 var(--space-4);
+}
+.body-lg {
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
+.body-sm {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--fg-muted);
+}
+
+/* Label / overline */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Mono */
+code, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--orange-light);
+}
+
+/* Quote */
+blockquote, .quote {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  color: var(--fg-primary);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-6);
+  margin: var(--space-8) 0;
+}
+
+/* ─── UTILITY CLASSES ─────────────────────────────────────── */
+.text-accent   { color: var(--accent); }
+.text-spicy    { color: var(--spicy); }
+.text-muted    { color: var(--fg-muted); }
+.bg-navy       { background: var(--navy); }
+.bg-charcoal   { background: var(--charcoal); }
+.bg-light      { background: var(--off-white); color: var(--fg-on-light); }
+.sr-only       { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }

@@ -1,0 +1,110 @@
+.section {
+  background: var(--off-white);
+  padding: 120px 48px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* ── Left ───────────────────────────────────── */
+.left {}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--navy);
+  margin: 0 0 24px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.bodyText {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 16px;
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 12px 28px;
+  border-radius: var(--r-sm);
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background var(--dur-base), box-shadow var(--dur-base);
+}
+.btn:hover { background: #152240; box-shadow: var(--shadow-md); }
+
+/* ── Team grid ──────────────────────────────── */
+.teamGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.teamCard {
+  background: var(--white);
+  border: 1px solid var(--light-border);
+  border-radius: var(--r-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur-base), transform var(--dur-base);
+}
+.teamCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.teamBar {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.teamLabel {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 960px) {
+  .container { grid-template-columns: 1fr; gap: 48px; }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 80px 24px; }
+}

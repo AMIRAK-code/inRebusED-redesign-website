@@ -1,0 +1,135 @@
+.section {
+  background: var(--navy);
+  padding: 120px 48px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  margin-bottom: 64px;
+  max-width: 600px;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 20px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* ── Quote banner ────────────────────────────── */
+.quoteBanner {
+  background: var(--charcoal);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  padding: 48px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.quoteOrb {
+  position: absolute;
+  right: -80px; top: -80px;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 130, 32, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.quoteContent { position: relative; z-index: 1; }
+
+.quoteIcon {
+  font-family: var(--font-display);
+  font-size: 120px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 0.7;
+  margin-bottom: 16px;
+  opacity: 0.3;
+  user-select: none;
+}
+
+.quoteText {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 16px;
+  font-style: normal;
+}
+
+.quoteAccent { color: var(--orange); }
+
+.quoteAttr {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--mid-grey);
+  letter-spacing: var(--tracking-wide);
+  font-style: normal;
+}
+
+/* ── Chips ───────────────────────────────────── */
+.chipsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--light-grey);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-dark);
+  padding: 8px 16px;
+  border-radius: var(--r-full);
+  letter-spacing: 0.02em;
+  transition: color var(--dur-base), background var(--dur-base), border-color var(--dur-base);
+  cursor: default;
+}
+
+.chip:hover {
+  color: var(--white);
+  background: rgba(245, 130, 32, 0.1);
+  border-color: rgba(245, 130, 32, 0.3);
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .section { padding: 80px 24px; }
+  .quoteBanner { padding: 32px 24px; }
+}

@@ -1,0 +1,216 @@
+.section {
+  position: relative;
+  background: var(--navy);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Header (left column, stays fixed while track scrolls) ── */
+.header {
+  position: absolute;
+  left: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 14px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4vw, 60px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 16px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 20px;
+}
+
+.scrollArrow {
+  color: var(--orange);
+  animation: nudge 2s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(6px); }
+}
+
+/* ── Scrolling viewport ──────────────────────── */
+.viewport {
+  position: absolute;
+  inset: 0;
+  left: 310px; /* offset for header column */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  display: flex;
+  gap: 20px;
+  padding: 0 48px 0 0;
+  will-change: transform;
+  align-items: center;
+}
+
+/* ── Cards ───────────────────────────────────── */
+.card {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(300px, 28vw, 440px);
+  height: 70vh;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    rgba(10, 22, 40, 0.7) 70%,
+    rgba(10, 22, 40, 0.95) 100%
+  );
+  transition: opacity var(--dur-slow);
+}
+
+.card:hover::after {
+  opacity: 0.75;
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .cardImg {
+  transform: scale(1.05);
+}
+
+/* ── Card text overlay ───────────────────────── */
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+}
+
+.cardTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(245, 130, 32, 0.12);
+  border: 1px solid rgba(245, 130, 32, 0.25);
+  padding: 4px 10px;
+  border-radius: 40px;
+  display: inline-block;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.cardIndex {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.06em;
+}
+
+/* ── Progress dots ───────────────────────────── */
+.progressBar {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.progressTrack {
+  display: flex;
+  gap: 8px;
+}
+
+.progressDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 960px) {
+  .header {
+    position: static;
+    transform: none;
+    width: 100%;
+    left: auto;
+    padding: 48px 24px 24px;
+  }
+
+  .viewport {
+    position: relative;
+    left: 0;
+    inset: auto;
+    height: 60vh;
+  }
+
+  .section {
+    flex-direction: column;
+    height: auto;
+    padding-bottom: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card { width: 75vw; height: 55vh; }
+  .track { padding: 0 24px; }
+}

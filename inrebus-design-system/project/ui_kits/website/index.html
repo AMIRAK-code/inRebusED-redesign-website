@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>inRebus Educational — UI Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: #0A1628;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0A1628; }
+    ::-webkit-scrollbar-thumb { background: #333333; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Hero.jsx"></script>
+  <script type="text/babel" src="Services.jsx"></script>
+  <script type="text/babel" src="Process.jsx"></script>
+  <script type="text/babel" src="Clients.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+
+  <script type="text/babel">
+    const SECTIONS = ['hero','about','services','process','clients','contact'];
+
+    function App() {
+      const [section, setSection] = React.useState('hero');
+
+      const navigate = React.useCallback((id) => {
+        setSection(id);
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 68;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }, []);
+
+      // Track active section via IntersectionObserver
+      React.useEffect(() => {
+        const ids = ['hero','about','services','process','clients','contact'];
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) setSection(e.target.id); });
+        }, { rootMargin: '-40% 0px -50% 0px' });
+        ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+        return () => obs.disconnect();
+      }, []);
+
+      return (
+        <div>
+          <Nav currentSection={section} onNavigate={navigate} />
+
+          <div id="hero"><Hero onNavigate={navigate} /></div>
+
+          {/* About section */}
+          <section id="about" style={{background:'#F7F7F7', padding:'120px 48px'}}>
+            <div style={{maxWidth:'1280px',margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'80px',alignItems:'center'}}>
+              <div>
+                <span style={{fontFamily:"'Lexend',sans-serif",fontSize:'11px',fontWeight:700,letterSpacing:'0.14em',textTransform:'uppercase',color:'#F58220',display:'block',marginBottom:'16px'}}>inSide — About Us</span>
+                <h2 style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'56px',fontWeight:900,textTransform:'uppercase',lineHeight:1.0,letterSpacing:'-0.02em',color:'#0A1628',margin:'0 0 24px'}}>Research &amp;<br /><span style={{color:'#F58220'}}>Development</span><br />Since 2003</h2>
+                <p style={{fontFamily:"'Lexend',sans-serif",fontSize:'15px',color:'#6B7480',lineHeight:1.75,margin:'0 0 16px'}}>inRebus was born in Turin in 2003 as a software house and consulting company, following a development path in the IT sector started in the 90s.</p>
+                <p style={{fontFamily:"'Lexend',sans-serif",fontSize:'15px',color:'#6B7480',lineHeight:1.75,margin:'0 0 36px'}}>A few years ago we raised as a challenge the idea of starting a business line devoted to e-learning training — and rapidly transformed that challenge into a vital and constantly evolving reality.</p>
+                <button style={{fontFamily:"'Lexend',sans-serif",fontSize:'13px',fontWeight:600,background:'#0A1628',color:'#fff',border:'none',padding:'12px 28px',borderRadius:'6px',cursor:'pointer'}}>Download Brochure →</button>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+                {[
+                  {label:'Project Managers',color:'#F58220'},
+                  {label:'Instructional Designers',color:'#E8451A'},
+                  {label:'Graphic Designers',color:'#0A1628'},
+                  {label:'Video Makers',color:'#202020'},
+                  {label:'Illustrators',color:'#F58220'},
+                  {label:'Developers',color:'#E8451A'},
+                ].map(({label,color}) => (
+                  <div key={label} style={{background:'#fff',border:'1px solid #E5E5E5',borderRadius:'10px',padding:'20px',boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
+                    <div style={{width:'32px',height:'4px',background:color,borderRadius:'2px',marginBottom:'12px'}}></div>
+                    <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'16px',fontWeight:700,textTransform:'uppercase',color:'#0A1628',letterSpacing:'-0.01em'}}>{label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div id="services"><Services /></div>
+          <div id="process"><Process /></div>
+          <div id="clients"><Clients /></div>
+          <div id="contact"><Footer onNavigate={navigate} /></div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

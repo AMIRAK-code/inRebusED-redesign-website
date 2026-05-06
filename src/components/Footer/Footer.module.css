@@ -1,0 +1,212 @@
+.footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ── CTA Banner ──────────────────────────────── */
+.ctaBanner {
+  position: relative;
+  background: var(--charcoal);
+  padding: 96px 48px;
+  overflow: hidden;
+}
+
+.ctaOrb {
+  position: absolute;
+  right: -100px; top: -100px;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 130, 32, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ctaInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.ctaOverline {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 20px;
+}
+
+.ctaAccent { color: var(--orange); }
+
+.ctaDesc {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 36px;
+  max-width: 480px;
+}
+
+.ctaActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.ctaBtn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 12px 28px;
+  border-radius: var(--r-sm);
+  transition: background var(--dur-base), box-shadow var(--dur-base);
+  will-change: transform;
+}
+.ctaBtn:hover {
+  background: var(--orange-light);
+  box-shadow: var(--glow-orange);
+}
+
+.ctaEmail {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--mid-grey);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color var(--dur-base);
+}
+.ctaEmail:hover { color: var(--light-grey); }
+
+/* ── Footer bottom ───────────────────────────── */
+.bottom {
+  padding: 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border-dark);
+  margin-bottom: 24px;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+
+.logoIn { color: var(--orange); }
+
+.logoSub {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  color: var(--mid-grey);
+  margin-left: 5px;
+}
+
+.address {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  line-height: 1.8;
+  font-style: normal;
+}
+
+.address a {
+  color: var(--mid-grey);
+  text-decoration: none;
+  transition: color var(--dur-base);
+}
+.address a:hover { color: var(--light-grey); }
+
+.footLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footLink {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--dur-base);
+}
+.footLink:hover { color: var(--light-grey); }
+
+.copyBlock {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #333;
+  line-height: 1.8;
+}
+
+.legal {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.legalLink {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #333;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--dur-base);
+}
+.legalLink:hover { color: var(--mid-grey); }
+
+.legalDot { color: #333; font-size: 11px; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 960px) {
+  .bottomGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .ctaBanner { padding: 64px 24px; }
+  .bottom    { padding: 40px 24px; }
+  .bottomGrid { grid-template-columns: 1fr; gap: 24px; }
+  .ctaActions { flex-direction: column; align-items: flex-start; }
+}
