@@ -2,87 +2,22 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import styles from './Projects.module.css'
+import caseStudies from '../../data/case-studies'
 
-import infografiaImg  from '../../images/Infografia.webp'
-import minecraftImg   from '../../images/Minecraft Behind Bars.webp'
-import resourcesImg   from '../../images/One of The Best - Resources of creativity Design.webp'
-import downloadImg    from '../../images/download (1).webp'
-import polaroidImg    from '../../images/Polaroid Poster.jpg'
-import cinemaImg      from '../../images/cinema paradiso polaroid poster.webp'
-import taxiDriverImg  from '../../images/TAXI DRIVER.jpg'
+const CATEGORY_LABEL: Record<string, string> = {
+  'digital-academy':   'Digital Academy',
+  'onboarding':        'Onboarding',
+  'product-training':  'Product Training',
+  'vertical-training': 'Vertical Training',
+}
 
-const PROJECTS = [
-  {
-    title: 'Supply Chain Academy',
-    client: 'Piedmont Region',
-    tag: 'Digital Academy',
-    desc: '11 regional supply chain academies coordinating training for employed and unemployed workers across Piedmont.',
-    img: infografiaImg,
-  },
-  {
-    title: 'Digital Liguria',
-    client: 'Liguria Digitale',
-    tag: 'Digital Academy',
-    desc: 'A free e-learning platform offering reskilling and digital-literacy courses to all residents of the Liguria Region.',
-    img: resourcesImg,
-  },
-  {
-    title: 'Dussmann Academy',
-    client: 'Dussmann Services',
-    tag: 'Digital Academy',
-    desc: 'Corporate academy reaching 17,000 Italian employees with role-tailored e-learning, webinars and managerial training.',
-    img: downloadImg,
-  },
-  {
-    title: 'Marelli Campus',
-    client: 'Marelli',
-    tag: 'Digital Academy',
-    desc: 'Ninety-plus online modules digitising classroom training for the Magneti Marelli authorised service network — running since 2014.',
-    img: minecraftImg,
-  },
-  {
-    title: 'Esselunga Onboarding',
-    client: 'Esselunga',
-    tag: 'Onboarding',
-    desc: 'New recruits ride the iconic Esselunga van through historical scenes, exploring company history, campaigns and product innovations.',
-    img: polaroidImg,
-  },
-  {
-    title: 'Maserati History',
-    client: 'Maserati',
-    tag: 'Onboarding',
-    desc: 'A century of Italian sports-car heritage organised by decade, immersing global sales staff in one of motoring’s most iconic brands.',
-    img: cinemaImg,
-  },
-  {
-    title: 'Clienteling Training',
-    client: 'Gucci',
-    tag: 'Product Training',
-    desc: 'Mobile-first digital learning programme for Gucci stores and e-commerce teams, in line with the brand’s intercultural style.',
-    img: taxiDriverImg,
-  },
-  {
-    title: 'IVECO eDaily',
-    client: 'IVECO',
-    tag: 'Product Training',
-    desc: 'Gamified, animated-film inspired module guiding the sales network through the features of the new electric Daily.',
-    img: infografiaImg,
-  },
-  {
-    title: 'Anti-Money Laundering Web Series',
-    client: 'Intesa Sanpaolo',
-    tag: 'Vertical Training',
-    desc: 'Crime-comic mini-series presenting complex money-laundering cases as detective stories — released episode-by-episode.',
-    img: minecraftImg,
-  },
-  {
-    title: 'M-346 / C-27J Familiarisation',
-    client: 'Leonardo Aircraft Division',
-    tag: 'Product Training',
-    desc: 'Online familiarisation modules with 360° on-board video and ATA-chapter coverage for Leonardo staff and international clients.',
-    img: resourcesImg,
-  },
-]
+const PROJECTS = caseStudies.slice(0, 10).map(cs => ({
+  title:  cs.title,
+  client: cs.client,
+  tag:    CATEGORY_LABEL[cs.category],
+  desc:   cs.brief,
+  img:    cs.image,
+}))
 
 const N = PROJECTS.length
 
