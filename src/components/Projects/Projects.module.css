@@ -257,6 +257,15 @@
   gap: 12px;
 }
 
+.cardClient {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
 .cardTitle {
   font-family: var(--font-display);
   font-size: clamp(28px, 4.8vw, 72px);

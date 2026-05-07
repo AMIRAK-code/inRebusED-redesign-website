@@ -4,10 +4,15 @@ import { gsap } from '../../lib/gsap'
 import styles from './Clients.module.css'
 
 const CLIENTS = [
-  'Jeep', 'Alfa Romeo', 'Unicredit', 'Maserati', 'Reale',
-  'Mopar', 'Intesa Sanpaolo', 'Iveco', 'Lancia', 'CNHi',
-  'Esselunga', 'FCA', 'FTP', 'Magneti Marelli', 'Daikin',
-  'Fiat', 'Abarth', 'SKP', 'Finmeccanica', 'Sky',
+  // Featured in current case studies
+  'Piedmont Region', 'Liguria Digitale', 'Dussmann Services',
+  'IVECO', 'Marelli', 'Esselunga', 'Maserati', 'Gucci',
+  'Leonardo', 'CNH Industrial', 'Intesa Sanpaolo', 'RINA',
+  'Skillab',
+  // Long-standing partners
+  'Jeep', 'Alfa Romeo', 'Unicredit', 'Reale', 'Mopar',
+  'Lancia', 'FCA', 'FPT', 'Daikin', 'Fiat', 'Abarth',
+  'SKF', 'Finmeccanica', 'Sky',
 ]
 
 export default function Clients() {
@@ -37,15 +42,14 @@ export default function Clients() {
 
         {/* Header */}
         <div className={styles.header}>
-          <span className={styles.label}>inEvolution — Our Clients</span>
+          <span className={styles.label}>inEvolution — Who Has Chosen Us</span>
           <h2 className={styles.title}>
             Trusted by Industry<br />
             <span className={styles.titleAccent}>Leaders</span>
           </h2>
           <p className={styles.desc}>
-            Each client is a world with its own geography, population and culture.
-            Each encounter enriches us and inspires us towards always more creative
-            and effective solutions.
+            Every client is unique, with their own specific geography, population and
+            culture. Every encounter enriches us and inspires us to find better solutions.
           </p>
         </div>
 
