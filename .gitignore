@@ -1,0 +1,77 @@
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Build output (Vite) ───────────────────────────────────────────────────────
+dist/
+dist-ssr/
+
+# ── Vite cache ────────────────────────────────────────────────────────────────
+.vite/
+
+# ── TypeScript incremental build cache ───────────────────────────────────────
+*.tsbuildinfo
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Test coverage ─────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Editor — VS Code ─────────────────────────────────────────────────────────
+# Commit .vscode/extensions.json if you want to share recommended extensions;
+# ignore everything else (personal settings, debug launch configs, etc.)
+.vscode/*
+!.vscode/extensions.json
+
+# ── Editor — JetBrains (WebStorm / IntelliJ) ─────────────────────────────────
+.idea/
+*.iml
+
+# ── Editor — misc ────────────────────────────────────────────────────────────
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?          # Vim/Neovim swap files
+*.swp
+*.swo
+*~             # Emacs backup files
+
+# ── OS — macOS ────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ── OS — Windows ─────────────────────────────────────────────────────────────
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ── Claude Code AI assistant state ───────────────────────────────────────────
+.claude/
+
+# ── Misc ─────────────────────────────────────────────────────────────────────
+*.local        # Vite local overrides (vite.config.local.ts, etc.)
