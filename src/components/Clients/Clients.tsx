@@ -2,18 +2,10 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
 import styles from './Clients.module.css'
+import clients from '../../data/clients'
 
-const CLIENTS = [
-  // Featured in current case studies
-  'Piedmont Region', 'Liguria Digitale', 'Dussmann Services',
-  'IVECO', 'Marelli', 'Esselunga', 'Maserati', 'Gucci',
-  'Leonardo', 'CNH Industrial', 'Intesa Sanpaolo', 'RINA',
-  'Skillab',
-  // Long-standing partners
-  'Jeep', 'Alfa Romeo', 'Unicredit', 'Reale', 'Mopar',
-  'Lancia', 'FCA', 'FPT', 'Daikin', 'Fiat', 'Abarth',
-  'SKF', 'Finmeccanica', 'Sky',
-]
+const logoClients  = clients.filter(c => c.logo !== null)
+const chipClients  = clients.filter(c => c.logo === null)
 
 export default function Clients() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -27,6 +19,15 @@ export default function Clients() {
       opacity: 0, y: 40, duration: 0.9, ease: 'expo',
       scrollTrigger: { trigger: `.${styles.quoteBanner}`, start: 'top 84%', once: true },
     })
+    if (logoClients.length > 0) {
+      gsap.from(`.${styles.logoTile}`, {
+        opacity: 0, scale: 0.9,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: 'back.out(1.4)',
+        scrollTrigger: { trigger: `.${styles.logoGrid}`, start: 'top 84%', once: true },
+      })
+    }
     gsap.from(`.${styles.chip}`, {
       opacity: 0, scale: 0.9,
       stagger: 0.04,
@@ -66,12 +67,35 @@ export default function Clients() {
           </div>
         </div>
 
-        {/* Client chips */}
-        <div className={styles.chipsGrid}>
-          {CLIENTS.map((name) => (
-            <span key={name} className={styles.chip}>{name}</span>
-          ))}
-        </div>
+        {/* Logo grid — only rendered when at least one logo is mapped */}
+        {logoClients.length > 0 && (
+          <div className={styles.logoGrid}>
+            {logoClients.map(c => (
+              <div key={c.name} className={styles.logoTile} title={c.name}>
+                <img
+                  src={c.logo!}
+                  alt={c.name}
+                  className={styles.logoImg}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Chip wall — clients without a logo */}
+        {chipClients.length > 0 && (
+          <div className={styles.chipsGrid}>
+            {chipClients.map(c => (
+              <span
+                key={c.name}
+                className={`${styles.chip} ${c.featured ? styles.chipFeatured : ''}`}
+              >
+                {c.name}
+              </span>
+            ))}
+          </div>
+        )}
 
       </div>
     </section>

@@ -159,6 +159,51 @@
   transition: background 0.3s ease, height 0.25s ease;
 }
 
+/* ── Filter bar ──────────────────────────────────────────────────────── */
+.filterBar {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.filterPill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 7px 14px;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur-base), background var(--dur-base), border-color var(--dur-base);
+}
+
+.filterPill:hover {
+  color: var(--white);
+  border-color: rgba(245, 130, 32, 0.5);
+}
+
+.filterPillActive {
+  color: var(--white);
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.filterPillActive:hover {
+  border-color: var(--orange);
+}
+
 /* ── Card wrappers (one per project, stacked by z-index) ─────────────── */
 .cardWrapper {
   position: absolute;
@@ -168,6 +213,10 @@
   justify-content: center;
   perspective: 1000px;
   pointer-events: none;
+  /* Scroll-driven transforms — all driven by CSS custom properties.
+     Defaults keep cards below viewport until the first onUpdate fires. */
+  transform: translateY(calc(var(--ty, 115) * 1%)) scale(var(--sc, 1)) rotate(calc(var(--rot, 0) * 1deg));
+  will-change: transform;
 }
 
 /* ── The physical card ───────────────────────────────────────────────── */
@@ -179,7 +228,7 @@
   overflow: hidden;
   cursor: pointer;
   pointer-events: auto;
-  will-change: transform, filter;
+  will-change: transform;
   transform-origin: center center;
   transform-style: preserve-3d;
   box-shadow:
@@ -299,12 +348,12 @@
   pointer-events: auto;
 }
 
-/* ── Dim overlay: GSAP sets opacity as next card enters ──────────────── */
+/* ── Dim overlay: opacity driven by --dim CSS custom property ────────── */
 .dim {
   position: absolute;
   inset: 0;
   background: rgba(10, 22, 40, 0.85);
-  opacity: 0;
+  opacity: var(--dim, 0);
   pointer-events: none;
   z-index: 10;
   border-radius: 18px;
