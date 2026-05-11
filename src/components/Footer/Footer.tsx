@@ -50,13 +50,13 @@ export default function Footer({ scrollTo }: FooterProps) {
       <div className={styles.ctaBanner}>
         <div className={styles.ctaOrb} aria-hidden="true" />
         <div className={styles.ctaInner}>
-          <span className={styles.ctaOverline}>inContact</span>
+          <span className={styles.ctaOverline}>inContact — How To Find Us</span>
           <h2 className={styles.ctaTitle}>
-            Ready to start<br />
-            <span className={styles.ctaAccent}>your project?</span>
+            The right training,<br />
+            <span className={styles.ctaAccent}>delivered the right way.</span>
           </h2>
           <p className={styles.ctaDesc}>
-            Do you want to meet us or need more information?
+            Want to meet us or need more information about our digital learning solutions?
             Get in touch — we respond within 24 hours.
           </p>
           <div className={styles.ctaActions}>
