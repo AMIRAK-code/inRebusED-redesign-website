@@ -9,8 +9,8 @@ interface HeroProps {
 
 const STATS = [
   { num: '2003', label: 'Founded in Turin' },
-  { num: '20+',  label: 'Major clients' },
-  { num: '3',    label: 'Language pairs' },
+  { num: '20+',  label: 'Years of experience' },
+  { num: '40+',  label: 'Trusted clients' },
   { num: '100%', label: 'Custom solutions' },
 ]
 
@@ -72,18 +72,18 @@ export default function Hero({ scrollTo }: HeroProps) {
       <div className={styles.inner}>
         <p className={styles.overline}>
           <span className={styles.overlineDot}>●</span>
-          E-learning outside the box
+          Digital Learning Solutions
         </p>
 
         <h1 className={styles.headline}>
-          <span className={styles.headlineAccent}>Digital</span>
-          <br />Learning
-          <br /><span className={styles.headlineOutline}>Re-imagined</span>
+          <span className={styles.headlineAccent}>Creative</span>
+          <br />Outside
+          <br /><span className={styles.headlineOutline}>The Box</span>
         </h1>
 
         <p className={styles.sub}>
-          We are project managers, instructional designers, illustrators,
-          <br />video makers and developers. Based in Turin since 2003.
+          Thinking outside the box with an innovative approach
+          <br />to deliver the right training, in the right way, at the right time.
         </p>
 
         <div className={styles.ctas}>

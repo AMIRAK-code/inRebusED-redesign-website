@@ -73,5 +73,9 @@ $RECYCLE.BIN/
 # ── Claude Code AI assistant state ───────────────────────────────────────────
 .claude/
 
+# ── Local-only assets (source decks, working files) ──────────────────────────
+.cloud/
+.tmp_pptx_media/
+
 # ── Misc ─────────────────────────────────────────────────────────────────────
 *.local        # Vite local overrides (vite.config.local.ts, etc.)

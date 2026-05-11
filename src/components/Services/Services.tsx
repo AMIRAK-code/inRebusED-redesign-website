@@ -1,42 +1,83 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
 import styles from './Services.module.css'
 
-interface Service {
+interface Pillar {
+  num: string
   tag: string
   title: string
-  desc: string
+  intro: string
+  items: { name: string; desc?: string }[]
 }
 
-const SERVICES: Service[] = [
-  { tag: 'Custom',   title: 'Educational Projects',    desc: 'Tailor-made digital learning experiences designed around your specific needs, brand, and learner profile.' },
-  { tag: 'Design',   title: 'Graphic Design',          desc: 'Visual identity and interface design for courses, platforms and educational materials.' },
-  { tag: 'Creative', title: 'Creative Communication',  desc: 'Outside-the-box approaches to knowledge transfer — we break the conventions of corporate e-learning.' },
-  { tag: 'Strategy', title: 'Instructional Design',    desc: 'Structuring learning objectives, assessments, and paths that deliver measurable outcomes.' },
-  { tag: 'Build',    title: 'Courses Development',     desc: 'Full production of SCORM/xAPI-compliant courses optimised across all devices and LMS platforms.' },
-  { tag: 'Tech',     title: 'Web/App Programming',     desc: 'Assessment apps, custom LMS, SaaS platforms and deep integrations with your existing ecosystem.' },
-  { tag: 'Visual',   title: 'Illustration',            desc: 'Original illustration style that gives inRebus courses a recognisable, human, and engaging quality.' },
-  { tag: 'Media',    title: 'Smart Video',             desc: 'Our proprietary SV line — interactive video that turns passive watching into active learning.' },
-  { tag: 'Global',   title: 'Translation & Voice',     desc: 'Multilingual courses with professional voice-over in multiple European and global languages.' },
+const PILLARS: Pillar[] = [
+  {
+    num: '01',
+    tag: 'Training Projects',
+    title: 'Learning Experiences',
+    intro: 'We create learning experiences that are tailored, effective and engaging.',
+    items: [
+      { name: 'eLearning courses',          desc: 'Bespoke and off-the-shelf' },
+      { name: 'Digitisation',               desc: 'Of traditional training materials' },
+      { name: 'Virtual classrooms',         desc: 'Multilingual webinars' },
+      { name: 'Blended learning',           desc: 'For an integrated experience' },
+      { name: 'Virtual coaching',           desc: 'For trainers and teams' },
+      { name: 'Video training',             desc: 'Traditional, 360° and AI-powered' },
+      { name: 'Immersive experiences',      desc: 'Augmented and virtual reality' },
+    ],
+  },
+  {
+    num: '02',
+    tag: 'Classroom → Digital',
+    title: 'Platforms & Ecosystems',
+    intro: 'We design and develop intuitive, scalable digital platforms for managing and delivering training.',
+    items: [
+      { name: 'Digital Academy',            desc: 'Digital learning ecosystems' },
+      { name: 'MoodleXR AI',                desc: 'AI-powered immersive open-source LMS' },
+      { name: 'SkillFrame',                 desc: 'Competence & skills certification' },
+      { name: 'SkillMatch',                 desc: 'Talent & skills matching platform' },
+    ],
+  },
+  {
+    num: '03',
+    tag: 'Consultancy & Support',
+    title: 'Lifecycle Services',
+    intro: 'We support organisations throughout the entire training lifecycle — at their premises as well.',
+    items: [
+      { name: 'LMS administration',         desc: 'Operational platform management' },
+      { name: 'Content management',         desc: 'Uploading, updating, mapping' },
+      { name: 'Monitoring & analytics',     desc: 'Tracking, reporting, KPIs' },
+      { name: 'Technical support',          desc: 'Helpdesk and troubleshooting' },
+      { name: 'Online course design',       desc: 'Interactive digital content' },
+      { name: 'Multimedia production',      desc: 'Presentations and videos' },
+    ],
+  },
 ]
 
-function ServiceCard({ tag, title, desc }: Service) {
-  const [hovered, setHovered] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
-
+function PillarCard({ p, index }: { p: Pillar; index: number }) {
   return (
-    <div
-      ref={cardRef}
-      className={`${styles.card} ${hovered ? styles.cardHovered : ''}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className={styles.cardTag}>{tag}</div>
-      <h3 className={styles.cardTitle}>{title}</h3>
-      <p className={styles.cardDesc}>{desc}</p>
-      <span className={`${styles.cardArrow} ${hovered ? styles.cardArrowHovered : ''}`} aria-hidden="true">→</span>
-    </div>
+    <article className={styles.pillar} style={{ '--i': index } as React.CSSProperties}>
+      <div className={styles.pillarHead}>
+        <div className={styles.pillarNum}>{p.num}</div>
+        <div className={styles.pillarHeadText}>
+          <div className={styles.pillarTag}>{p.tag}</div>
+          <h3 className={styles.pillarTitle}>{p.title}</h3>
+        </div>
+      </div>
+      <p className={styles.pillarIntro}>{p.intro}</p>
+      <ul className={styles.pillarList}>
+        {p.items.map((it) => (
+          <li key={it.name} className={styles.pillarItem}>
+            <span className={styles.pillarItemDot} aria-hidden="true">→</span>
+            <div>
+              <div className={styles.pillarItemName}>{it.name}</div>
+              {it.desc && <div className={styles.pillarItemDesc}>{it.desc}</div>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </article>
   )
 }
 
@@ -56,12 +97,12 @@ export default function Services() {
       opacity: 0, y: 20, duration: 0.7, ease: 'expo', delay: 0.16,
       scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', once: true },
     })
-    gsap.from(`.${styles.card}`, {
-      opacity: 0, y: 40,
-      stagger: 0.06,
-      duration: 0.75,
+    gsap.from(`.${styles.pillar}`, {
+      opacity: 0, y: 48,
+      stagger: 0.12,
+      duration: 0.85,
       ease: 'expo',
-      scrollTrigger: { trigger: `.${styles.grid}`, start: 'top 82%', once: true },
+      scrollTrigger: { trigger: `.${styles.pillarsGrid}`, start: 'top 82%', once: true },
     })
   }, { scope: sectionRef })
 
@@ -69,20 +110,20 @@ export default function Services() {
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <span className={styles.label}>inPractice — Our Services</span>
+          <span className={styles.label}>inPractice — What We Do</span>
           <h2 className={styles.title}>
-            All The Necessary<br />
-            <span className={styles.titleAccent}>Skills</span>
+            1, 2, 3…<br />
+            <span className={styles.titleAccent}>What We Do</span>
           </h2>
           <p className={styles.desc}>
-            We cover every phase — from training needs analysis to results evaluation —
-            in-house, with a trusted network when needed.
+            An effective framework for designing learning experiences through a modular
+            approach based on interactive, combinable learning modules.
           </p>
         </div>
 
-        <div className={styles.grid}>
-          {SERVICES.map((sv) => (
-            <ServiceCard key={sv.title} {...sv} />
+        <div className={styles.pillarsGrid}>
+          {PILLARS.map((p, i) => (
+            <PillarCard key={p.num} p={p} index={i} />
           ))}
         </div>
       </div>

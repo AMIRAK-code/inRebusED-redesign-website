@@ -4,14 +4,16 @@ import { gsap } from '../../lib/gsap'
 import styles from './Process.module.css'
 
 const STEPS = [
-  { num: '01', title: 'Briefing',      desc: 'Definition of guidelines and project scope with the client.' },
-  { num: '02', title: 'Research',      desc: 'Documentation analysis and deep subject-matter investigation.' },
-  { num: '03', title: 'Project',       desc: 'Structure design, user interface architecture and learning flows.' },
-  { num: '04', title: 'Storyboard',   desc: 'Content mapping, scripts and visual narrative for every module.' },
-  { num: '05', title: 'Graphic Design',desc: 'Visual design validated to project and brand characteristics.' },
-  { num: '06', title: 'Production',   desc: 'Course development following validated graphics and storyboard.' },
-  { num: '07', title: 'Testing',      desc: 'Quality control, accessibility and cross-platform validation.' },
-  { num: '08', title: 'Release',      desc: 'Course delivery and LMS support with professional help desk.' },
+  { num: '01', title: 'Briefing',      desc: 'Definition of guidelines with the client.' },
+  { num: '02', title: 'Research',      desc: 'Document analysis and deep subject-matter investigation.' },
+  { num: '03', title: 'Project',       desc: 'Definition of structure and delivery method.' },
+  { num: '04', title: 'Feedback',      desc: 'First validation cycle with the client.' },
+  { num: '05', title: 'Storyboarding', desc: 'Content mapping, scripts and visual narrative for every module.' },
+  { num: '06', title: 'Visual Design', desc: 'Graphic interface designed to project specifications.' },
+  { num: '07', title: 'Validation',    desc: 'Sign-off of the visual design and storyboard.' },
+  { num: '08', title: 'Production',    desc: 'Course development with validated graphics and storyboard.' },
+  { num: '09', title: 'Testing',       desc: 'Quality control, accessibility and cross-platform validation.' },
+  { num: '10', title: 'Delivery',      desc: 'Final release with deployment and monitoring support.' },
 ]
 
 export default function Process() {
@@ -50,14 +52,14 @@ export default function Process() {
 
         {/* Left — sticky info */}
         <div className={styles.left}>
-          <span className={styles.label}>inAction — Our Approach</span>
+          <span className={styles.label}>inAction — How We Work</span>
           <h2 className={styles.title}>
-            Every Phase.<br />
-            <span className={styles.titleAccent}>Zero Shortcuts.</span>
+            Everything<br />
+            <span className={styles.titleAccent}>Under Control</span>
           </h2>
           <p className={styles.desc}>
-            We take care of every phase of product development, from training needs
-            analysis to results evaluation.
+            Every stage of every project is under control — from the first briefing to
+            final deployment, with feedback loops at every checkpoint.
           </p>
 
           <blockquote className={styles.quote}>

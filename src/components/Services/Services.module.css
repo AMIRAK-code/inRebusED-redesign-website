@@ -46,77 +46,124 @@
   margin: 0;
 }
 
-/* ── Grid ────────────────────────────────────── */
-.grid {
+/* ── Pillars grid ────────────────────────────── */
+.pillarsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 24px;
+}
+
+.pillar {
+  background: var(--charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--r-md);
-  overflow: hidden;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--dur-base), transform var(--dur-base);
 }
 
-/* ── Card ────────────────────────────────────── */
-.card {
-  background: var(--navy);
-  padding: 32px 28px;
-  cursor: pointer;
-  position: relative;
-  transition: background var(--dur-base);
+.pillar:hover {
+  border-color: rgba(245, 130, 32, 0.45);
+  transform: translateY(-4px);
 }
 
-.cardHovered { background: var(--charcoal); }
+.pillarHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
 
-.cardTag {
+.pillarNum {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--orange);
+  letter-spacing: -0.04em;
+}
+
+.pillarHeadText { flex: 1; }
+
+.pillarTag {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   color: var(--spicy);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-.cardTitle {
+.pillarTitle {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   text-transform: uppercase;
   color: var(--white);
   letter-spacing: -0.01em;
-  margin: 0 0 10px;
-}
-
-.cardDesc {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--mid-grey);
-  line-height: 1.65;
   margin: 0;
+  line-height: 1.05;
 }
 
-.cardArrow {
-  position: absolute;
-  bottom: 28px; right: 28px;
-  color: #333;
-  font-size: 18px;
-  transition: color var(--dur-base), transform var(--dur-base);
-  line-height: 1;
+.pillarIntro {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--mid-grey);
+  line-height: 1.6;
+  margin: 0 0 24px;
 }
 
-.cardArrowHovered {
+.pillarList {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pillarItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.pillarItemDot {
   color: var(--orange);
-  transform: translateX(4px);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.pillarItemName {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.pillarItemDesc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  line-height: 1.45;
+  margin-top: 2px;
 }
 
 /* ── Responsive ──────────────────────────────── */
-@media (max-width: 960px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 1024px) {
+  .pillarsGrid { grid-template-columns: 1fr; gap: 20px; }
 }
 
 @media (max-width: 768px) {
   .section { padding: 80px 24px; }
-  .grid { grid-template-columns: 1fr; }
-  .card { padding: 24px 20px; }
+  .pillar { padding: 28px 24px; }
+  .pillarNum { font-size: 44px; }
 }

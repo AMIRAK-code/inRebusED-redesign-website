@@ -15,6 +15,61 @@
 /* ── Left ───────────────────────────────────── */
 .left {}
 
+.subTitle {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--navy);
+  margin: 0 0 16px;
+}
+
+/* ── Timeline ───────────────────────────────── */
+.timeline {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0 0 0 24px;
+  border-left: 1px solid rgba(10, 22, 40, 0.18);
+}
+
+.timelineItem {
+  position: relative;
+  padding: 12px 0 12px 0;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 18px;
+  align-items: baseline;
+}
+
+.timelineItem::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 18px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 3px var(--off-white);
+}
+
+.timelineYear {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+.timelineText {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--mid-grey);
+  line-height: 1.5;
+}
+
 .label {
   display: block;
   font-family: var(--font-body);
@@ -64,10 +119,13 @@
 .btn:hover { background: #152240; box-shadow: var(--shadow-md); }
 
 /* ── Team grid ──────────────────────────────── */
+.right {}
+
 .teamGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  margin-top: 24px;
 }
 
 .teamCard {
