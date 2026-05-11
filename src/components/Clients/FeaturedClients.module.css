@@ -1,0 +1,142 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 100%;
+}
+
+/* ── Card ─────────────────────────────────────── */
+.card {
+  position: relative;
+  background: var(--charcoal);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  cursor: pointer;
+  appearance: none;
+  text-align: left;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--orange);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Case study backdrop ──────────────────────── */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  filter: blur(3px);
+  transform: scale(1.06);
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.card:hover .backdrop {
+  opacity: 0.35;
+}
+
+/* ── Navy gradient overlay ────────────────────── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 22, 40, 0.2) 0%,
+    rgba(10, 22, 40, 0.72) 50%,
+    rgba(10, 22, 40, 0.96) 100%
+  );
+  z-index: 1;
+}
+
+/* ── Content ──────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logoPanel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.logoImg {
+  max-height: 48px;
+  max-width: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.countBadge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(245, 130, 32, 0.12);
+  border: 1px solid rgba(245, 130, 32, 0.25);
+  border-radius: var(--r-full);
+  padding: 4px 10px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.industryTag {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mid-grey);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-full);
+  padding: 4px 10px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* ── Mobile ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

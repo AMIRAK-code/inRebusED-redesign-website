@@ -1,16 +1,38 @@
 .section {
   background: var(--navy);
   padding: 120px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cursor parallax glow — follows --mouse-x / --mouse-y (plain 0-100 numbers) */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    400px circle at calc(var(--mouse-x, 50) * 1%) calc(var(--mouse-y, 50) * 1%),
+    rgba(245, 130, 32, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .container {
   max-width: 1280px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Block spacing between every major section */
+.block {
+  margin-bottom: 96px;
 }
 
 /* ── Header ──────────────────────────────────── */
 .header {
-  margin-bottom: 64px;
   max-width: 600px;
 }
 
@@ -46,13 +68,49 @@
   margin: 0;
 }
 
+/* ── Stats strip ─────────────────────────────── */
+.statsStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.statCard {
+  background: var(--charcoal);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.statNum {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--mid-grey);
+}
+
 /* ── Quote banner ────────────────────────────── */
 .quoteBanner {
   background: var(--charcoal);
   border: 1px solid var(--border-dark);
   border-radius: var(--r-md);
   padding: 48px;
-  margin-bottom: 48px;
   position: relative;
   overflow: hidden;
 }
@@ -101,35 +159,10 @@
   font-style: normal;
 }
 
-/* ── Chips ───────────────────────────────────── */
-.chipsGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.chip {
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--light-grey);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-dark);
-  padding: 8px 16px;
-  border-radius: var(--r-full);
-  letter-spacing: 0.02em;
-  transition: color var(--dur-base), background var(--dur-base), border-color var(--dur-base);
-  cursor: default;
-}
-
-.chip:hover {
-  color: var(--white);
-  background: rgba(245, 130, 32, 0.1);
-  border-color: rgba(245, 130, 32, 0.3);
-}
-
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
-  .section { padding: 80px 24px; }
-  .quoteBanner { padding: 32px 24px; }
+  .section      { padding: 80px 24px; }
+  .block        { margin-bottom: 64px; }
+  .quoteBanner  { padding: 32px 24px; }
+  .statsStrip   { grid-template-columns: repeat(2, 1fr); }
 }

@@ -1,7 +1,12 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
 import styles from './Footer.module.css'
+import caseStudies, { type Category } from '../../data/case-studies'
+
+const CATS: Category[] = ['digital-academy', 'onboarding', 'product-training', 'vertical-training']
+const FEATURED_WORK = CATS.map(cat => caseStudies.find(cs => cs.category === cat)).filter(Boolean) as typeof caseStudies
 
 interface FooterProps {
   scrollTo: (id: string) => void
@@ -102,6 +107,20 @@ export default function Footer({ scrollTo }: FooterProps) {
                   >
                     {label}
                   </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Featured Work */}
+          <nav aria-label="Featured work">
+            <p className={styles.columnTitle}>Featured Work</p>
+            <ul className={styles.footLinks}>
+              {FEATURED_WORK.map(cs => (
+                <li key={cs.slug}>
+                  <Link to={`/work/${cs.slug}`} className={styles.footLink}>
+                    {cs.title}
+                  </Link>
                 </li>
               ))}
             </ul>
