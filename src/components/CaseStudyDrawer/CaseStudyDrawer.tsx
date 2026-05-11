@@ -2,16 +2,9 @@ import { useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
-import allCaseStudies, { type CaseStudy } from '../../data/case-studies'
+import allCaseStudies, { CATEGORY_LABEL, type CaseStudy } from '../../data/case-studies'
 import clients from '../../data/clients'
 import styles from './CaseStudyDrawer.module.css'
-
-const CATEGORY_LABEL: Record<string, string> = {
-  'digital-academy':   'Digital Academy',
-  'onboarding':        'Onboarding',
-  'product-training':  'Product Training',
-  'vertical-training': 'Vertical Training',
-}
 
 interface Props {
   study: CaseStudy

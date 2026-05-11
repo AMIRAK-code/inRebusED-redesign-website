@@ -73,6 +73,16 @@
   border-radius: var(--r-full);
 }
 
+.clientLogo {
+  max-height: 36px;
+  max-width: 120px;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
 .clientName {
   font-family: var(--font-body);
   font-size: 20px;

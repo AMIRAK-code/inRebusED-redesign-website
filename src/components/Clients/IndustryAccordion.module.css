@@ -117,7 +117,7 @@
 }
 
 .logoTile {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 10px 14px;
@@ -127,6 +127,10 @@
   appearance: none;
   cursor: default;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logoTileLight {
+  background: #fff;
 }
 
 .logoTile.clickable {

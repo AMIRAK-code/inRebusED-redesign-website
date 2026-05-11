@@ -3,15 +3,9 @@ import { useParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../lib/gsap'
 import Nav from '../components/Nav/Nav'
-import caseStudies from '../data/case-studies'
+import caseStudies, { CATEGORY_LABEL } from '../data/case-studies'
+import clients from '../data/clients'
 import styles from './CaseStudyPage.module.css'
-
-const CATEGORY_LABEL: Record<string, string> = {
-  'digital-academy':   'Digital Academy',
-  'onboarding':        'Onboarding',
-  'product-training':  'Product Training',
-  'vertical-training': 'Vertical Training',
-}
 
 export default function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -80,6 +74,8 @@ export default function CaseStudyPage() {
 
   if (!study) return <Navigate to="/work" replace />
 
+  const clientData = clients.find(c => c.name === study.client)
+
   return (
     <div ref={pageRef} className={styles.page}>
       <Nav />
@@ -97,7 +93,10 @@ export default function CaseStudyPage() {
         <div ref={metaRef} className={styles.meta}>
           <div className={styles.metaLeft}>
             <span className={styles.categoryTag}>{CATEGORY_LABEL[study.category]}</span>
-            <span className={styles.clientName}>{study.client}</span>
+            {clientData?.logo
+              ? <img src={clientData.logo} alt={study.client} className={styles.clientLogo} />
+              : <span className={styles.clientName}>{study.client}</span>
+            }
           </div>
           <div className={styles.metaRight}>
             <span className={styles.audienceLabel}>Audience →</span>

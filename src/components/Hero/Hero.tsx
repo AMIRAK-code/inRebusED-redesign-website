@@ -10,7 +10,7 @@ interface HeroProps {
 
 const STATS = [
   { num: '2003', label: 'Founded in Turin' },
-  { num: '20+',  label: 'Years of experience' },
+  { num: `${new Date().getFullYear() - 2003}+`, label: 'Years of experience' },
   { num: '40+',  label: 'Trusted clients' },
   { num: '100%', label: 'Custom solutions' },
 ]

@@ -175,7 +175,7 @@ export default function IndustryAccordion() {
                       return (
                         <button
                           key={c.name}
-                          className={`${styles.logoTile} ${clickable ? styles.clickable : ''}`}
+                          className={`${styles.logoTile}${c.lightBg ? ` ${styles.logoTileLight}` : ''} ${clickable ? styles.clickable : ''}`}
                           onClick={clickable
                             ? e => { e.stopPropagation(); navigate(`/work?client=${encodeURIComponent(c.name)}`) }
                             : undefined

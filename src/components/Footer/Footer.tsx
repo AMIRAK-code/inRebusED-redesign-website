@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
 import styles from './Footer.module.css'
-import caseStudies from '../../data/case-studies'
+import caseStudies, { type Category } from '../../data/case-studies'
 
-const FEATURED_WORK = caseStudies.slice(0, 5)
+const CATS: Category[] = ['digital-academy', 'onboarding', 'product-training', 'vertical-training']
+const FEATURED_WORK = CATS.map(cat => caseStudies.find(cs => cs.category === cat)).filter(Boolean) as typeof caseStudies
 
 interface FooterProps {
   scrollTo: (id: string) => void

@@ -40,7 +40,7 @@ export default function LogoMarquee() {
     return (
       <div className={styles.staticGrid}>
         {allLogoClients.map(c => (
-          <div key={c.name} className={styles.tile}>
+          <div key={c.name} className={`${styles.tile}${c.lightBg ? ` ${styles.tileLight}` : ''}`}>
             <img src={c.logo!} alt={c.name} className={styles.logo} loading="lazy" />
           </div>
         ))}
@@ -54,7 +54,7 @@ export default function LogoMarquee() {
       <div className={styles.track}>
         <div ref={row1Ref} className={styles.row}>
           {[...half1, ...half1].map((c, i) => (
-            <div key={`r1-${i}`} className={styles.tile}>
+            <div key={`r1-${i}`} className={`${styles.tile}${c.lightBg ? ` ${styles.tileLight}` : ''}`}>
               <img src={c.logo!} alt={c.name} className={styles.logo} loading="lazy" />
             </div>
           ))}
@@ -65,7 +65,7 @@ export default function LogoMarquee() {
       <div className={styles.track}>
         <div ref={row2Ref} className={styles.row}>
           {[...half2, ...half2].map((c, i) => (
-            <div key={`r2-${i}`} className={styles.tile}>
+            <div key={`r2-${i}`} className={`${styles.tile}${c.lightBg ? ` ${styles.tileLight}` : ''}`}>
               <img src={c.logo!} alt={c.name} className={styles.logo} loading="lazy" />
             </div>
           ))}

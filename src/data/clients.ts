@@ -11,6 +11,7 @@ export interface Client {
   logo: string | null
   featured: boolean
   industry: Industry
+  lightBg?: boolean
 }
 
 const clients: Client[] = [
@@ -22,19 +23,19 @@ const clients: Client[] = [
   { name: 'IVECO',                      logo: '/clients/12.png', featured: true, industry: 'automotive'          },
   { name: 'Marelli',                    logo: '/clients/13.png', featured: true, industry: 'automotive'          },
   { name: 'Esselunga',                  logo: '/clients/39.png', featured: true, industry: 'retail-lifestyle'    },
-  { name: 'Maserati',                   logo: '/clients/25.png', featured: true, industry: 'automotive'          },
+  { name: 'Maserati',                   logo: '/clients/25.png', featured: true, industry: 'automotive',          lightBg: true },
   { name: 'Leonardo Aircraft Division', logo: '/clients/41.png', featured: true, industry: 'aerospace-defense'   },
   { name: 'Gucci',                      logo: '/clients/20.png', featured: true, industry: 'retail-lifestyle'    },
   { name: 'Skillab',                    logo: '/clients/40.png', featured: true, industry: 'public-sector'       },
   { name: 'RINA',                       logo: '/clients/21.png', featured: true, industry: 'industrial-services' },
-  { name: 'CNH Industrial',             logo: '/clients/43.png', featured: true, industry: 'automotive'          },
+  { name: 'CNH Industrial',             logo: '/clients/43.png', featured: true, industry: 'automotive',          lightBg: true },
   { name: 'Intesa Sanpaolo',            logo: '/clients/42.png', featured: true, industry: 'finance'             },
 
   // ── Automotive ────────────────────────────────────────────────────────────
-  { name: 'Stellantis',                 logo: '/clients/29.png', featured: false, industry: 'automotive' },
-  { name: 'Fiat',                       logo: '/clients/15.png', featured: false, industry: 'automotive' },
-  { name: 'Alfa Romeo',                 logo: '/clients/03.png', featured: false, industry: 'automotive' },
-  { name: 'Lancia',                     logo: '/clients/18.png', featured: false, industry: 'automotive' },
+  { name: 'Stellantis',                 logo: '/clients/29.png', featured: false, industry: 'automotive', lightBg: true },
+  { name: 'Fiat',                       logo: '/clients/15.png', featured: false, industry: 'automotive', lightBg: true },
+  { name: 'Alfa Romeo',                 logo: '/clients/03.png', featured: false, industry: 'automotive', lightBg: true },
+  { name: 'Lancia',                     logo: '/clients/18.png', featured: false, industry: 'automotive', lightBg: true },
   { name: 'Abarth',                     logo: '/clients/22.png', featured: false, industry: 'automotive' },
   { name: 'FPT Powertrain Technologies',logo: '/clients/28.png', featured: false, industry: 'automotive' },
   { name: 'Bitron',                     logo: '/clients/16.png', featured: false, industry: 'automotive' },
@@ -62,7 +63,7 @@ const clients: Client[] = [
   { name: 'Daikin',                     logo: '/clients/30.png', featured: false, industry: 'industrial-services' },
   { name: 'SGS',                        logo: '/clients/33.png', featured: false, industry: 'industrial-services' },
   { name: 'SMAT Gruppo',                logo: '/clients/06.png', featured: false, industry: 'industrial-services' },
-  { name: 'CASE Agriculture',           logo: '/clients/07.png', featured: false, industry: 'industrial-services' },
+  { name: 'CASE Agriculture',           logo: '/clients/07.png', featured: false, industry: 'industrial-services', lightBg: true },
   { name: 'Tinexta',                    logo: '/clients/09.png', featured: false, industry: 'industrial-services' },
   { name: 'Intellera',                  logo: '/clients/10.png', featured: false, industry: 'industrial-services' },
 

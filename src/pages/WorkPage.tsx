@@ -2,15 +2,9 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { gsap, ScrollTrigger } from '../lib/gsap'
 import Nav from '../components/Nav/Nav'
-import caseStudies, { type Category } from '../data/case-studies'
+import caseStudies, { CATEGORY_LABEL, type Category } from '../data/case-studies'
+import clients from '../data/clients'
 import styles from './WorkPage.module.css'
-
-const CATEGORY_LABEL: Record<Category, string> = {
-  'digital-academy':   'Digital Academy',
-  'onboarding':        'Onboarding',
-  'product-training':  'Product Training',
-  'vertical-training': 'Vertical Training',
-}
 
 const CATEGORIES: Category[] = [
   'digital-academy',
@@ -153,34 +147,42 @@ export default function WorkPage() {
 
         {/* Card grid */}
         <div ref={gridRef} className={styles.grid}>
-          {filtered.map(cs => (
-            <div
-              key={cs.slug}
-              data-card=""
-              className={styles.card}
-              role="button"
-              tabIndex={0}
-              aria-label={`View case study: ${cs.title}`}
-              onClick={() => navigate(`/work/${cs.slug}`)}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  navigate(`/work/${cs.slug}`)
-                }
-              }}
-            >
-              <div className={styles.cardImgWrap}>
-                <img src={cs.image} alt={cs.title} loading="lazy" className={styles.cardImg} />
-                <span className={styles.cardTag}>{CATEGORY_LABEL[cs.category]}</span>
+          {filtered.map(cs => {
+            const clientData = clients.find(c => c.name === cs.client)
+            return (
+              <div
+                key={cs.slug}
+                data-card=""
+                className={styles.card}
+                role="button"
+                tabIndex={0}
+                aria-label={`View case study: ${cs.title}`}
+                onClick={() => navigate(`/work/${cs.slug}`)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    navigate(`/work/${cs.slug}`)
+                  }
+                }}
+              >
+                <div className={styles.cardImgWrap}>
+                  <img src={cs.image} alt={cs.title} loading="lazy" className={styles.cardImg} />
+                  <span className={styles.cardTag}>{CATEGORY_LABEL[cs.category]}</span>
+                </div>
+                <div className={styles.cardBody}>
+                  <div className={styles.cardClientRow}>
+                    {clientData?.logo && (
+                      <img src={clientData.logo} alt="" className={styles.cardClientLogo} />
+                    )}
+                    <span className={styles.cardClient}>{cs.client}</span>
+                  </div>
+                  <h3 className={styles.cardTitle}>{cs.title}</h3>
+                  <p className={styles.cardBrief}>{cs.brief}</p>
+                  <span className={styles.cardCta}>View Case Study →</span>
+                </div>
               </div>
-              <div className={styles.cardBody}>
-                <span className={styles.cardClient}>{cs.client}</span>
-                <h3 className={styles.cardTitle}>{cs.title}</h3>
-                <p className={styles.cardBrief}>{cs.brief}</p>
-                <span className={styles.cardCta}>View Case Study →</span>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
       </main>

@@ -3,15 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import styles from './Projects.module.css'
-import caseStudies, { type CaseStudy, type Category } from '../../data/case-studies'
+import caseStudies, { CATEGORY_LABEL, type CaseStudy, type Category } from '../../data/case-studies'
 import CaseStudyDrawer from '../CaseStudyDrawer/CaseStudyDrawer'
-
-const CATEGORY_LABEL: Record<string, string> = {
-  'digital-academy':   'Digital Academy',
-  'onboarding':        'Onboarding',
-  'product-training':  'Product Training',
-  'vertical-training': 'Vertical Training',
-}
 
 const FILTER_PILLS: { label: string; value: Category | 'all' }[] = [
   { label: 'All',               value: 'all'               },

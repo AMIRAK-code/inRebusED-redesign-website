@@ -242,4 +242,11 @@ const caseStudies: CaseStudy[] = [
   },
 ]
 
+export const CATEGORY_LABEL: Record<Category, string> = {
+  'digital-academy':   'Digital Academy',
+  'onboarding':        'Onboarding',
+  'product-training':  'Product Training',
+  'vertical-training': 'Vertical Training',
+}
+
 export default caseStudies
