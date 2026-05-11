@@ -1,0 +1,17 @@
+{
+  "name": "inRebus Digital Learning",
+  "short_name": "inRebus",
+  "description": "Creative e-learning solutions outside the box.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A1628",
+  "theme_color": "#F58220",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
