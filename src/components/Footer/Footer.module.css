@@ -103,7 +103,7 @@
 
 .bottomGrid {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  grid-template-columns: 2fr 1.5fr 1fr 1.4fr 1fr;
   gap: 32px;
   padding-bottom: 32px;
   border-bottom: 1px solid var(--border-dark);
@@ -152,6 +152,16 @@
 }
 .address a:hover { color: var(--light-grey); }
 
+.columnTitle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  margin: 0 0 12px;
+}
+
 .footLinks {
   list-style: none;
   display: flex;
@@ -168,6 +178,8 @@
   padding: 0;
   text-align: left;
   cursor: pointer;
+  text-decoration: none;
+  display: block;
   transition: color var(--dur-base);
 }
 .footLink:hover { color: var(--light-grey); }
@@ -202,6 +214,10 @@
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 960px) {
   .bottomGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+  .bottomGrid { grid-template-columns: 2fr 1.5fr 1fr 1.4fr 1fr; }
 }
 
 @media (max-width: 768px) {

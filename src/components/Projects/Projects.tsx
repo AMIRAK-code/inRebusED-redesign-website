@@ -1,55 +1,107 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import styles from './Projects.module.css'
-import caseStudies from '../../data/case-studies'
+import caseStudies, { CATEGORY_LABEL, type CaseStudy, type Category } from '../../data/case-studies'
+import CaseStudyDrawer from '../CaseStudyDrawer/CaseStudyDrawer'
 
-const CATEGORY_LABEL: Record<string, string> = {
-  'digital-academy':   'Digital Academy',
-  'onboarding':        'Onboarding',
-  'product-training':  'Product Training',
-  'vertical-training': 'Vertical Training',
-}
+const FILTER_PILLS: { label: string; value: Category | 'all' }[] = [
+  { label: 'All',               value: 'all'               },
+  { label: 'Digital Academy',   value: 'digital-academy'   },
+  { label: 'Onboarding',        value: 'onboarding'        },
+  { label: 'Product Training',  value: 'product-training'  },
+  { label: 'Vertical Training', value: 'vertical-training' },
+]
 
-const PROJECTS = caseStudies.slice(0, 10).map(cs => ({
-  title:  cs.title,
-  client: cs.client,
-  tag:    CATEGORY_LABEL[cs.category],
-  desc:   cs.brief,
-  img:    cs.image,
-}))
-
-const N = PROJECTS.length
-
-// Alternate rotation direction per card so the pile looks organic
 const rotDir = (i: number) => (i % 2 === 0 ? 1 : -1)
 
 export default function Projects() {
+  const navigate = useNavigate()
+  const [filter, setFilter]               = useState<Category | 'all'>('all')
+  const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null)
+
+  const filteredStudies = filter === 'all'
+    ? caseStudies
+    : caseStudies.filter(cs => cs.category === filter)
+
+  const PROJECTS = filteredStudies.slice(0, 10).map(cs => ({
+    title:  cs.title,
+    client: cs.client,
+    tag:    CATEGORY_LABEL[cs.category],
+    desc:   cs.brief,
+    img:    cs.image,
+    study:  cs,
+  }))
+
+  const HAS_MORE   = filteredStudies.length > 10
+  // N = total scroll steps (project cards + optional CTA card)
+  const N          = PROJECTS.length + (HAS_MORE ? 1 : 0)
+  // denominator shown in counter and per-card label
+  const totalDenom = HAS_MORE ? caseStudies.length : N
+
   const sectionRef      = useRef<HTMLElement>(null)
+  const cardWrapperRefs = useRef<(HTMLDivElement | null)[]>([])
   const cardRefs        = useRef<(HTMLDivElement | null)[]>([])
   const dimRefs         = useRef<(HTMLDivElement | null)[]>([])
   const counterRef      = useRef<HTMLSpanElement>(null)
   const progressDotRefs = useRef<(HTMLDivElement | null)[]>([])
   const progressFillRef = useRef<HTMLDivElement>(null)
+  const filterBarRef    = useRef<HTMLDivElement>(null)
+  const isTransitioning = useRef(false)
+
+  function handleFilterChange(newFilter: Category | 'all') {
+    if (newFilter === filter || isTransitioning.current) return
+    isTransitioning.current = true
+
+    const wrappers = cardWrapperRefs.current.filter(Boolean) as HTMLDivElement[]
+    if (wrappers.length > 0) {
+      gsap.to(wrappers, {
+        opacity: 0,
+        duration: 0.2,
+        ease: 'power2.in',
+        overwrite: true,
+        onComplete: () => {
+          isTransitioning.current = false
+          setFilter(newFilter)
+        },
+      })
+    } else {
+      isTransitioning.current = false
+      setFilter(newFilter)
+    }
+  }
 
   useGSAP(() => {
     const section = sectionRef.current
     if (!section) return
 
-    const vh = () => window.innerHeight
-
-    // ── Initial state: all cards below viewport ──────────────────────────
-    cardRefs.current.forEach(card => {
-      if (card) gsap.set(card, { yPercent: 115 })
+    // Reset state left over from previous filter
+    cardWrapperRefs.current.forEach(w => {
+      if (!w) return
+      w.style.opacity = ''
+      w.style.removeProperty('--ty')
+      w.style.removeProperty('--sc')
+      w.style.removeProperty('--rot')
     })
+    dimRefs.current.forEach(d => {
+      if (d) d.style.removeProperty('--dim')
+    })
+    if (counterRef.current) counterRef.current.textContent = '01'
+    if (progressFillRef.current) progressFillRef.current.style.width = '0%'
+    if (filterBarRef.current) {
+      filterBarRef.current.style.opacity = '1'
+      filterBarRef.current.style.pointerEvents = 'auto'
+    }
 
+    const vh = () => window.innerHeight
     const triggers: ScrollTrigger[] = []
     const cleanups: (() => void)[] = []
 
     for (let i = 0; i < N; i++) {
       const idx = i
 
-      // ── Hover tilt (3-D perspective tilt on current card) ──────────────
+      // ── 3-D hover tilt (skipped for CTA card which has no cardRef) ───────
       const card = cardRefs.current[idx]
       if (card) {
         const onMove = (e: MouseEvent) => {
@@ -69,56 +121,61 @@ export default function Projects() {
         )
       }
 
-      // ── Scroll-linked stacking transitions ─────────────────────────────
+      // ── Scroll-linked stacking ───────────────────────────────────────
       const st = ScrollTrigger.create({
         trigger: section,
         start: () => `top+=${idx * vh()} top`,
         end:   () => `top+=${(idx + 1) * vh()} top`,
-        scrub: 1.2,
+        scrub: 0.5,
         invalidateOnRefresh: true,
 
         onUpdate(self) {
           const p = self.progress
 
-          // Card idx — slides up from below
-          const c0 = cardRefs.current[idx]
-          if (c0) gsap.set(c0, { yPercent: (1 - p) * 115 })
+          // Fade filter bar out as first card slides in
+          if (idx === 0 && filterBarRef.current) {
+            const op = 1 - p
+            filterBarRef.current.style.opacity      = String(op)
+            filterBarRef.current.style.pointerEvents = op < 0.05 ? 'none' : 'auto'
+          }
 
-          // Card idx-1 — depth 0 → depth 1 (scale + rotate + dim)
-          const c1  = cardRefs.current[idx - 1]
-          const d1  = dimRefs.current[idx - 1]
-          if (c1) gsap.set(c1, {
-            scale:    1 - 0.06 * p,
-            rotation: rotDir(idx - 1) * 1.8 * p,
-            filter:   `blur(${(p * 1.5).toFixed(2)}px)`,
-          })
-          if (d1) gsap.set(d1, { opacity: 0.3 * p })
+          // Incoming card slides up from below
+          const w0 = cardWrapperRefs.current[idx]
+          if (w0) w0.style.setProperty('--ty', String((1 - p) * 115))
 
-          // Card idx-2 — depth 1 → depth 2 (deepen further)
-          const c2 = cardRefs.current[idx - 2]
+          // Previous card recedes to depth-1
+          const w1 = cardWrapperRefs.current[idx - 1]
+          if (w1) {
+            w1.style.setProperty('--sc',  String(1 - 0.06 * p))
+            w1.style.setProperty('--rot', String(rotDir(idx - 1) * 1.8 * p))
+          }
+          const d1 = dimRefs.current[idx - 1]
+          if (d1) d1.style.setProperty('--dim', String(0.3 * p))
+
+          // Two-back card deepens to depth-2
+          const w2 = cardWrapperRefs.current[idx - 2]
+          if (w2) {
+            w2.style.setProperty('--sc',  String(0.94 - 0.06 * p))
+            w2.style.setProperty('--rot', String(rotDir(idx - 2) * (1.8 + 1.8 * p)))
+          }
           const d2 = dimRefs.current[idx - 2]
-          if (c2) gsap.set(c2, {
-            scale:    0.94 - 0.06 * p,
-            rotation: rotDir(idx - 2) * (1.8 + 1.8 * p),
-          })
-          if (d2) gsap.set(d2, { opacity: 0.3 + 0.25 * p })
+          if (d2) d2.style.setProperty('--dim', String(0.3 + 0.25 * p))
 
-          // ── Flank updates ────────────────────────────────────────────────
-          // Counter: flip to new card at 50% progress
+          // Counter flip
           if (p >= 0.5 && counterRef.current) {
             counterRef.current.textContent = String(idx + 1).padStart(2, '0')
           }
 
-          // Progress pips
+          // Pips
           progressDotRefs.current.forEach((dot, j) => {
             if (!dot) return
-            const active = j < idx || (j === idx && p >= 0.5)
+            const active    = j < idx || (j === idx && p >= 0.5)
             const isCurrent = active && (j === idx || (j === idx - 1 && p < 0.5))
             dot.style.background = active ? 'var(--orange)' : 'rgba(255,255,255,0.18)'
             dot.style.height     = isCurrent ? `${28 + p * 10}px` : active ? '36px' : '20px'
           })
 
-          // Progress fill bar
+          // Progress bar
           if (progressFillRef.current) {
             progressFillRef.current.style.width = `${((idx + p) / N) * 100}%`
           }
@@ -128,11 +185,13 @@ export default function Projects() {
       triggers.push(st)
     }
 
+    ScrollTrigger.refresh()
+
     return () => {
       triggers.forEach(st => st.kill())
       cleanups.forEach(fn => fn())
     }
-  }, { scope: sectionRef })
+  }, { scope: sectionRef, dependencies: [filter] })
 
   return (
     <section
@@ -142,17 +201,36 @@ export default function Projects() {
     >
       <div className={styles.sticky}>
 
-        {/* ── Grain texture overlay ──────────────────────────────────── */}
+        {/* ── Grain texture ──────────────────────────────────────────── */}
         <div className={styles.grain} aria-hidden="true" />
 
-        {/* ── Title screen (z-index 0, behind all cards) ─────────────── */}
+        {/* ── Filter bar ─────────────────────────────────────────────── */}
+        <div
+          ref={filterBarRef}
+          className={styles.filterBar}
+          role="group"
+          aria-label="Filter by category"
+        >
+          {FILTER_PILLS.map(pill => (
+            <button
+              key={pill.value}
+              className={`${styles.filterPill}${filter === pill.value ? ` ${styles.filterPillActive}` : ''}`}
+              onClick={() => handleFilterChange(pill.value)}
+              aria-pressed={filter === pill.value}
+            >
+              {pill.label}
+            </button>
+          ))}
+        </div>
+
+        {/* ── Title screen ───────────────────────────────────────────── */}
         <div className={styles.titleScreen}>
           <span className={styles.titleLabel}>Our Work</span>
           <h2 className={styles.titleHeading}>
             Selected<br />
             <span className={styles.titleAccent}>Projects</span>
           </h2>
-          <p className={styles.titleSub}>{String(N).padStart(2, '0')} case studies</p>
+          <p className={styles.titleSub}>{String(PROJECTS.length).padStart(2, '0')} case studies</p>
           <div className={styles.titleArrow} aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -164,7 +242,7 @@ export default function Projects() {
         <div className={styles.leftFlank} aria-hidden="true">
           <div className={styles.counterBlock}>
             <span ref={counterRef} className={styles.counterNum}>01</span>
-            <span className={styles.counterTotal}>/{String(N).padStart(2, '0')}</span>
+            <span className={styles.counterTotal}>/{String(totalDenom).padStart(2, '0')}</span>
           </div>
           <span className={styles.flankLabel}>Our Work</span>
         </div>
@@ -172,7 +250,7 @@ export default function Projects() {
         {/* ── Right flank ────────────────────────────────────────────── */}
         <div className={styles.rightFlank} aria-hidden="true">
           <div className={styles.pips}>
-            {PROJECTS.map((_, i) => (
+            {Array.from({ length: N }).map((_, i) => (
               <div
                 key={i}
                 ref={el => { progressDotRefs.current[i] = el }}
@@ -186,6 +264,7 @@ export default function Projects() {
         {PROJECTS.map((p, i) => (
           <div
             key={p.title}
+            ref={el => { cardWrapperRefs.current[i] = el }}
             className={styles.cardWrapper}
             style={{ zIndex: i + 1 }}
           >
@@ -195,7 +274,13 @@ export default function Projects() {
               role="button"
               tabIndex={0}
               aria-label={`View project: ${p.title}`}
-              onClick={() => {/* navigate to project */ }}
+              onClick={() => setSelectedStudy(p.study)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setSelectedStudy(p.study)
+                }
+              }}
             >
               <img
                 src={p.img}
@@ -211,7 +296,7 @@ export default function Projects() {
                 <div className={styles.cardTop}>
                   <span className={styles.cardTag}>{p.tag}</span>
                   <span className={styles.cardCount}>
-                    {String(i + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(N).padStart(2, '0')}
+                    {String(i + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(totalDenom).padStart(2, '0')}
                   </span>
                 </div>
 
@@ -228,18 +313,54 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Dim overlay — GSAP sets opacity as next card enters */}
               <div ref={el => { dimRefs.current[i] = el }} className={styles.dim} />
             </div>
           </div>
         ))}
 
-        {/* ── Bottom progress bar ────────────────────────────────────── */}
+        {/* ── CTA card — shown when there are > 10 studies in the current filter ── */}
+        {HAS_MORE && (
+          <div
+            ref={el => { cardWrapperRefs.current[PROJECTS.length] = el }}
+            className={styles.cardWrapper}
+            style={{ zIndex: PROJECTS.length + 1 }}
+          >
+            <div
+              className={`${styles.card} ${styles.ctaCard}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`View all ${caseStudies.length} case studies`}
+              onClick={() => navigate('/work')}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  navigate('/work')
+                }
+              }}
+            >
+              <h2 className={styles.ctaHeading}>STILL<br />HUNGRY?</h2>
+              <p className={styles.ctaSub}>Explore all {caseStudies.length} case studies</p>
+              <span className={styles.ctaArrow}>→ View Full Portfolio</span>
+            </div>
+          </div>
+        )}
+
+        {/* ── Progress bar ───────────────────────────────────────────── */}
         <div className={styles.progressTrack} aria-hidden="true">
           <div ref={progressFillRef} className={styles.progressFill} />
         </div>
 
       </div>
+
+      {/* ── Case study drawer ──────────────────────────────────────────── */}
+      {selectedStudy && (
+        <CaseStudyDrawer
+          study={selectedStudy}
+          caseStudies={filteredStudies.slice(0, 10)}
+          onNavigate={setSelectedStudy}
+          onClose={() => setSelectedStudy(null)}
+        />
+      )}
     </section>
   )
 }

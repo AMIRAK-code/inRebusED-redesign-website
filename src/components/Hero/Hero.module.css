@@ -127,6 +127,27 @@
 }
 .btnPrimary:active { transform: scale(0.97); }
 
+.btnWork {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  padding: 14px 32px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
+  white-space: nowrap;
+}
+.btnWork:hover {
+  background: var(--white);
+  color: var(--navy);
+  border-color: var(--white);
+}
+
 .btnSecondary {
   font-family: var(--font-body);
   font-size: 14px;

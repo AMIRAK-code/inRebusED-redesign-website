@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText } from '../../lib/gsap'
 import styles from './Hero.module.css'
@@ -9,7 +10,7 @@ interface HeroProps {
 
 const STATS = [
   { num: '2003', label: 'Founded in Turin' },
-  { num: '20+',  label: 'Years of experience' },
+  { num: `${new Date().getFullYear() - 2003}+`, label: 'Years of experience' },
   { num: '40+',  label: 'Trusted clients' },
   { num: '100%', label: 'Custom solutions' },
 ]
@@ -95,6 +96,9 @@ export default function Hero({ scrollTo }: HeroProps) {
           >
             Explore Services
           </button>
+          <Link to="/work" className={styles.btnWork}>
+            See Our Work →
+          </Link>
           <button
             className={styles.btnSecondary}
             onClick={() => scrollTo('contact')}

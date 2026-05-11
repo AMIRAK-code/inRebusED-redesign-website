@@ -159,6 +159,51 @@
   transition: background 0.3s ease, height 0.25s ease;
 }
 
+/* ── Filter bar ──────────────────────────────────────────────────────── */
+.filterBar {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.filterPill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 7px 14px;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur-base), background var(--dur-base), border-color var(--dur-base);
+}
+
+.filterPill:hover {
+  color: var(--white);
+  border-color: rgba(245, 130, 32, 0.5);
+}
+
+.filterPillActive {
+  color: var(--white);
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.filterPillActive:hover {
+  border-color: var(--orange);
+}
+
 /* ── Card wrappers (one per project, stacked by z-index) ─────────────── */
 .cardWrapper {
   position: absolute;
@@ -168,6 +213,10 @@
   justify-content: center;
   perspective: 1000px;
   pointer-events: none;
+  /* Scroll-driven transforms — all driven by CSS custom properties.
+     Defaults keep cards below viewport until the first onUpdate fires. */
+  transform: translateY(calc(var(--ty, 115) * 1%)) scale(var(--sc, 1)) rotate(calc(var(--rot, 0) * 1deg));
+  will-change: transform;
 }
 
 /* ── The physical card ───────────────────────────────────────────────── */
@@ -179,7 +228,7 @@
   overflow: hidden;
   cursor: pointer;
   pointer-events: auto;
-  will-change: transform, filter;
+  will-change: transform;
   transform-origin: center center;
   transform-style: preserve-3d;
   box-shadow:
@@ -299,12 +348,12 @@
   pointer-events: auto;
 }
 
-/* ── Dim overlay: GSAP sets opacity as next card enters ──────────────── */
+/* ── Dim overlay: opacity driven by --dim CSS custom property ────────── */
 .dim {
   position: absolute;
   inset: 0;
   background: rgba(10, 22, 40, 0.85);
-  opacity: 0;
+  opacity: var(--dim, 0);
   pointer-events: none;
   z-index: 10;
   border-radius: 18px;
@@ -326,6 +375,59 @@
   width: 0%;
   background: var(--orange);
   border-radius: 1px;
+}
+
+/* ── CTA card ────────────────────────────────────────────────────────────── */
+.ctaCard {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--spicy) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8vh 6vw;
+  box-shadow:
+    0 2px  6px  rgba(0, 0, 0, 0.18),
+    0 10px 28px  rgba(0, 0, 0, 0.30),
+    0 28px 64px  rgba(0, 0, 0, 0.40),
+    0 48px 96px  rgba(0, 0, 0, 0.28);
+}
+
+.ctaHeading {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 11vw, 140px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.85;
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 24px;
+}
+
+.ctaSub {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 36px;
+  line-height: 1.5;
+}
+
+.ctaArrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  padding: 12px 24px;
+  border-radius: var(--r-full);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ctaCard:hover .ctaArrow {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--white);
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
