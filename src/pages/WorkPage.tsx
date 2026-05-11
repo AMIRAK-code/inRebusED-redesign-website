@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { gsap, ScrollTrigger } from '../lib/gsap'
 import Nav from '../components/Nav/Nav'
 import caseStudies, { type Category } from '../data/case-studies'
@@ -32,16 +32,21 @@ const categoryCounts = Object.fromEntries(
 ) as Record<Category, number>
 
 export default function WorkPage() {
-  const [filter, setFilter] = useState<Category | 'all'>('all')
-  const navigate = useNavigate()
-  const gridRef = useRef<HTMLDivElement>(null)
-  const isTransitioning = useRef(false)
-  const hasEnteredRef = useRef(false)
-  const isFirstFilter = useRef(true)
+  const [filter, setFilter]         = useState<Category | 'all'>('all')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate                    = useNavigate()
+  const gridRef                     = useRef<HTMLDivElement>(null)
+  const isTransitioning             = useRef(false)
+  const hasEnteredRef               = useRef(false)
+  const isFirstFilter               = useRef(true)
 
-  const filtered = filter === 'all'
-    ? caseStudies
-    : caseStudies.filter(cs => cs.category === filter)
+  const clientFilter = searchParams.get('client')
+
+  const filtered = clientFilter
+    ? caseStudies.filter(cs => cs.client === clientFilter)
+    : filter === 'all'
+      ? caseStudies
+      : caseStudies.filter(cs => cs.category === filter)
 
   function handleFilterChange(newFilter: Category | 'all') {
     if (newFilter === filter || isTransitioning.current) return
@@ -119,19 +124,32 @@ export default function WorkPage() {
           </div>
         </div>
 
-        {/* Filter tabs */}
-        <div className={styles.filterRow} role="group" aria-label="Filter by category">
-          {FILTER_PILLS.map(pill => (
+        {/* Filter tabs — replaced by client tag when navigated from Clients section */}
+        {clientFilter ? (
+          <div className={styles.clientTag}>
+            <span>Showing: <strong>{clientFilter}</strong></span>
             <button
-              key={pill.value}
-              className={`${styles.filterPill}${filter === pill.value ? ` ${styles.filterPillActive}` : ''}`}
-              onClick={() => handleFilterChange(pill.value)}
-              aria-pressed={filter === pill.value}
+              className={styles.clientTagRemove}
+              onClick={() => setSearchParams({})}
+              aria-label="Clear client filter"
             >
-              {pill.label}
+              ×
             </button>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className={styles.filterRow} role="group" aria-label="Filter by category">
+            {FILTER_PILLS.map(pill => (
+              <button
+                key={pill.value}
+                className={`${styles.filterPill}${filter === pill.value ? ` ${styles.filterPillActive}` : ''}`}
+                onClick={() => handleFilterChange(pill.value)}
+                aria-pressed={filter === pill.value}
+              >
+                {pill.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Card grid */}
         <div ref={gridRef} className={styles.grid}>

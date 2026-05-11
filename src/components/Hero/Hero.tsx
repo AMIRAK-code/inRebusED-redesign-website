@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText } from '../../lib/gsap'
 import styles from './Hero.module.css'
@@ -95,6 +96,9 @@ export default function Hero({ scrollTo }: HeroProps) {
           >
             Explore Services
           </button>
+          <Link to="/work" className={styles.btnWork}>
+            See Our Work →
+          </Link>
           <button
             className={styles.btnSecondary}
             onClick={() => scrollTo('contact')}

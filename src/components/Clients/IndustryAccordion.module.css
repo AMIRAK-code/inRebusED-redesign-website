@@ -1,0 +1,198 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Group ────────────────────────────────────── */
+.group {
+  background: var(--charcoal);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────────── */
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  appearance: none;
+  gap: 16px;
+  transition: background 0.2s ease;
+}
+
+.header:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.headerOpen {
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  color: var(--orange);
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.industryLabel {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(245, 130, 32, 0.1);
+  border-radius: var(--r-full);
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+}
+
+.chevron {
+  color: var(--mid-grey);
+  width: 16px;
+  height: 16px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.chevron svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Body ─────────────────────────────────────── */
+.body {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.bodyInner {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Logo strip ───────────────────────────────── */
+.logoStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.logoTile {
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  cursor: default;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logoTile.clickable {
+  cursor: pointer;
+}
+
+.logoTile.clickable:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(245, 130, 32, 0.25);
+}
+
+.logoImg {
+  max-height: 40px;
+  max-width: 100px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+/* ── Chip strip ───────────────────────────────── */
+.chipStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--light-grey);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-dark);
+  padding: 6px 14px;
+  border-radius: var(--r-full);
+  appearance: none;
+  cursor: default;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.chip.clickable {
+  cursor: pointer;
+}
+
+.chip.clickable:hover {
+  color: var(--white);
+  background: rgba(245, 130, 32, 0.08);
+  border-color: rgba(245, 130, 32, 0.25);
+}
+
+/* ── Mobile ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 18px;
+  }
+
+  .bodyInner {
+    padding: 16px 18px 20px;
+  }
+
+  .industryLabel {
+    font-size: 15px;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}

@@ -377,6 +377,59 @@
   border-radius: 1px;
 }
 
+/* ── CTA card ────────────────────────────────────────────────────────────── */
+.ctaCard {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--spicy) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8vh 6vw;
+  box-shadow:
+    0 2px  6px  rgba(0, 0, 0, 0.18),
+    0 10px 28px  rgba(0, 0, 0, 0.30),
+    0 28px 64px  rgba(0, 0, 0, 0.40),
+    0 48px 96px  rgba(0, 0, 0, 0.28);
+}
+
+.ctaHeading {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 11vw, 140px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.85;
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 24px;
+}
+
+.ctaSub {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 36px;
+  line-height: 1.5;
+}
+
+.ctaArrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  padding: 12px 24px;
+  border-radius: var(--r-full);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ctaCard:hover .ctaArrow {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--white);
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .leftFlank,

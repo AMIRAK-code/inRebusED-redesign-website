@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import styles from './Projects.module.css'
@@ -23,6 +24,7 @@ const FILTER_PILLS: { label: string; value: Category | 'all' }[] = [
 const rotDir = (i: number) => (i % 2 === 0 ? 1 : -1)
 
 export default function Projects() {
+  const navigate = useNavigate()
   const [filter, setFilter]               = useState<Category | 'all'>('all')
   const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null)
 
@@ -36,9 +38,14 @@ export default function Projects() {
     tag:    CATEGORY_LABEL[cs.category],
     desc:   cs.brief,
     img:    cs.image,
+    study:  cs,
   }))
 
-  const N = PROJECTS.length
+  const HAS_MORE   = filteredStudies.length > 10
+  // N = total scroll steps (project cards + optional CTA card)
+  const N          = PROJECTS.length + (HAS_MORE ? 1 : 0)
+  // denominator shown in counter and per-card label
+  const totalDenom = HAS_MORE ? caseStudies.length : N
 
   const sectionRef      = useRef<HTMLElement>(null)
   const cardWrapperRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -101,7 +108,7 @@ export default function Projects() {
     for (let i = 0; i < N; i++) {
       const idx = i
 
-      // ── 3-D hover tilt ───────────────────────────────────────────────
+      // ── 3-D hover tilt (skipped for CTA card which has no cardRef) ───────
       const card = cardRefs.current[idx]
       if (card) {
         const onMove = (e: MouseEvent) => {
@@ -230,7 +237,7 @@ export default function Projects() {
             Selected<br />
             <span className={styles.titleAccent}>Projects</span>
           </h2>
-          <p className={styles.titleSub}>{String(N).padStart(2, '0')} case studies</p>
+          <p className={styles.titleSub}>{String(PROJECTS.length).padStart(2, '0')} case studies</p>
           <div className={styles.titleArrow} aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -242,7 +249,7 @@ export default function Projects() {
         <div className={styles.leftFlank} aria-hidden="true">
           <div className={styles.counterBlock}>
             <span ref={counterRef} className={styles.counterNum}>01</span>
-            <span className={styles.counterTotal}>/{String(N).padStart(2, '0')}</span>
+            <span className={styles.counterTotal}>/{String(totalDenom).padStart(2, '0')}</span>
           </div>
           <span className={styles.flankLabel}>Our Work</span>
         </div>
@@ -250,7 +257,7 @@ export default function Projects() {
         {/* ── Right flank ────────────────────────────────────────────── */}
         <div className={styles.rightFlank} aria-hidden="true">
           <div className={styles.pips}>
-            {PROJECTS.map((_, i) => (
+            {Array.from({ length: N }).map((_, i) => (
               <div
                 key={i}
                 ref={el => { progressDotRefs.current[i] = el }}
@@ -274,11 +281,11 @@ export default function Projects() {
               role="button"
               tabIndex={0}
               aria-label={`View project: ${p.title}`}
-              onClick={() => setSelectedStudy(filteredStudies[i])}
+              onClick={() => setSelectedStudy(p.study)}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  setSelectedStudy(filteredStudies[i])
+                  setSelectedStudy(p.study)
                 }
               }}
             >
@@ -296,7 +303,7 @@ export default function Projects() {
                 <div className={styles.cardTop}>
                   <span className={styles.cardTag}>{p.tag}</span>
                   <span className={styles.cardCount}>
-                    {String(i + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(N).padStart(2, '0')}
+                    {String(i + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(totalDenom).padStart(2, '0')}
                   </span>
                 </div>
 
@@ -318,6 +325,33 @@ export default function Projects() {
           </div>
         ))}
 
+        {/* ── CTA card — shown when there are > 10 studies in the current filter ── */}
+        {HAS_MORE && (
+          <div
+            ref={el => { cardWrapperRefs.current[PROJECTS.length] = el }}
+            className={styles.cardWrapper}
+            style={{ zIndex: PROJECTS.length + 1 }}
+          >
+            <div
+              className={`${styles.card} ${styles.ctaCard}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`View all ${caseStudies.length} case studies`}
+              onClick={() => navigate('/work')}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  navigate('/work')
+                }
+              }}
+            >
+              <h2 className={styles.ctaHeading}>STILL<br />HUNGRY?</h2>
+              <p className={styles.ctaSub}>Explore all {caseStudies.length} case studies</p>
+              <span className={styles.ctaArrow}>→ View Full Portfolio</span>
+            </div>
+          </div>
+        )}
+
         {/* ── Progress bar ───────────────────────────────────────────── */}
         <div className={styles.progressTrack} aria-hidden="true">
           <div ref={progressFillRef} className={styles.progressFill} />
@@ -329,6 +363,8 @@ export default function Projects() {
       {selectedStudy && (
         <CaseStudyDrawer
           study={selectedStudy}
+          caseStudies={filteredStudies.slice(0, 10)}
+          onNavigate={setSelectedStudy}
           onClose={() => setSelectedStudy(null)}
         />
       )}

@@ -122,6 +122,41 @@
   border-color: var(--orange);
 }
 
+/* ── Client filter tag ────────────────────────── */
+.clientTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(245, 130, 32, 0.1);
+  border: 1px solid rgba(245, 130, 32, 0.35);
+  border-radius: var(--r-full);
+  padding: 8px 16px;
+  margin-bottom: 40px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.clientTag strong {
+  color: var(--orange);
+  font-weight: 700;
+}
+
+.clientTagRemove {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color var(--dur-base);
+  display: flex;
+  align-items: center;
+}
+
+.clientTagRemove:hover { color: var(--white); }
+
 /* ── Card grid ────────────────────────────────── */
 .grid {
   display: grid;
