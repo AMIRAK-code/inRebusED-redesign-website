@@ -1,40 +1,41 @@
+import { useRef, useEffect } from 'react'
 import styles from './Hero.module.css'
 
-/**
- * Drop your background asset into /public/:
- *   hero.mp4  — recommended (full colour, GPU-accelerated, tiny file)
- *   hero.webm — optional second source for older Firefox
- *   hero.gif  — works but expect large file size & 256-colour limit
- *
- * The component renders whichever file is present.
- * If none are found the canvas-style orb gradient background shows through.
- */
-
-// Vite resolves /public files at the root path at runtime — no import needed.
-const VIDEO_SRC  = '/hero.mp4'
-const WEBM_SRC   = '/hero.webm'
-const GIF_SRC    = '/hero.gif'
+const VIDEO_SRC = '/hero.mp4'
+const WEBM_SRC  = '/hero.webm'
+const GIF_SRC   = '/hero.gif'
 
 export default function HeroMedia() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    // Programmatic play handles React StrictMode double-mount and
+    // browsers that silently ignore the autoPlay attribute
+    v.play().catch(() => {
+      // Autoplay blocked or file missing — reveal GIF layer behind it
+      v.style.display = 'none'
+    })
+  }, [])
+
   return (
     <div className={styles.heroBgMedia}>
-      {/* ── Try video first (MP4 / WebM) ───────────────────────────── */}
       <video
+        ref={videoRef}
         className={styles.heroBgAsset}
-        autoPlay
         muted
         loop
         playsInline
         disablePictureInPicture
+        preload="auto"
         aria-hidden="true"
-        // If the browser can't play video at all it skips to the <img> below
-        onError={e => { (e.currentTarget as HTMLVideoElement).style.display = 'none' }}
       >
         <source src={WEBM_SRC} type="video/webm" />
         <source src={VIDEO_SRC} type="video/mp4" />
       </video>
 
-      {/* ── GIF fallback ────────────────────────────────────────────── */}
+      {/* GIF / static image fallback — visible only if video is hidden */}
       <img
         src={GIF_SRC}
         alt=""
@@ -44,7 +45,7 @@ export default function HeroMedia() {
         decoding="async"
       />
 
-      {/* ── Dark scrim so headline text stays legible ────────────────── */}
+      {/* Directional scrim — keeps left-side text legible over any background */}
       <div className={styles.heroBgScrim} aria-hidden="true" />
     </div>
   )
