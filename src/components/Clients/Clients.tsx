@@ -9,7 +9,7 @@ import FeaturedClients from './FeaturedClients'
 import IndustryAccordion from './IndustryAccordion'
 
 const STATS = [
-  { key: 'studies',    label: 'Case Studies', value: caseStudies.length },
+  { key: 'studies',    label: 'Short list',   value: null },
   { key: 'clients',    label: 'Clients',       value: clients.length },
   { key: 'years',      label: 'Years',         value: 23 },
   { key: 'categories', label: 'Categories',    value: 4 },
@@ -60,7 +60,8 @@ export default function Clients() {
         statNumRefs.current.forEach((el, i) => {
           if (!el) return
           const target = STATS[i].value
-          const obj    = { val: 0 }
+          if (target === null) return
+          const obj = { val: 0 }
           gsap.to(obj, {
             val: target,
             duration: 1.4,
@@ -101,7 +102,7 @@ export default function Clients() {
                 ref={el => { statNumRefs.current[i] = el }}
                 className={styles.statNum}
               >
-                0
+                {stat.value === null ? '—' : '0'}
               </span>
               <span className={styles.statLabel}>{stat.label}</span>
             </div>

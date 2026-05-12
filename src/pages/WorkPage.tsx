@@ -106,7 +106,7 @@ export default function WorkPage() {
         <div className={styles.heroStrip}>
           <div className={styles.heroLeft}>
             <span className={styles.heroLabel}>Our Work</span>
-            <h1 className={styles.heroHeading}>{caseStudies.length} Case Studies</h1>
+            <h1 className={styles.heroHeading}>You asked for the long list.</h1>
           </div>
           <div className={styles.heroStats}>
             {CATEGORIES.map(cat => (
