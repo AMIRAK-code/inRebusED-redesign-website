@@ -1,10 +1,18 @@
+/* Outer section is 200vh — gives ScrollTrigger room to scrub the exit */
 .section {
   position: relative;
-  min-height: 100vh;
+  height: 200vh;
   background: var(--navy);
+}
+
+/* Sticky viewport — stays pinned at top while outer section scrolls */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  overflow: hidden;
   padding: 120px 48px 80px;
 }
 
@@ -331,7 +339,7 @@
 
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
-  .section { padding: 100px 24px 80px; }
+  .sticky { padding: 100px 24px 80px; }
   .headline { font-size: clamp(52px, 14vw, 80px); }
   .sub { font-size: 15px; }
   .sub br { display: none; }
