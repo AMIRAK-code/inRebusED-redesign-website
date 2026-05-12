@@ -15,6 +15,11 @@ const STATS = [
   { num: '100%', label: 'Custom solutions' },
 ]
 
+function parseStatNum(s: string): { value: number; suffix: string } {
+  const m = s.match(/^(\d+)(.*)$/)
+  return m ? { value: parseInt(m[1]), suffix: m[2] } : { value: 0, suffix: s }
+}
+
 export default function Hero({ scrollTo }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -37,6 +42,24 @@ export default function Hero({ scrollTo }: HeroProps) {
     tl.to(`.${styles.ctas}`,     { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
     tl.to(`.${styles.statsRow}`, { opacity: 1, duration: 0.8 },        '-=0.2')
     tl.to(`.${styles.scrollHint}`, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+
+    // Stat counters — tick up once the row fades in
+    tl.add(() => {
+      const els = Array.from(
+        sectionRef.current!.querySelectorAll<HTMLElement>(`.${styles.statNum}`)
+      )
+      els.forEach((el, i) => {
+        const { value, suffix } = parseStatNum(STATS[i].num)
+        const obj = { val: 0 }
+        gsap.to(obj, {
+          val: value,
+          duration: 1.8,
+          ease: 'power2.out',
+          snap: { val: 1 },
+          onUpdate: () => { el.textContent = String(Math.round(obj.val)) + suffix },
+        })
+      })
+    }, '-=0.6')
 
     // Orb parallax
     gsap.to(`.${styles.orbOrange}`, {
@@ -66,6 +89,7 @@ export default function Hero({ scrollTo }: HeroProps) {
       <div className={styles.bg} aria-hidden="true">
         <div className={styles.orbOrange} />
         <div className={styles.orbSpicy} />
+        <div className={styles.orbBlue} />
         <div className={styles.gridLines} />
       </div>
 
