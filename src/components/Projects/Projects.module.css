@@ -66,6 +66,26 @@
   margin: 0 0 28px;
 }
 
+.viewAllLink {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  text-decoration: none;
+  border: 1px solid rgba(245, 130, 32, 0.35);
+  padding: 9px 18px;
+  border-radius: var(--r-full);
+  margin-bottom: 28px;
+  transition: background var(--dur-base), border-color var(--dur-base);
+}
+.viewAllLink:hover {
+  background: rgba(245, 130, 32, 0.1);
+  border-color: rgba(245, 130, 32, 0.6);
+}
+
 .titleArrow {
   color: var(--orange);
   animation: bounce 2s ease-in-out infinite;
@@ -202,6 +222,18 @@
 
 .filterPillActive:hover {
   border-color: var(--orange);
+}
+
+/* GSAP Flip-driven sliding indicator */
+.filterIndicator {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--orange);
+  border-radius: 1px;
+  pointer-events: none;
 }
 
 /* ── Card wrappers (one per project, stacked by z-index) ─────────────── */

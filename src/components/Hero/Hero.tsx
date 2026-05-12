@@ -1,8 +1,9 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
-import { gsap, SplitText } from '../../lib/gsap'
+import { gsap, ScrollTrigger, SplitText } from '../../lib/gsap'
 import styles from './Hero.module.css'
+import HeroMedia from './HeroMedia'
 
 interface HeroProps {
   scrollTo: (id: string) => void
@@ -15,16 +16,20 @@ const STATS = [
   { num: '100%', label: 'Custom solutions' },
 ]
 
+function parseStatNum(s: string): { value: number; suffix: string } {
+  const m = s.match(/^(\d+)(.*)$/)
+  return m ? { value: parseInt(m[1]), suffix: m[2] } : { value: 0, suffix: s }
+}
+
 export default function Hero({ scrollTo }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    // Elements start opacity:0 via CSS — animate TO visible
+    // ── Entrance ─────────────────────────────────────────────────────────
     const tl = gsap.timeline({ delay: 0.2, defaults: { ease: 'expo' } })
 
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
 
-    // Headline: make container visible, split words animate in
     tl.set(`.${styles.headline}`, { opacity: 1 }, '<')
     const split = SplitText.create(`.${styles.headline}`, { type: 'words' })
     tl.from(
@@ -33,23 +38,56 @@ export default function Hero({ scrollTo }: HeroProps) {
       '<',
     )
 
-    tl.to(`.${styles.sub}`,      { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
-    tl.to(`.${styles.ctas}`,     { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
-    tl.to(`.${styles.statsRow}`, { opacity: 1, duration: 0.8 },        '-=0.2')
+    tl.to(`.${styles.sub}`,        { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+    tl.to(`.${styles.ctas}`,       { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
+    tl.to(`.${styles.statsRow}`,   { opacity: 1, duration: 0.8 },        '-=0.2')
     tl.to(`.${styles.scrollHint}`, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
 
-    // Orb parallax
-    gsap.to(`.${styles.orbOrange}`, {
-      y: -120,
-      scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: 1.5 },
+    // Stat counters
+    tl.add(() => {
+      const els = Array.from(
+        sectionRef.current!.querySelectorAll<HTMLElement>(`.${styles.statNum}`)
+      )
+      els.forEach((el, i) => {
+        const { value, suffix } = parseStatNum(STATS[i].num)
+        const obj = { val: 0 }
+        gsap.to(obj, {
+          val: value, duration: 1.8, ease: 'power2.out', snap: { val: 1 },
+          onUpdate: () => { el.textContent = String(Math.round(obj.val)) + suffix },
+        })
+      })
+    }, '-=0.6')
+
+    // ── Sticky zoom-out exit ──────────────────────────────────────────────
+    // section is 200vh tall; sticky inner stays pinned at top:0.
+    // ScrollTrigger scrubs through that 200vh window.
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1.4,
+      animation: gsap.timeline()
+        // video pulls back (zoom out)
+        .to(`.${styles.heroBgMedia}`, {
+          scale: 0.86, opacity: 0.18, ease: 'none',
+        }, 0)
+        // orb glows fade
+        .to([`.${styles.orbOrange}`, `.${styles.orbSpicy}`, `.${styles.orbBlue}`], {
+          opacity: 0, ease: 'none',
+        }, 0)
+        // scroll hint disappears first
+        .to(`.${styles.scrollHint}`, { opacity: 0, ease: 'none' }, 0)
+        // headline rises and fades
+        .to(`.${styles.overline}`,   { opacity: 0, y: -48, ease: 'none' }, 0.05)
+        .to(`.${styles.headline}`,   { opacity: 0, y: -80, ease: 'none' }, 0.05)
+        .to(`.${styles.sub}`,        { opacity: 0, y: -48, ease: 'none' }, 0.12)
+        .to(`.${styles.ctas}`,       { opacity: 0, y: -36, ease: 'none' }, 0.18)
+        .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.22),
     })
-    gsap.to(`.${styles.orbSpicy}`, {
-      y: -70,
-      scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: 2 },
-    })
+
   }, { scope: sectionRef })
 
-  // Magnetic buttons
+  // Magnetic CTA
   const onMagMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - r.left - r.width / 2) * 0.3
@@ -62,66 +100,69 @@ export default function Hero({ scrollTo }: HeroProps) {
 
   return (
     <section ref={sectionRef} className={styles.section} aria-label="Hero">
-      {/* Background */}
-      <div className={styles.bg} aria-hidden="true">
-        <div className={styles.orbOrange} />
-        <div className={styles.orbSpicy} />
-        <div className={styles.gridLines} />
-      </div>
+      {/* sticky viewport — 100vh, pinned while outer section scrolls 200vh */}
+      <div className={styles.sticky}>
 
-      {/* Content */}
-      <div className={styles.inner}>
-        <p className={styles.overline}>
-          <span className={styles.overlineDot}>●</span>
-          Digital Learning Solutions
-        </p>
-
-        <h1 className={styles.headline}>
-          <span className={styles.headlineAccent}>Creative</span>
-          <br />Outside
-          <br /><span className={styles.headlineOutline}>The Box</span>
-        </h1>
-
-        <p className={styles.sub}>
-          Thinking outside the box with an innovative approach
-          <br />to deliver the right training, in the right way, at the right time.
-        </p>
-
-        <div className={styles.ctas}>
-          <button
-            className={styles.btnPrimary}
-            onClick={() => scrollTo('services')}
-            onMouseMove={onMagMove}
-            onMouseLeave={onMagLeave}
-          >
-            Explore Services
-          </button>
-          <Link to="/work" className={styles.btnWork}>
-            See Our Work →
-          </Link>
-          <button
-            className={styles.btnSecondary}
-            onClick={() => scrollTo('contact')}
-          >
-            Download Brochure
-          </button>
+        <div className={styles.bg} aria-hidden="true">
+          <HeroMedia />
+          <div className={styles.orbOrange} />
+          <div className={styles.orbSpicy} />
+          <div className={styles.orbBlue} />
+          <div className={styles.gridLines} />
         </div>
 
-        {/* Stats */}
-        <div className={styles.statsRow}>
-          {STATS.map(({ num, label }) => (
-            <div key={num} className={styles.stat}>
-              <div className={styles.statNum}>{num}</div>
-              <div className={styles.statLabel}>{label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+        <div className={styles.inner}>
+          <p className={styles.overline}>
+            <span className={styles.overlineDot}>●</span>
+            Digital Learning Solutions
+          </p>
 
-      {/* Scroll hint */}
-      <div className={styles.scrollHint} aria-hidden="true">
-        <div className={styles.scrollLine} />
-        <span className={styles.scrollText}>scroll</span>
+          <h1 className={styles.headline}>
+            <span className={styles.headlineAccent}>Creative</span>
+            <br />Outside
+            <br /><span className={styles.headlineOutline}>The Box</span>
+          </h1>
+
+          <p className={styles.sub}>
+            Thinking outside the box with an innovative approach
+            <br />to deliver the right training, in the right way, at the right time.
+          </p>
+
+          <div className={styles.ctas}>
+            <button
+              className={styles.btnPrimary}
+              onClick={() => scrollTo('services')}
+              onMouseMove={onMagMove}
+              onMouseLeave={onMagLeave}
+            >
+              Explore Services
+            </button>
+            <Link to="/work" className={styles.btnWork}>
+              See Our Work →
+            </Link>
+            <button
+              className={styles.btnSecondary}
+              onClick={() => scrollTo('contact')}
+            >
+              Download Brochure
+            </button>
+          </div>
+
+          <div className={styles.statsRow}>
+            {STATS.map(({ num, label }) => (
+              <div key={num} className={styles.stat}>
+                <div className={styles.statNum}>{num}</div>
+                <div className={styles.statLabel}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.scrollHint} aria-hidden="true">
+          <div className={styles.scrollLine} />
+          <span className={styles.scrollText}>scroll</span>
+        </div>
+
       </div>
     </section>
   )

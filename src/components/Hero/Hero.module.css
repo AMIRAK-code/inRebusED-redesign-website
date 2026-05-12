@@ -1,10 +1,18 @@
+/* Outer section is 200vh — gives ScrollTrigger room to scrub the exit */
 .section {
   position: relative;
-  min-height: 100vh;
+  height: 200vh;
   background: var(--navy);
+}
+
+/* Sticky viewport — stays pinned at top while outer section scrolls */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  overflow: hidden;
   padding: 120px 48px 80px;
 }
 
@@ -15,22 +23,113 @@
   pointer-events: none;
 }
 
+/* ── Video / GIF background ──────────────────── */
+.heroBgMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Shared styles for both <video> and <img> */
+.heroBgAsset {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * The <img> (GIF) is hidden while the <video> plays.
+ * If the video fails to load its onError handler hides it,
+ * which lets the stacked <img> show through instead.
+ *
+ * CSS trick: video + img — hide img by default; if video is hidden
+ * (display:none set by onError) the img becomes visible automatically
+ * because it's absolutely positioned below it.
+ */
+.heroBgGif {
+  /* sits behind the video layer — visible only when video is gone */
+  z-index: -1;
+}
+
+/* Dark gradient scrim — keeps text readable over any background */
+.heroBgScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgba(10, 22, 40, 0.82) 0%,
+      rgba(10, 22, 40, 0.55) 50%,
+      rgba(10, 22, 40, 0.30) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 22, 40, 0.40) 0%,
+      rgba(10, 22, 40, 0.10) 40%,
+      rgba(10, 22, 40, 0.55) 100%
+    );
+}
+
+/* ── Aurora drift keyframes ──────────────────── */
+@keyframes auroraDrift1 {
+  0%   { transform: translate(0%,   0%)  scale(1);    }
+  25%  { transform: translate(-4%,  7%)  scale(1.09); }
+  55%  { transform: translate(-7%,  2%)  scale(1.04); }
+  80%  { transform: translate(-2%,  9%)  scale(0.96); }
+  100% { transform: translate(0%,   0%)  scale(1);    }
+}
+
+@keyframes auroraDrift2 {
+  0%   { transform: translate(0%,  0%)   scale(1);    }
+  30%  { transform: translate(7%, -9%)   scale(1.11); }
+  65%  { transform: translate(-5%, 4%)   scale(0.94); }
+  100% { transform: translate(0%,  0%)   scale(1);    }
+}
+
+@keyframes auroraDrift3 {
+  0%   { transform: translate(0%,  0%)   scale(1);    }
+  40%  { transform: translate(-9%,-6%)   scale(1.07); }
+  80%  { transform: translate(6%,  8%)   scale(0.97); }
+  100% { transform: translate(0%,  0%)   scale(1);    }
+}
+
 .orbOrange {
   position: absolute;
   top: -10%; right: -5%;
-  width: 600px; height: 600px;
+  width: 680px; height: 680px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 130, 32, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(245, 130, 32, 0.20) 0%, transparent 68%);
   will-change: transform;
+  animation: auroraDrift1 22s ease-in-out infinite;
+  z-index: 1;
 }
 
 .orbSpicy {
   position: absolute;
-  bottom: 5%; left: 30%;
-  width: 400px; height: 400px;
+  bottom: 0%; left: 25%;
+  width: 480px; height: 480px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(232, 69, 26, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(232, 69, 26, 0.10) 0%, transparent 68%);
   will-change: transform;
+  animation: auroraDrift2 16s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Third orb — cool blue depth layer */
+.orbBlue {
+  position: absolute;
+  top: 35%; left: -8%;
+  width: 560px; height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 100, 220, 0.07) 0%, transparent 65%);
+  will-change: transform;
+  animation: auroraDrift3 28s ease-in-out infinite;
+  z-index: 1;
 }
 
 .gridLines {
@@ -40,6 +139,7 @@
     linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 80px 80px;
+  z-index: 2;
 }
 
 /* ── Content ─────────────────────────────────── */
@@ -66,7 +166,17 @@
   transform: translateY(16px);
 }
 
-.overlineDot { color: var(--spicy); font-size: 8px; }
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1);   opacity: 1;   }
+  50%       { transform: scale(2.2); opacity: 0.3; }
+}
+
+.overlineDot {
+  color: var(--spicy);
+  font-size: 8px;
+  animation: dotPulse 2.6s ease-in-out infinite;
+  display: inline-block;
+}
 
 /* Headline */
 .headline {
@@ -229,7 +339,7 @@
 
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
-  .section { padding: 100px 24px 80px; }
+  .sticky { padding: 100px 24px 80px; }
   .headline { font-size: clamp(52px, 14vw, 80px); }
   .sub { font-size: 15px; }
   .sub br { display: none; }
