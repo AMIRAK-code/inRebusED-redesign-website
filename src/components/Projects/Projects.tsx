@@ -32,9 +32,8 @@ export default function Projects() {
     slug:   cs.slug,
   }))
 
-  const HAS_MORE   = filteredStudies.length > 10
-  const N          = PROJECTS.length + (HAS_MORE ? 1 : 0)
-  const totalDenom = HAS_MORE ? caseStudies.length : N
+  const HAS_MORE = filteredStudies.length > 10
+  const N        = PROJECTS.length + (HAS_MORE ? 1 : 0)
 
   const sectionRef      = useRef<HTMLElement>(null)
   const cardWrapperRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -259,9 +258,9 @@ export default function Projects() {
             Selected<br />
             <span className={styles.titleAccent}>Projects</span>
           </h2>
-          <p className={styles.titleSub}>{String(PROJECTS.length).padStart(2, '0')} case studies</p>
+          <p className={styles.titleSub}>This is the short list.</p>
           <Link to="/work" className={styles.viewAllLink}>
-            View all {caseStudies.length} case studies →
+            The long list →
           </Link>
           <div className={styles.titleArrow} aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -274,7 +273,6 @@ export default function Projects() {
         <div className={styles.leftFlank} aria-hidden="true">
           <div className={styles.counterBlock}>
             <span ref={counterRef} className={styles.counterNum}>01</span>
-            <span className={styles.counterTotal}>/{String(totalDenom).padStart(2, '0')}</span>
           </div>
           <span className={styles.flankLabel}>Our Work</span>
         </div>
@@ -328,7 +326,7 @@ export default function Projects() {
                 <div className={styles.cardTop}>
                   <span className={styles.cardTag}>{p.tag}</span>
                   <span className={styles.cardCount}>
-                    {String(i + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(totalDenom).padStart(2, '0')}
+                    {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
 
@@ -361,7 +359,7 @@ export default function Projects() {
               className={`${styles.card} ${styles.ctaCard}`}
               role="button"
               tabIndex={0}
-              aria-label={`View all ${caseStudies.length} case studies`}
+              aria-label="View all case studies"
               onClick={() => navigate('/work')}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -371,8 +369,8 @@ export default function Projects() {
               }}
             >
               <h2 className={styles.ctaHeading}>STILL<br />HUNGRY?</h2>
-              <p className={styles.ctaSub}>Explore all {caseStudies.length} case studies</p>
-              <span className={styles.ctaArrow}>→ View Full Portfolio</span>
+              <p className={styles.ctaSub}>The list keeps going.</p>
+              <span className={styles.ctaArrow}>→ Long list this way</span>
             </div>
           </div>
         )}
