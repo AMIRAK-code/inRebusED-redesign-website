@@ -11,6 +11,8 @@ interface Pillar {
   items: { name: string; desc?: string }[]
 }
 
+const PILLAR_ACCENTS = ['var(--orange)', 'var(--spicy)', 'var(--navy)']
+
 const PILLARS: Pillar[] = [
   {
     num: '01',
@@ -57,7 +59,10 @@ const PILLARS: Pillar[] = [
 
 function PillarCard({ p, index }: { p: Pillar; index: number }) {
   return (
-    <article className={styles.pillar} style={{ '--i': index } as React.CSSProperties}>
+    <article
+      className={styles.pillar}
+      style={{ '--i': index, '--pillar-accent': PILLAR_ACCENTS[index] } as React.CSSProperties}
+    >
       <div className={styles.pillarHead}>
         <div className={styles.pillarNum}>{p.num}</div>
         <div className={styles.pillarHeadText}>
