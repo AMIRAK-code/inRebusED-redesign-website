@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText } from '../../lib/gsap'
 import styles from './Hero.module.css'
+import HeroCanvas from './HeroCanvas'
 
 interface HeroProps {
   scrollTo: (id: string) => void
@@ -87,6 +88,7 @@ export default function Hero({ scrollTo }: HeroProps) {
     <section ref={sectionRef} className={styles.section} aria-label="Hero">
       {/* Background */}
       <div className={styles.bg} aria-hidden="true">
+        <HeroCanvas />
         <div className={styles.orbOrange} />
         <div className={styles.orbSpicy} />
         <div className={styles.orbBlue} />
