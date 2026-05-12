@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import WorkPage from './pages/WorkPage'
 import CaseStudyPage from './pages/CaseStudyPage'
+import ScrollToTop from './components/ScrollToTop'
 
 // Lazy-loaded only in dev; Vite tree-shakes this import in production builds
 const DebugLogosPage = import.meta.env.DEV
@@ -11,6 +12,8 @@ const DebugLogosPage = import.meta.env.DEV
 
 export default function App() {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/work" element={<WorkPage />} />
@@ -27,5 +30,6 @@ export default function App() {
       )}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }

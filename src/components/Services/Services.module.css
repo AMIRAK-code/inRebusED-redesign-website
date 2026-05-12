@@ -80,7 +80,7 @@
   font-size: 56px;
   font-weight: 900;
   line-height: 0.9;
-  color: var(--orange);
+  color: var(--pillar-accent, var(--orange));
   letter-spacing: -0.04em;
 }
 
@@ -132,7 +132,7 @@
 }
 
 .pillarItemDot {
-  color: var(--orange);
+  color: var(--pillar-accent, var(--orange));
   font-size: 13px;
   font-weight: 700;
   line-height: 1.4;

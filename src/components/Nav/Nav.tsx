@@ -7,6 +7,7 @@ import styles from './Nav.module.css'
 interface NavProps {
   activeSection?: string
   scrollTo?: (id: string) => void
+  minimal?: boolean
 }
 
 const NAV_LINKS = [
@@ -17,7 +18,7 @@ const NAV_LINKS = [
   { id: 'projects', label: 'inWork' },
 ]
 
-export default function Nav({ activeSection = '', scrollTo = () => {} }: NavProps) {
+export default function Nav({ activeSection = '', scrollTo = () => {}, minimal = false }: NavProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
@@ -100,34 +101,40 @@ export default function Nav({ activeSection = '', scrollTo = () => {} }: NavProp
           )}
 
           {/* Desktop links */}
-          <ul className={styles.links} role="list">
-            {/* Work — always a React Router link */}
-            <li>
-              <Link
-                to="/work"
-                className={`${styles.link} ${isWork ? styles.linkActive : ''}`}
-              >
-                <span className={styles.linkIn}>in</span>Work
-              </Link>
-            </li>
-
-            {NAV_LINKS.map(({ id, label }) => (
-              <li key={id}>
-                {isHome ? (
-                  <button
-                    className={`${styles.link} ${activeSection === id ? styles.linkActive : ''}`}
-                    onClick={() => handleNavClick(id)}
-                  >
-                    <span className={styles.linkIn}>in</span>{label.slice(2)}
-                  </button>
-                ) : (
-                  <a href={`/#${id}`} className={styles.link}>
-                    <span className={styles.linkIn}>in</span>{label.slice(2)}
-                  </a>
-                )}
+          {minimal ? (
+            <Link to="/work" className={styles.navBackLink}>
+              ← Back to work
+            </Link>
+          ) : (
+            <ul className={styles.links} role="list">
+              {/* Work — always a React Router link */}
+              <li>
+                <Link
+                  to="/work"
+                  className={`${styles.link} ${isWork ? styles.linkActive : ''}`}
+                >
+                  <span className={styles.linkIn}>in</span>Work
+                </Link>
               </li>
-            ))}
-          </ul>
+
+              {NAV_LINKS.map(({ id, label }) => (
+                <li key={id}>
+                  {isHome ? (
+                    <button
+                      className={`${styles.link} ${activeSection === id ? styles.linkActive : ''}`}
+                      onClick={() => handleNavClick(id)}
+                    >
+                      <span className={styles.linkIn}>in</span>{label.slice(2)}
+                    </button>
+                  ) : (
+                    <a href={`/#${id}`} className={styles.link}>
+                      <span className={styles.linkIn}>in</span>{label.slice(2)}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
 
           {/* Actions */}
           <div className={styles.actions}>

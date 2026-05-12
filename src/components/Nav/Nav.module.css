@@ -109,6 +109,21 @@
 
 .linkIn { color: var(--orange); font-weight: 700; }
 
+/* ── Back link (minimal mode) ──────────────────── */
+.navBackLink {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--mid-grey);
+  text-decoration: none;
+  flex: 1;
+  text-align: center;
+  transition: color var(--dur-base);
+}
+.navBackLink:hover { color: var(--orange); }
+
 /* ── Actions ───────────────────────────────────── */
 .actions {
   display: flex;

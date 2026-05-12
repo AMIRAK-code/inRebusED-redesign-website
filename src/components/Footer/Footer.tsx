@@ -9,7 +9,7 @@ const CATS: Category[] = ['digital-academy', 'onboarding', 'product-training', '
 const FEATURED_WORK = CATS.map(cat => caseStudies.find(cs => cs.category === cat)).filter(Boolean) as typeof caseStudies
 
 interface FooterProps {
-  scrollTo: (id: string) => void
+  scrollTo?: (id: string) => void
 }
 
 const NAV_LINKS = ['inSide', 'inPractice', 'inAction', 'inEvolution']
@@ -20,7 +20,7 @@ const SECTION_MAP: Record<string, string> = {
   inEvolution: 'clients',
 }
 
-export default function Footer({ scrollTo }: FooterProps) {
+export default function Footer({ scrollTo = () => {} }: FooterProps) {
   const footerRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
