@@ -5,6 +5,7 @@ import { gsap } from '../../lib/gsap'
 import { useT } from '../../i18n/LangContext'
 import styles from './Footer.module.css'
 import caseStudies, { type Category } from '../../data/case-studies'
+import OfficeMap, { OFFICE_LAT, OFFICE_LNG } from './OfficeMap'
 
 const CATS: Category[] = ['digital-academy', 'onboarding', 'product-training', 'vertical-training']
 const FEATURED_WORK = CATS.map(cat => caseStudies.find(cs => cs.category === cat)).filter(Boolean) as typeof caseStudies
@@ -43,6 +44,18 @@ export default function Footer({ scrollTo = () => {} }: FooterProps) {
     gsap.from([`.${styles.ctaDesc}`, `.${styles.ctaActions}`], {
       opacity: 0, y: 20, stagger: 0.1, duration: 0.7, ease: 'expo', delay: 0.16,
       scrollTrigger: { trigger: footerRef.current, start: 'top 82%', once: true },
+    })
+    gsap.from(`.${styles.findUsLabel}`, {
+      opacity: 0, y: 20, duration: 0.7, ease: 'expo',
+      scrollTrigger: { trigger: `.${styles.findUs}`, start: 'top 80%', once: true },
+    })
+    gsap.from(`.${styles.findUsAddress}`, {
+      opacity: 0, x: -40, duration: 0.9, ease: 'expo', delay: 0.1,
+      scrollTrigger: { trigger: `.${styles.findUs}`, start: 'top 80%', once: true },
+    })
+    gsap.from(`.${styles.findUsMapWrap}`, {
+      opacity: 0, x: 40, duration: 0.9, ease: 'expo', delay: 0.18,
+      scrollTrigger: { trigger: `.${styles.findUs}`, start: 'top 80%', once: true },
     })
   }, { scope: footerRef })
 
@@ -112,6 +125,62 @@ export default function Footer({ scrollTo = () => {} }: FooterProps) {
         </div>
       </div>
 
+      {/* Find Us — off-white strip */}
+      <div className={styles.findUs}>
+        <div className={styles.findUsInner}>
+          <span className={styles.findUsLabel}>{t('contact.address.heading')}</span>
+
+          <div className={styles.findUsCols}>
+            {/* Left — address */}
+            <address className={styles.findUsAddress}>
+              <div className={styles.findUsRow}>
+                <svg className={styles.findUsIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2C8.134 2 5 5.134 5 9c0 6.627 7 13 7 13s7-6.373 7-13c0-3.866-3.134-7-7-7Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+                  <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.6"/>
+                </svg>
+                <div>
+                  <p>{t('contact.address.street')}</p>
+                  <p>{t('contact.address.city')}</p>
+                </div>
+              </div>
+
+              <div className={styles.findUsRow}>
+                <svg className={styles.findUsIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.39 21 3 14.61 3 7a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+                </svg>
+                <a href={`tel:${t('contact.phone').replace(/\s/g, '')}`} className={styles.findUsLink}>
+                  {t('contact.phone')}
+                </a>
+              </div>
+
+              <div className={styles.findUsRow}>
+                <svg className={styles.findUsIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.6"/>
+                  <path d="M2 8l10 6 10-6" stroke="currentColor" strokeWidth="1.6"/>
+                </svg>
+                <a href={`mailto:${t('contact.email')}`} className={styles.findUsLink}>
+                  {t('contact.email')}
+                </a>
+              </div>
+
+              <a
+                href={`https://maps.google.com/?q=${OFFICE_LAT},${OFFICE_LNG}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.findUsDirections}
+              >
+                {t('contact.directions')}
+              </a>
+            </address>
+
+            {/* Right — map */}
+            <div className={styles.findUsMapWrap}>
+              <OfficeMap />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Footer bottom */}
       <div className={styles.bottom}>
         <div className={styles.bottomGrid}>
@@ -140,13 +209,6 @@ export default function Footer({ scrollTo = () => {} }: FooterProps) {
               </div>
             </div>
           </div>
-
-          {/* Contact */}
-          <address className={styles.address}>
-            <p>{t('contact.address.street')}, {t('contact.address.city')}</p>
-            <p>Tel. <a href={`tel:${t('contact.phone').replace(/\s/g,'')}`}>{t('contact.phone')}</a></p>
-            <p><a href={`mailto:${t('contact.email')}`}>{t('contact.email')}</a></p>
-          </address>
 
           {/* Nav */}
           <nav aria-label={t('footer.nav.label')}>
