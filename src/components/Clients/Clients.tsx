@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Clients.module.css'
 import clients from '../../data/clients'
 import caseStudies from '../../data/case-studies'
@@ -9,10 +10,10 @@ import FeaturedClients from './FeaturedClients'
 import IndustryAccordion from './IndustryAccordion'
 
 const STATS = [
-  { key: 'studies',    label: 'Short list',   value: null },
-  { key: 'clients',    label: 'Clients',       value: clients.length },
-  { key: 'years',      label: 'Years',         value: 23 },
-  { key: 'categories', label: 'Categories',    value: 4 },
+  { key: 'studies',    labelKey: 'clients.stat.shortlist',  value: null },
+  { key: 'clients',    labelKey: 'clients.stat.clients',    value: clients.length },
+  { key: 'years',      labelKey: 'clients.stat.years',      value: 23 },
+  { key: 'categories', labelKey: 'clients.stat.categories', value: 4 },
 ]
 
 const enableParallax =
@@ -21,6 +22,7 @@ const enableParallax =
   !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function Clients() {
+  const { t } = useT()
   const sectionRef  = useRef<HTMLElement>(null)
   const statNumRefs = useRef<(HTMLSpanElement | null)[]>([])
   const rafRef      = useRef<number | null>(null)
@@ -81,20 +83,15 @@ export default function Clients() {
     >
       <div className={styles.container}>
 
-        {/* ① Header */}
         <div className={`${styles.header} ${styles.block}`}>
-          <span className={styles.label}>inEvolution — Who Has Chosen Us</span>
+          <span className={styles.label}>{t('clients.label')}</span>
           <h2 className={styles.title}>
-            Trusted by Industry<br />
-            <span className={styles.titleAccent}>Leaders</span>
+            {t('clients.title')}<br />
+            <span className={styles.titleAccent}>{t('clients.title.accent')}</span>
           </h2>
-          <p className={styles.desc}>
-            Every client is unique, with their own specific geography, population and
-            culture. Every encounter enriches us and inspires us to find better solutions.
-          </p>
+          <p className={styles.desc}>{t('clients.desc')}</p>
         </div>
 
-        {/* ② Stats strip */}
         <div className={`${styles.statsStrip} ${styles.block}`}>
           {STATS.map((stat, i) => (
             <div key={stat.key} className={styles.statCard}>
@@ -102,38 +99,29 @@ export default function Clients() {
                 ref={el => { statNumRefs.current[i] = el }}
                 className={styles.statNum}
               >
-                {stat.value === null ? '—' : '0'}
+                {stat.value === null ? caseStudies.length : '0'}
               </span>
-              <span className={styles.statLabel}>{stat.label}</span>
+              <span className={styles.statLabel}>{t(stat.labelKey)}</span>
             </div>
           ))}
         </div>
 
-        {/* ③ Logo marquee */}
-        <div className={styles.block}>
-          <LogoMarquee />
-        </div>
+        <div className={styles.block}><LogoMarquee /></div>
+        <div className={styles.block}><FeaturedClients /></div>
+        <div className={styles.block}><IndustryAccordion /></div>
 
-        {/* ④ Featured client grid */}
-        <div className={styles.block}>
-          <FeaturedClients />
-        </div>
-
-        {/* ⑤ Industry accordion */}
-        <div className={styles.block}>
-          <IndustryAccordion />
-        </div>
-
-        {/* ⑥ Quote banner */}
         <div className={styles.quoteBanner}>
           <div className={styles.quoteOrb} aria-hidden="true" />
           <div className={styles.quoteContent}>
             <div className={styles.quoteIcon} aria-hidden="true">"</div>
             <p className={styles.quoteText}>
-              Online learning is not the next big thing,
-              <br />it is the <span className={styles.quoteAccent}>now big thing</span>
+              {t('clients.quote').split(t('clients.quote.accent')).map((part, i, arr) =>
+                i < arr.length - 1
+                  ? [part, <span key={i} className={styles.quoteAccent}>{t('clients.quote.accent')}</span>]
+                  : part
+              )}
             </p>
-            <cite className={styles.quoteAttr}>— Donna J. Abernathy</cite>
+            <cite className={styles.quoteAttr}>{t('clients.quote.attr')}</cite>
           </div>
         </div>
 
