@@ -53,11 +53,6 @@ function createBar(container: HTMLSpanElement): HTMLDivElement {
   return bar
 }
 
-// Bug fixes vs previous version:
-// 1. Removed gsap.set(letters, rotateX) inside tl.call — was racing with tl.to at same position
-// 2. Use tl.fromTo for enter phase — explicitly sets from-state per letter when its stagger fires
-// 3. Removed unused leaveBar param — bar state is determined entirely by direction
-// 4. Adjusted barDur to better match letter animation total time
 function sweepFlip(
   letters: HTMLSpanElement[],
   toWord: string,
@@ -110,12 +105,17 @@ function sweepFlip(
 
 export default function Hero({ scrollTo }: HeroProps) {
   const { t } = useT()
-  const sectionRef     = useRef<HTMLElement>(null)
-  const accentRef      = useRef<HTMLSpanElement>(null)
-  const lettersRef     = useRef<HTMLSpanElement[]>([])
-  const barRef         = useRef<HTMLDivElement | null>(null)
-  const setupToutRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const revisitToutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const sectionRef   = useRef<HTMLElement>(null)
+  const accentRef    = useRef<HTMLSpanElement>(null)
+  const lettersRef   = useRef<HTMLSpanElement[]>([])
+  const barRef       = useRef<HTMLDivElement | null>(null)
+  const flipToutRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // 'LEARNING' | 'CREATIVE' — tracks which word is visible so scroll callbacks
+  // can guard against double-flipping.
+  const wordRef      = useRef<'LEARNING' | 'CREATIVE'>('LEARNING')
+  // Set to true once the letter spans are ready so ScrollTrigger callbacks
+  // don't fire before the entrance animation has finished.
+  const flipReadyRef = useRef(false)
 
   useGSAP(() => {
     // ── Entrance ─────────────────────────────────────────────────────────
@@ -151,33 +151,49 @@ export default function Hero({ scrollTo }: HeroProps) {
       })
     }, '-=0.6')
 
-    // ── Accent flip setup — fires after entrance timeline fully completes ─
-    // Using eventCallback('onComplete') instead of tl.add() to guarantee this
-    // fires AFTER every tween ends, not at a cursor position that may land
-    // mid-timeline when a previous tl.add used a relative '-=' offset.
+    // ── Flip setup — runs after entrance finishes ─────────────────────────
+    // Decoupled from SplitText: we revert the split first, then build our
+    // own letter spans.  Using eventCallback('onComplete') is the most
+    // reliable hook because it fires after EVERY tween in the timeline has
+    // finished, regardless of where prior tl.add() calls placed their cursor.
     tl.eventCallback('onComplete', () => {
       if (!accentRef.current) return
-      split.revert()
+      split.revert()                    // clean up SplitText DOM wrappers
+      accentRef.current.textContent = 'LEARNING'  // guarantee plain text
 
       lettersRef.current = buildLetterSpans(accentRef.current, 'LEARNING')
-      barRef.current = createBar(accentRef.current)
+      barRef.current     = createBar(accentRef.current)
+      wordRef.current    = 'LEARNING'
+      flipReadyRef.current = true
 
-      // Equal cycling: both words hold for ~3.5s, then flip to the other.
-      // currentWord tracks which word is currently visible.
-      let currentWord = 'LEARNING'
-
-      const cycle = () => {
-        if (!lettersRef.current.length || !barRef.current) return
-        const toWord  = currentWord === 'LEARNING' ? 'CREATIVE' : 'LEARNING'
-        const dir: 'ltr' | 'rtl' = toWord === 'CREATIVE' ? 'ltr' : 'rtl'
-        sweepFlip(lettersRef.current, toWord, barRef.current, dir, () => {
-          currentWord = toWord
-          revisitToutRef.current = setTimeout(cycle, 3500)
+      // First flip: LEARNING → CREATIVE after 3 s
+      flipToutRef.current = setTimeout(() => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        sweepFlip(lettersRef.current, 'CREATIVE', barRef.current, 'ltr', () => {
+          wordRef.current = 'CREATIVE'
         })
-      }
+      }, 3000)
+    })
 
-      // Short delay so the first flip feels like a deliberate reveal, not a glitch
-      setupToutRef.current = setTimeout(cycle, 600)
+    // ── Scroll flip ───────────────────────────────────────────────────────
+    // When the user scrolls ~20 % into the hero, CREATIVE flips back to
+    // LEARNING.  If they scroll back to the top, it flips to CREATIVE again.
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top+=20% top',
+      onEnter: () => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        if (flipToutRef.current) { clearTimeout(flipToutRef.current); flipToutRef.current = null }
+        if (wordRef.current === 'CREATIVE') {
+          sweepFlip(lettersRef.current, 'LEARNING', barRef.current, 'rtl', () => { wordRef.current = 'LEARNING' })
+        }
+      },
+      onLeaveBack: () => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        if (wordRef.current === 'LEARNING') {
+          sweepFlip(lettersRef.current, 'CREATIVE', barRef.current, 'ltr', () => { wordRef.current = 'CREATIVE' })
+        }
+      },
     })
 
     // ── Scroll exit ───────────────────────────────────────────────────────
@@ -198,8 +214,8 @@ export default function Hero({ scrollTo }: HeroProps) {
     })
 
     return () => {
-      if (setupToutRef.current)   clearTimeout(setupToutRef.current)
-      if (revisitToutRef.current) clearTimeout(revisitToutRef.current)
+      if (flipToutRef.current) clearTimeout(flipToutRef.current)
+      flipReadyRef.current = false
     }
   }, { scope: sectionRef })
 
