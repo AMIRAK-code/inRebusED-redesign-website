@@ -31,10 +31,9 @@ export default function Hero({ scrollTo }: HeroProps) {
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
 
     tl.set(`.${styles.headline}`, { opacity: 1 }, '<')
-    const split = SplitText.create(`.${styles.headline}`, { type: 'words' })
     tl.from(
-      split.words,
-      { opacity: 0, y: 48, rotateX: -40, stagger: 0.06, duration: 0.9, transformPerspective: 800 },
+      ['.hero-word-0', '.hero-word-1'],
+      { opacity: 0, y: 48, rotateX: -40, stagger: 0.15, duration: 0.9, transformPerspective: 800, display: 'inline-block' },
       '<',
     )
 
@@ -77,12 +76,20 @@ export default function Hero({ scrollTo }: HeroProps) {
         }, 0)
         // scroll hint disappears first
         .to(`.${styles.scrollHint}`, { opacity: 0, ease: 'none' }, 0)
-        // headline rises and fades
-        .to(`.${styles.overline}`,   { opacity: 0, y: -48, ease: 'none' }, 0.05)
-        .to(`.${styles.headline}`,   { opacity: 0, y: -80, ease: 'none' }, 0.05)
-        .to(`.${styles.sub}`,        { opacity: 0, y: -48, ease: 'none' }, 0.12)
-        .to(`.${styles.ctas}`,       { opacity: 0, y: -36, ease: 'none' }, 0.18)
-        .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.22),
+        // typewriter effect smoothly transiting text
+        .to('.hero-word-0', { color: 'var(--orange)', duration: 0.15 }, 0.1)
+        .to('.hero-word-0', { text: 'Learning', duration: 0.3, ease: 'none' }, 0.1)
+        
+        .to('.hero-word-1', { color: 'inherit', duration: 0.15 }, 0.1)
+        .to('.hero-word-1', { text: 'Outside', duration: 0.3, ease: 'none' }, 0.1)
+        
+        .to('.hero-word-2', { text: 'The Box', duration: 0.3, ease: 'none' }, 0.4)
+        // headline rises and fades (delayed so it happens after text change is read)
+        .to(`.${styles.overline}`,   { opacity: 0, y: -48, ease: 'none' }, 0.8)
+        .to(`.${styles.headline}`,   { opacity: 0, y: -80, ease: 'none' }, 0.8)
+        .to(`.${styles.sub}`,        { opacity: 0, y: -48, ease: 'none' }, 0.85)
+        .to(`.${styles.ctas}`,       { opacity: 0, y: -36, ease: 'none' }, 0.9)
+        .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.95),
     })
 
   }, { scope: sectionRef })
@@ -118,9 +125,9 @@ export default function Hero({ scrollTo }: HeroProps) {
           </p>
 
           <h1 className={styles.headline}>
-            <span className={styles.headlineAccent}>Creative</span>
-            <br />Outside
-            <br /><span className={styles.headlineOutline}>The Box</span>
+            <span className="hero-word-0" style={{ color: 'inherit', display: 'inline-block' }}>Creative</span>
+            <br /><span className="hero-word-1" style={{ color: 'var(--orange)', display: 'inline-block' }}>Learning</span>
+            <br /><span className={`hero-word-2 ${styles.headlineOutline}`} style={{ minHeight: '1em', display: 'inline-block' }}></span>
           </h1>
 
           <p className={styles.sub}>

@@ -1,7 +1,7 @@
-/* Outer section is 200vh — gives ScrollTrigger room to scrub the exit */
+/* Outer section is 400vh — gives ScrollTrigger much more room to scrub the exit smoothly */
 .section {
   position: relative;
-  height: 200vh;
+  height: 400vh;
   background: var(--navy);
 }
 
