@@ -3,12 +3,16 @@ import Nav from '../components/Nav/Nav'
 import Hero from '../components/Hero/Hero'
 import About from '../components/About/About'
 import Services from '../components/Services/Services'
+import Products from '../components/Products/Products'
 import Process from '../components/Process/Process'
 import Clients from '../components/Clients/Clients'
 import Projects from '../components/Projects/Projects'
 import Footer from '../components/Footer/Footer'
 
-const SECTION_IDS = ['hero', 'about', 'services', 'process', 'clients', 'projects', 'contact']
+const SECTION_IDS = [
+  'hero', 'about', 'services', 'products',
+  'process', 'clients', 'projects', 'contact',
+]
 
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState('hero')
@@ -43,6 +47,7 @@ export default function HomePage() {
         <div id="hero"><Hero scrollTo={scrollTo} /></div>
         <div id="about"><About scrollTo={scrollTo} /></div>
         <div id="services"><Services /></div>
+        <div id="products"><Products /></div>
         <div id="process"><Process /></div>
         <div id="clients"><Clients /></div>
         <div id="projects"><Projects /></div>
