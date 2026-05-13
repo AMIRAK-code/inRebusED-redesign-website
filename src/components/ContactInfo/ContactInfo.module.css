@@ -1,0 +1,132 @@
+.section {
+  background: var(--off-white);
+  padding: 120px 48px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Section head ────────────────────────────── */
+.sectionHead {
+  margin-bottom: 64px;
+  max-width: 560px;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--navy);
+  margin: 0;
+}
+
+.titleAccent { color: var(--orange); }
+
+/* ── Two columns ─────────────────────────────── */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* ── Address (left) ──────────────────────────── */
+.left {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.addressHeading {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--navy);
+  margin: 0 0 4px;
+}
+
+.addressRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: var(--leading-normal);
+}
+
+.addressRow p { margin: 0; }
+
+.icon {
+  flex-shrink: 0;
+  color: var(--orange);
+  margin-top: 2px;
+}
+
+.contactLink {
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: color var(--dur-base);
+}
+
+.contactLink:hover { color: var(--orange); }
+
+.directionsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--orange);
+  text-decoration: none;
+  margin-top: 8px;
+  transition: gap var(--dur-base);
+}
+
+.directionsLink:hover { gap: 10px; }
+
+/* ── Map (right) ─────────────────────────────── */
+.mapWrap {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  height: 440px;
+  border: 1px solid var(--light-border);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .twoCol { grid-template-columns: 1fr; gap: 40px; }
+  .mapWrap { height: 360px; }
+}
+
+@media (max-width: 768px) {
+  .section  { padding: 80px 24px; }
+  .mapWrap  { height: 300px; }
+}

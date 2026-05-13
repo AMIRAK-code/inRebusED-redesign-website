@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Nav.module.css'
 
 interface NavProps {
@@ -10,15 +11,8 @@ interface NavProps {
   minimal?: boolean
 }
 
-const NAV_LINKS = [
-  { id: 'about',    label: 'inSide' },
-  { id: 'services', label: 'inPractice' },
-  { id: 'process',  label: 'inAction' },
-  { id: 'clients',  label: 'inEvolution' },
-  { id: 'projects', label: 'inWork' },
-]
-
 export default function Nav({ activeSection = '', scrollTo = () => {}, minimal = false }: NavProps) {
+  const { lang, setLang, t } = useT()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
@@ -26,6 +20,14 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
 
   const isHome = location.pathname === '/'
   const isWork = location.pathname.startsWith('/work')
+
+  const NAV_LINKS = [
+    { id: 'about',    labelKey: 'nav.inside' },
+    { id: 'services', labelKey: 'nav.inpractice' },
+    { id: 'process',  labelKey: 'nav.inaction' },
+    { id: 'clients',  labelKey: 'nav.inevolution' },
+    { id: 'projects', labelKey: 'nav.inwork' },
+  ]
 
   useGSAP(() => {
     gsap.from(navRef.current, {
@@ -70,6 +72,8 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
     gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.75)' })
   }
 
+  const toggleLang = () => setLang(lang === 'en' ? 'it' : 'en')
+
   const logoContent = (
     <>
       <span className={styles.logoIn}>in</span>Rebus
@@ -103,11 +107,10 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
           {/* Desktop links */}
           {minimal ? (
             <Link to="/work" className={styles.navBackLink}>
-              ← Back to work
+              {t('nav.back')}
             </Link>
           ) : (
             <ul className={styles.links} role="list">
-              {/* Work — always a React Router link */}
               <li>
                 <Link
                   to="/work"
@@ -117,35 +120,44 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
                 </Link>
               </li>
 
-              {NAV_LINKS.map(({ id, label }) => (
-                <li key={id}>
-                  {isHome ? (
-                    <button
-                      className={`${styles.link} ${activeSection === id ? styles.linkActive : ''}`}
-                      onClick={() => handleNavClick(id)}
-                    >
-                      <span className={styles.linkIn}>in</span>{label.slice(2)}
-                    </button>
-                  ) : (
-                    <a href={`/#${id}`} className={styles.link}>
-                      <span className={styles.linkIn}>in</span>{label.slice(2)}
-                    </a>
-                  )}
-                </li>
-              ))}
+              {NAV_LINKS.map(({ id, labelKey }) => {
+                const label = t(labelKey)
+                return (
+                  <li key={id}>
+                    {isHome ? (
+                      <button
+                        className={`${styles.link} ${activeSection === id ? styles.linkActive : ''}`}
+                        onClick={() => handleNavClick(id)}
+                      >
+                        <span className={styles.linkIn}>in</span>{label.slice(2)}
+                      </button>
+                    ) : (
+                      <a href={`/#${id}`} className={styles.link}>
+                        <span className={styles.linkIn}>in</span>{label.slice(2)}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           )}
 
           {/* Actions */}
           <div className={styles.actions}>
-            <button className={styles.btnLang} aria-label="Language">EN</button>
+            <button
+              className={styles.btnLang}
+              aria-label={lang === 'en' ? 'Switch to Italian' : 'Passa all\'inglese'}
+              onClick={toggleLang}
+            >
+              {t('nav.lang')}
+            </button>
             <button
               className={styles.btnCta}
               onClick={handleContactClick}
               onMouseMove={handleCtaMouseMove}
               onMouseLeave={handleCtaMouseLeave}
             >
-              Contact Us
+              {t('nav.contact')}
             </button>
             <button
               className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ''}`}
@@ -167,7 +179,6 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
         aria-label="Mobile navigation"
         aria-hidden={!menuOpen}
       >
-        {/* Work link at top of mobile menu */}
         <Link
           to="/work"
           className={`${styles.mobileLink} ${isWork ? styles.mobileLinkActive : ''}`}
@@ -177,8 +188,9 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
           <span className={styles.linkIn}>in</span>Work
         </Link>
 
-        {NAV_LINKS.map(({ id, label }) =>
-          isHome ? (
+        {NAV_LINKS.map(({ id, labelKey }) => {
+          const label = t(labelKey)
+          return isHome ? (
             <button
               key={id}
               className={styles.mobileLink}
@@ -197,15 +209,24 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
             >
               <span className={styles.linkIn}>in</span>{label.slice(2)}
             </a>
-          ),
-        )}
+          )
+        })}
 
         <button
           className={`${styles.btnCta} ${styles.mobileCta}`}
           onClick={handleContactClick}
           tabIndex={menuOpen ? 0 : -1}
         >
-          Contact Us
+          {t('nav.contact')}
+        </button>
+
+        <button
+          className={styles.btnLang}
+          onClick={toggleLang}
+          tabIndex={menuOpen ? 0 : -1}
+          aria-label={lang === 'en' ? 'Switch to Italian' : 'Passa all\'inglese'}
+        >
+          {t('nav.lang')}
         </button>
       </div>
     </>

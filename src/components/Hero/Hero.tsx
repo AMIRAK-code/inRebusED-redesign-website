@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, SplitText } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Hero.module.css'
 import HeroMedia from './HeroMedia'
 
@@ -10,10 +11,10 @@ interface HeroProps {
 }
 
 const STATS = [
-  { num: '2003', label: 'Founded in Turin' },
-  { num: `${new Date().getFullYear() - 2003}+`, label: 'Years of experience' },
-  { num: '40+',  label: 'Trusted clients' },
-  { num: '100%', label: 'Custom solutions' },
+  { key: 'founded',   num: '2003', labelKey: 'hero.stat.founded.label' },
+  { key: 'years',     num: `${new Date().getFullYear() - 2003}+`, labelKey: 'hero.stat.years.label' },
+  { key: 'clients',   num: '40+',  labelKey: 'hero.stat.clients.label' },
+  { key: 'solutions', num: '100%', labelKey: 'hero.stat.solutions.label' },
 ]
 
 function parseStatNum(s: string): { value: number; suffix: string } {
@@ -22,10 +23,10 @@ function parseStatNum(s: string): { value: number; suffix: string } {
 }
 
 export default function Hero({ scrollTo }: HeroProps) {
+  const { t } = useT()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    // ── Entrance ─────────────────────────────────────────────────────────
     const tl = gsap.timeline({ delay: 0.2, defaults: { ease: 'expo' } })
 
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
@@ -43,7 +44,6 @@ export default function Hero({ scrollTo }: HeroProps) {
     tl.to(`.${styles.statsRow}`,   { opacity: 1, duration: 0.8 },        '-=0.2')
     tl.to(`.${styles.scrollHint}`, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
 
-    // Stat counters
     tl.add(() => {
       const els = Array.from(
         sectionRef.current!.querySelectorAll<HTMLElement>(`.${styles.statNum}`)
@@ -58,36 +58,23 @@ export default function Hero({ scrollTo }: HeroProps) {
       })
     }, '-=0.6')
 
-    // ── Sticky zoom-out exit ──────────────────────────────────────────────
-    // section is 200vh tall; sticky inner stays pinned at top:0.
-    // ScrollTrigger scrubs through that 200vh window.
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
       end: 'bottom bottom',
       scrub: 1.4,
       animation: gsap.timeline()
-        // video pulls back (zoom out)
-        .to(`.${styles.heroBgMedia}`, {
-          scale: 0.86, opacity: 0.18, ease: 'none',
-        }, 0)
-        // orb glows fade
-        .to([`.${styles.orbOrange}`, `.${styles.orbSpicy}`, `.${styles.orbBlue}`], {
-          opacity: 0, ease: 'none',
-        }, 0)
-        // scroll hint disappears first
+        .to(`.${styles.heroBgMedia}`, { scale: 0.86, opacity: 0.18, ease: 'none' }, 0)
+        .to([`.${styles.orbOrange}`, `.${styles.orbSpicy}`, `.${styles.orbBlue}`], { opacity: 0, ease: 'none' }, 0)
         .to(`.${styles.scrollHint}`, { opacity: 0, ease: 'none' }, 0)
-        // headline rises and fades
         .to(`.${styles.overline}`,   { opacity: 0, y: -48, ease: 'none' }, 0.05)
         .to(`.${styles.headline}`,   { opacity: 0, y: -80, ease: 'none' }, 0.05)
         .to(`.${styles.sub}`,        { opacity: 0, y: -48, ease: 'none' }, 0.12)
         .to(`.${styles.ctas}`,       { opacity: 0, y: -36, ease: 'none' }, 0.18)
         .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.22),
     })
-
   }, { scope: sectionRef })
 
-  // Magnetic CTA
   const onMagMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - r.left - r.width / 2) * 0.3
@@ -100,7 +87,6 @@ export default function Hero({ scrollTo }: HeroProps) {
 
   return (
     <section ref={sectionRef} className={styles.section} aria-label="Hero">
-      {/* sticky viewport — 100vh, pinned while outer section scrolls 200vh */}
       <div className={styles.sticky}>
 
         <div className={styles.bg} aria-hidden="true">
@@ -114,19 +100,16 @@ export default function Hero({ scrollTo }: HeroProps) {
         <div className={styles.inner}>
           <p className={styles.overline}>
             <span className={styles.overlineDot}>●</span>
-            Digital Learning Solutions
+            {t('hero.overline')}
           </p>
 
           <h1 className={styles.headline}>
-            <span className={styles.headlineAccent}>Creative</span>
-            <br />Outside
-            <br /><span className={styles.headlineOutline}>The Box</span>
+            <span className={styles.headlineAccent}>{t('hero.headline.accent')}</span>
+            <br />{t('hero.headline.line2')}
+            <br /><span className={styles.headlineOutline}>{t('hero.headline.outline')}</span>
           </h1>
 
-          <p className={styles.sub}>
-            Thinking outside the box with an innovative approach
-            <br />to deliver the right training, in the right way, at the right time.
-          </p>
+          <p className={styles.sub}>{t('hero.sub')}</p>
 
           <div className={styles.ctas}>
             <button
@@ -135,24 +118,24 @@ export default function Hero({ scrollTo }: HeroProps) {
               onMouseMove={onMagMove}
               onMouseLeave={onMagLeave}
             >
-              Explore Services
+              {t('hero.cta.services')}
             </button>
             <Link to="/work" className={styles.btnWork}>
-              See Our Work →
+              {t('hero.cta.work')}
             </Link>
             <button
               className={styles.btnSecondary}
               onClick={() => scrollTo('contact')}
             >
-              Download Brochure
+              {t('hero.cta.brochure')}
             </button>
           </div>
 
           <div className={styles.statsRow}>
-            {STATS.map(({ num, label }) => (
-              <div key={num} className={styles.stat}>
+            {STATS.map(({ key, num, labelKey }) => (
+              <div key={key} className={styles.stat}>
                 <div className={styles.statNum}>{num}</div>
-                <div className={styles.statLabel}>{label}</div>
+                <div className={styles.statLabel}>{t(labelKey)}</div>
               </div>
             ))}
           </div>
@@ -160,7 +143,7 @@ export default function Hero({ scrollTo }: HeroProps) {
 
         <div className={styles.scrollHint} aria-hidden="true">
           <div className={styles.scrollLine} />
-          <span className={styles.scrollText}>scroll</span>
+          <span className={styles.scrollText}>{t('hero.scroll')}</span>
         </div>
 
       </div>
