@@ -203,9 +203,14 @@
   perspective-origin: 50% 50%;
 }
 
+.headlineLine2 {
+  display: inline-block; /* required so GSAP can apply y / rotateX */
+}
+
 .headlineOutline {
   -webkit-text-stroke: 2px rgba(255, 255, 255, 0.28);
   color: transparent;
+  display: inline-block; /* match headlineLine2 for consistent stagger */
 }
 
 /* Sub */

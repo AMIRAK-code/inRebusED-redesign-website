@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
-import { gsap, ScrollTrigger, SplitText } from '../../lib/gsap'
+import { gsap, ScrollTrigger } from '../../lib/gsap'
 import { useT } from '../../i18n/LangContext'
 import styles from './Hero.module.css'
 import HeroMedia from './HeroMedia'
@@ -123,11 +123,13 @@ export default function Hero({ scrollTo }: HeroProps) {
 
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
 
+    // Animate the 3 headline lines directly — no SplitText needed.
+    // headlineAccent (LEARNING), headlineLine2 (OUTSIDE), headlineOutline (THE BOX)
+    // are each inline-block spans so GSAP can apply y/rotateX per element.
     tl.set(`.${styles.headline}`, { opacity: 1 }, '<')
-    const split = SplitText.create(`.${styles.headline}`, { type: 'words' })
     tl.from(
-      split.words,
-      { opacity: 0, y: 48, rotateX: -40, stagger: 0.06, duration: 0.9, transformPerspective: 800 },
+      [`.${styles.headlineAccent}`, `.${styles.headlineLine2}`, `.${styles.headlineOutline}`],
+      { opacity: 0, y: 48, rotateX: -40, stagger: 0.12, duration: 0.9, transformPerspective: 800 },
       '<',
     )
 
@@ -158,9 +160,8 @@ export default function Hero({ scrollTo }: HeroProps) {
     // finished, regardless of where prior tl.add() calls placed their cursor.
     tl.eventCallback('onComplete', () => {
       if (!accentRef.current) return
-      split.revert()                    // clean up SplitText DOM wrappers
-      accentRef.current.textContent = 'LEARNING'  // guarantee plain text
-
+      // accentRef always contains plain "LEARNING" text — React owns it,
+      // no SplitText manipulation needed before building letter spans.
       lettersRef.current = buildLetterSpans(accentRef.current, 'LEARNING')
       barRef.current     = createBar(accentRef.current)
       wordRef.current    = 'LEARNING'
@@ -249,7 +250,7 @@ export default function Hero({ scrollTo }: HeroProps) {
 
           <h1 className={styles.headline}>
             <span ref={accentRef} className={styles.headlineAccent}>LEARNING</span>
-            <br />OUTSIDE
+            <br /><span className={styles.headlineLine2}>OUTSIDE</span>
             <br /><span className={styles.headlineOutline}>THE BOX</span>
           </h1>
 
