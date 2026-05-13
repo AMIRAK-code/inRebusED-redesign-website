@@ -22,11 +22,103 @@ function parseStatNum(s: string): { value: number; suffix: string } {
   return m ? { value: parseInt(m[1]), suffix: m[2] } : { value: 0, suffix: s }
 }
 
+// ── Accent sweep flip ─────────────────────────────────────────────────────────
+
+function buildLetterSpans(container: HTMLSpanElement, word: string): HTMLSpanElement[] {
+  container.innerHTML = ''
+  return [...word].map(char => {
+    const s = document.createElement('span')
+    s.dataset.al = '1'
+    s.textContent = char
+    s.style.cssText = 'display:inline-block;transform-style:preserve-3d;will-change:transform;'
+    container.appendChild(s)
+    return s
+  })
+}
+
+function createBar(container: HTMLSpanElement): HTMLDivElement {
+  const bar = document.createElement('div')
+  bar.style.cssText = [
+    'position:absolute',
+    'bottom:-6px',
+    'left:0',
+    'width:100%',
+    'height:4px',
+    'background:var(--orange,#F58220)',
+    'border-radius:2px',
+    'transform:scaleX(0)',
+    'transform-origin:left center',
+  ].join(';')
+  container.appendChild(bar)
+  return bar
+}
+
+// Bug fixes vs previous version:
+// 1. Removed gsap.set(letters, rotateX) inside tl.call — was racing with tl.to at same position
+// 2. Use tl.fromTo for enter phase — explicitly sets from-state per letter when its stagger fires
+// 3. Removed unused leaveBar param — bar state is determined entirely by direction
+// 4. Adjusted barDur to better match letter animation total time
+function sweepFlip(
+  letters: HTMLSpanElement[],
+  toWord: string,
+  bar: HTMLDivElement,
+  direction: 'ltr' | 'rtl',
+  onDone?: () => void,
+) {
+  const stagger  = 0.07
+  const exitDur  = 0.22
+  const enterDur = 0.28
+  // bar duration ≈ total letter flip time for visual sync
+  const barDur   = 0.1 + stagger * (letters.length - 1) + exitDur + stagger * (letters.length - 1) + enterDur
+
+  const tl = gsap.timeline({ onComplete: onDone })
+
+  // Bar: draws in ltr (LEARNING→CREATIVE) or erases rtl (CREATIVE→LEARNING)
+  if (direction === 'ltr') {
+    gsap.set(bar, { scaleX: 0, transformOrigin: 'left center' })
+    tl.to(bar, { scaleX: 1, duration: barDur, ease: 'power2.inOut' }, 0)
+  } else {
+    gsap.set(bar, { scaleX: 1, transformOrigin: 'right center' })
+    tl.to(bar, { scaleX: 0, duration: barDur, ease: 'power2.inOut' }, 0)
+  }
+
+  // Letters exit: roll top-forward to 90° (edge-on = invisible)
+  tl.to(letters, {
+    rotateX: 90, stagger, duration: exitDur,
+    ease: 'power2.in', transformPerspective: 520,
+  }, 0.1)
+
+  // Swap text content at the moment all letters are edge-on
+  const swapAt = 0.1 + stagger * (letters.length - 1) + exitDur
+  tl.call(() => {
+    ;[...toWord].forEach((ch, i) => { if (letters[i]) letters[i].textContent = ch })
+  }, [], swapAt)
+
+  // Letters enter: fromTo explicitly sets rotateX -90 for each element at its stagger start,
+  // preventing the race condition where tl.to reads stale rotateX: 90 from the exit phase.
+  tl.fromTo(
+    letters,
+    { rotateX: -90, transformPerspective: 520 },
+    { rotateX: 0, stagger, duration: enterDur, ease: 'back.out(1.3)', transformPerspective: 520 },
+    swapAt,
+  )
+
+  return tl
+}
+
+// ── Component ──────────────────────────────────────────────────────────────────
+
 export default function Hero({ scrollTo }: HeroProps) {
   const { t } = useT()
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef     = useRef<HTMLElement>(null)
+  const accentRef      = useRef<HTMLSpanElement>(null)
+  const lettersRef     = useRef<HTMLSpanElement[]>([])
+  const barRef         = useRef<HTMLDivElement | null>(null)
+  const setupToutRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const revisitToutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useGSAP(() => {
+    // ── Entrance ─────────────────────────────────────────────────────────
     const tl = gsap.timeline({ delay: 0.2, defaults: { ease: 'expo' } })
 
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
@@ -43,6 +135,7 @@ export default function Hero({ scrollTo }: HeroProps) {
     tl.to(`.${styles.ctas}`,       { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
     tl.to(`.${styles.statsRow}`,   { opacity: 1, duration: 0.8 },        '-=0.2')
     tl.to(`.${styles.scrollHint}`, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+    tl.to(`.${styles.flipWord}`,   { opacity: 1, duration: 1.4 },        '-=0.3')
 
     tl.add(() => {
       const els = Array.from(
@@ -58,6 +151,33 @@ export default function Hero({ scrollTo }: HeroProps) {
       })
     }, '-=0.6')
 
+    // ── Accent flip setup — fires immediately after entrance timeline ends ─
+    tl.add(() => {
+      if (!accentRef.current) return
+      split.revert()
+
+      lettersRef.current = buildLetterSpans(accentRef.current, 'LEARNING')
+      barRef.current = createBar(accentRef.current)
+
+      // Equal cycling: both words hold for ~3.5s, then flip to the other.
+      // currentWord tracks which word is currently visible.
+      let currentWord = 'LEARNING'
+
+      const cycle = () => {
+        if (!lettersRef.current.length || !barRef.current) return
+        const toWord  = currentWord === 'LEARNING' ? 'CREATIVE' : 'LEARNING'
+        const dir: 'ltr' | 'rtl' = toWord === 'CREATIVE' ? 'ltr' : 'rtl'
+        sweepFlip(lettersRef.current, toWord, barRef.current, dir, () => {
+          currentWord = toWord
+          revisitToutRef.current = setTimeout(cycle, 3500)
+        })
+      }
+
+      // Short delay so the first flip feels like a deliberate reveal, not a glitch
+      setupToutRef.current = setTimeout(cycle, 600)
+    })
+
+    // ── Scroll exit ───────────────────────────────────────────────────────
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
@@ -73,6 +193,11 @@ export default function Hero({ scrollTo }: HeroProps) {
         .to(`.${styles.ctas}`,       { opacity: 0, y: -36, ease: 'none' }, 0.18)
         .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.22),
     })
+
+    return () => {
+      if (setupToutRef.current)   clearTimeout(setupToutRef.current)
+      if (revisitToutRef.current) clearTimeout(revisitToutRef.current)
+    }
   }, { scope: sectionRef })
 
   const onMagMove = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,9 +229,9 @@ export default function Hero({ scrollTo }: HeroProps) {
           </p>
 
           <h1 className={styles.headline}>
-            <span className={styles.headlineAccent}>{t('hero.headline.accent')}</span>
-            <br />{t('hero.headline.line2')}
-            <br /><span className={styles.headlineOutline}>{t('hero.headline.outline')}</span>
+            <span ref={accentRef} className={styles.headlineAccent}>LEARNING</span>
+            <br />OUTSIDE
+            <br /><span className={styles.headlineOutline}>THE BOX</span>
           </h1>
 
           <p className={styles.sub}>{t('hero.sub')}</p>
@@ -140,6 +265,8 @@ export default function Hero({ scrollTo }: HeroProps) {
             ))}
           </div>
         </div>
+
+        <div className={styles.flipWord} aria-hidden="true">TORINO</div>
 
         <div className={styles.scrollHint} aria-hidden="true">
           <div className={styles.scrollLine} />
