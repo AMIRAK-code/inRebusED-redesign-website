@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, Flip } from '../../lib/gsap'
@@ -19,9 +19,18 @@ export default function Projects() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<Category | 'all'>('all')
 
-  const filteredStudies = filter === 'all'
-    ? caseStudies
-    : caseStudies.filter(cs => cs.category === filter)
+  const filteredStudies = useMemo(() => {
+    const studies = filter === 'all'
+      ? caseStudies
+      : caseStudies.filter(cs => cs.category === filter)
+      
+    const shuffled = [...studies]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }, [filter])
 
   const PROJECTS = filteredStudies.slice(0, 10).map(cs => ({
     title:  cs.title,
