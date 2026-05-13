@@ -151,8 +151,11 @@ export default function Hero({ scrollTo }: HeroProps) {
       })
     }, '-=0.6')
 
-    // ── Accent flip setup — fires immediately after entrance timeline ends ─
-    tl.add(() => {
+    // ── Accent flip setup — fires after entrance timeline fully completes ─
+    // Using eventCallback('onComplete') instead of tl.add() to guarantee this
+    // fires AFTER every tween ends, not at a cursor position that may land
+    // mid-timeline when a previous tl.add used a relative '-=' offset.
+    tl.eventCallback('onComplete', () => {
       if (!accentRef.current) return
       split.revert()
 

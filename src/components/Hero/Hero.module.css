@@ -196,6 +196,11 @@
   position: relative;
   display: inline-block;
   vertical-align: baseline;
+  /* Provides perspective context for child letter rotations so 3D flip
+     is visible even when a parent has overflow:hidden (which flattens
+     nested transform-style:preserve-3d in some browsers). */
+  perspective: 520px;
+  perspective-origin: 50% 50%;
 }
 
 .headlineOutline {
