@@ -184,7 +184,7 @@ const en: Record<string, string> = {
   'projects.cta.arrow': '→ Long list this way',
 
   // ── Footer ───────────────────────────────────────────────────────────
-  'footer.cta.overline': 'inContact — How To Find Us',
+  'footer.cta.overline': 'inContact — Get In Touch',
   'footer.cta.title': 'The right training,',
   'footer.cta.title.accent': 'delivered the right way.',
   'footer.cta.desc': 'Want to meet us or need more information about our digital learning solutions? Get in touch — we respond within 24 hours.',

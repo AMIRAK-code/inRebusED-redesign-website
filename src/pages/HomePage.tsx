@@ -6,13 +6,12 @@ import Services from '../components/Services/Services'
 import Products from '../components/Products/Products'
 import Process from '../components/Process/Process'
 import Clients from '../components/Clients/Clients'
-import ContactInfo from '../components/ContactInfo/ContactInfo'
 import Projects from '../components/Projects/Projects'
 import Footer from '../components/Footer/Footer'
 
 const SECTION_IDS = [
   'hero', 'about', 'services', 'products',
-  'process', 'clients', 'contact-info', 'projects', 'contact',
+  'process', 'clients', 'projects', 'contact',
 ]
 
 export default function HomePage() {
@@ -51,7 +50,6 @@ export default function HomePage() {
         <div id="products"><Products /></div>
         <div id="process"><Process /></div>
         <div id="clients"><Clients /></div>
-        <div id="contact-info"><ContactInfo /></div>
         <div id="projects"><Projects /></div>
         <div id="contact"><Footer scrollTo={scrollTo} /></div>
       </main>
