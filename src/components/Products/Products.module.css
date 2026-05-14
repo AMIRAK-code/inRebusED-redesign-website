@@ -1,0 +1,181 @@
+.section {
+  background: var(--charcoal);
+  padding: 120px 48px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  margin-bottom: 72px;
+  max-width: 600px;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5.5vw, 68px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 20px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.desc {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* ── 2×2 grid ────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.card {
+  position: relative;
+  background: var(--navy);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--r-lg);
+  padding: 48px 44px;
+  overflow: hidden;
+  transition: border-color var(--dur-slow), transform var(--dur-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-color: var(--card-accent, var(--orange));
+  transform: translateY(-6px);
+}
+
+.card:hover .cardGlow {
+  opacity: 1;
+}
+
+.card:hover .cardDot {
+  transform: scale(1.4);
+  background: var(--card-accent, var(--orange));
+}
+
+.cardInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cardTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--card-accent, var(--orange));
+  background: color-mix(in srgb, var(--card-accent, var(--orange)) 12%, transparent);
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  border: 1px solid color-mix(in srgb, var(--card-accent, var(--orange)) 28%, transparent);
+}
+
+.cardDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: transform var(--dur-base), background var(--dur-base);
+}
+
+.cardName {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 0 0 16px;
+}
+
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 32px;
+  flex: 1;
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--card-accent, var(--orange));
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: gap var(--dur-base), opacity var(--dur-base);
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.cardLink:hover {
+  gap: 10px;
+  opacity: 0.8;
+}
+
+/* Glow effect */
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 50% at 80% 90%,
+    color-mix(in srgb, var(--card-accent, var(--orange)) 14%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-slow);
+  border-radius: inherit;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 80px 24px; }
+  .card    { padding: 36px 28px; }
+}
