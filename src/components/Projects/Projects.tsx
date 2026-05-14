@@ -2,22 +2,26 @@ import { useRef, useState, useEffect, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, Flip } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Projects.module.css'
 import caseStudies, { CATEGORY_LABEL, type Category } from '../../data/case-studies'
 
-const FILTER_PILLS: { label: string; value: Category | 'all' }[] = [
-  { label: 'All',               value: 'all'               },
-  { label: 'Digital Academy',   value: 'digital-academy'   },
-  { label: 'Onboarding',        value: 'onboarding'        },
-  { label: 'Product Training',  value: 'product-training'  },
-  { label: 'Vertical Training', value: 'vertical-training' },
-]
+type FilterValue = Category | 'all'
 
 const rotDir = (i: number) => (i % 2 === 0 ? 1 : -1)
 
 export default function Projects() {
+  const { t } = useT()
   const navigate = useNavigate()
-  const [filter, setFilter] = useState<Category | 'all'>('all')
+  const [filter, setFilter] = useState<FilterValue>('all')
+
+  const FILTER_PILLS: { labelKey: string; value: FilterValue }[] = [
+    { labelKey: 'projects.filter.all',        value: 'all'               },
+    { labelKey: 'projects.filter.academy',    value: 'digital-academy'   },
+    { labelKey: 'projects.filter.onboarding', value: 'onboarding'        },
+    { labelKey: 'projects.filter.product',    value: 'product-training'  },
+    { labelKey: 'projects.filter.vertical',   value: 'vertical-training' },
+  ]
 
   const filteredStudies = useMemo(() => {
     const studies = filter === 'all'
@@ -56,7 +60,6 @@ export default function Projects() {
   const pillRefs        = useRef<Map<string, HTMLButtonElement>>(new Map())
   const isTransitioning = useRef(false)
 
-  // Position tab indicator over the active pill (with GSAP Flip)
   function moveIndicator(newFilter: string, animate: boolean) {
     const pill      = pillRefs.current.get(newFilter)
     const bar       = filterBarRef.current
@@ -77,18 +80,16 @@ export default function Projects() {
     }
   }
 
-  // Initialize indicator on mount (after first paint)
   useEffect(() => {
     const id = requestAnimationFrame(() => moveIndicator(filter, false))
     return () => cancelAnimationFrame(id)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function handleFilterChange(newFilter: Category | 'all') {
+  function handleFilterChange(newFilter: FilterValue) {
     if (newFilter === filter || isTransitioning.current) return
     isTransitioning.current = true
 
-    // Animate tab indicator with GSAP Flip
     moveIndicator(newFilter, true)
 
     const wrappers = cardWrapperRefs.current.filter(Boolean) as HTMLDivElement[]
@@ -114,7 +115,6 @@ export default function Projects() {
     const section = sectionRef.current
     if (!section) return
 
-    // Reset CSS custom props left over from previous filter
     cardWrapperRefs.current.forEach(w => {
       if (!w) return
       w.style.opacity = ''
@@ -132,7 +132,6 @@ export default function Projects() {
       filterBarRef.current.style.pointerEvents = 'auto'
     }
 
-    // Re-position indicator after filter re-render
     requestAnimationFrame(() => moveIndicator(filter, false))
 
     const vh = () => window.innerHeight
@@ -142,7 +141,6 @@ export default function Projects() {
     for (let i = 0; i < N; i++) {
       const idx = i
 
-      // 3-D hover tilt
       const card = cardRefs.current[idx]
       if (card) {
         const onMove = (e: MouseEvent) => {
@@ -162,7 +160,6 @@ export default function Projects() {
         )
       }
 
-      // Scroll-linked stacking
       const st = ScrollTrigger.create({
         trigger: section,
         start: () => `top+=${idx * vh()} top`,
@@ -235,10 +232,8 @@ export default function Projects() {
     >
       <div className={styles.sticky}>
 
-        {/* Grain texture */}
         <div className={styles.grain} aria-hidden="true" />
 
-        {/* Filter bar with GSAP Flip sliding indicator */}
         <div
           ref={filterBarRef}
           className={styles.filterBar}
@@ -253,23 +248,21 @@ export default function Projects() {
               onClick={() => handleFilterChange(pill.value)}
               aria-pressed={filter === pill.value}
             >
-              {pill.label}
+              {t(pill.labelKey)}
             </button>
           ))}
-          {/* Sliding indicator driven by GSAP Flip */}
           <div ref={indicatorRef} className={styles.filterIndicator} aria-hidden="true" />
         </div>
 
-        {/* Title screen */}
         <div className={styles.titleScreen}>
-          <span className={styles.titleLabel}>Our Work</span>
+          <span className={styles.titleLabel}>{t('projects.label')}</span>
           <h2 className={styles.titleHeading}>
-            Selected<br />
-            <span className={styles.titleAccent}>Projects</span>
+            {t('projects.title')}<br />
+            <span className={styles.titleAccent}>{t('projects.title.accent')}</span>
           </h2>
-          <p className={styles.titleSub}>This is the short list.</p>
+          <p className={styles.titleSub}>{t('projects.sub')}</p>
           <Link to="/work" className={styles.viewAllLink}>
-            The long list →
+            {t('projects.longlist')}
           </Link>
           <div className={styles.titleArrow} aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -278,15 +271,13 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Left flank */}
         <div className={styles.leftFlank} aria-hidden="true">
           <div className={styles.counterBlock}>
             <span ref={counterRef} className={styles.counterNum}>01</span>
           </div>
-          <span className={styles.flankLabel}>Our Work</span>
+          <span className={styles.flankLabel}>{t('projects.label')}</span>
         </div>
 
-        {/* Right flank */}
         <div className={styles.rightFlank} aria-hidden="true">
           <div className={styles.pips}>
             {Array.from({ length: N }).map((_, i) => (
@@ -299,7 +290,6 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Stacking cards — click → /work/[slug] */}
         {PROJECTS.map((p, i) => (
           <div
             key={p.slug}
@@ -344,7 +334,7 @@ export default function Projects() {
                   <h3 className={styles.cardTitle}>{p.title}</h3>
                   <p className={styles.cardDesc}>{p.desc}</p>
                   <span className={styles.cardCta}>
-                    View Project
+                    {t('projects.view')}
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -357,7 +347,6 @@ export default function Projects() {
           </div>
         ))}
 
-        {/* CTA card — when > 10 studies match the current filter */}
         {HAS_MORE && (
           <div
             ref={el => { cardWrapperRefs.current[PROJECTS.length] = el }}
@@ -377,14 +366,13 @@ export default function Projects() {
                 }
               }}
             >
-              <h2 className={styles.ctaHeading}>STILL<br />HUNGRY?</h2>
-              <p className={styles.ctaSub}>The list keeps going.</p>
-              <span className={styles.ctaArrow}>→ Long list this way</span>
+              <h2 className={styles.ctaHeading}>{t('projects.cta.heading')}</h2>
+              <p className={styles.ctaSub}>{t('projects.cta.sub')}</p>
+              <span className={styles.ctaArrow}>{t('projects.cta.arrow')}</span>
             </div>
           </div>
         )}
 
-        {/* Progress bar */}
         <div className={styles.progressTrack} aria-hidden="true">
           <div ref={progressFillRef} className={styles.progressFill} />
         </div>

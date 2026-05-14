@@ -1,27 +1,28 @@
 import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Process.module.css'
 
-const STEPS = [
-  { num: '01', title: 'Briefing',      desc: 'Definition of guidelines with the client.' },
-  { num: '02', title: 'Research',      desc: 'Document analysis and deep subject-matter investigation.' },
-  { num: '03', title: 'Project',       desc: 'Definition of structure and delivery method.' },
-  { num: '04', title: 'Feedback',      desc: 'First validation cycle with the client.' },
-  { num: '05', title: 'Storyboarding', desc: 'Content mapping, scripts and visual narrative for every module.' },
-  { num: '06', title: 'Visual Design', desc: 'Graphic interface designed to project specifications.' },
-  { num: '07', title: 'Validation',    desc: 'Sign-off of the visual design and storyboard.' },
-  { num: '08', title: 'Production',    desc: 'Course development with validated graphics and storyboard.' },
-  { num: '09', title: 'Testing',       desc: 'Quality control, accessibility and cross-platform validation.' },
-  { num: '10', title: 'Delivery',      desc: 'Final release with deployment and monitoring support.' },
+const STEP_KEYS = [
+  { num: '01', titleKey: 'process.s01.title', descKey: 'process.s01.desc' },
+  { num: '02', titleKey: 'process.s02.title', descKey: 'process.s02.desc' },
+  { num: '03', titleKey: 'process.s03.title', descKey: 'process.s03.desc' },
+  { num: '04', titleKey: 'process.s04.title', descKey: 'process.s04.desc' },
+  { num: '05', titleKey: 'process.s05.title', descKey: 'process.s05.desc' },
+  { num: '06', titleKey: 'process.s06.title', descKey: 'process.s06.desc' },
+  { num: '07', titleKey: 'process.s07.title', descKey: 'process.s07.desc' },
+  { num: '08', titleKey: 'process.s08.title', descKey: 'process.s08.desc' },
+  { num: '09', titleKey: 'process.s09.title', descKey: 'process.s09.desc' },
+  { num: '10', titleKey: 'process.s10.title', descKey: 'process.s10.desc' },
 ]
 
 export default function Process() {
+  const { t } = useT()
   const [active, setActive] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
-  const bigNumRef = useRef<HTMLDivElement>(null)
+  const bigNumRef  = useRef<HTMLDivElement>(null)
 
-  // Scroll-in entrance animations
   useGSAP(() => {
     gsap.from(`.${styles.left}`, {
       opacity: 0, x: -40, duration: 1, ease: 'expo',
@@ -36,7 +37,6 @@ export default function Process() {
     })
   }, { scope: sectionRef })
 
-  // Number change animation — fires whenever active step changes
   useGSAP(() => {
     if (!bigNumRef.current) return
     gsap.fromTo(
@@ -50,40 +50,32 @@ export default function Process() {
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
 
-        {/* Left — sticky info */}
         <div className={styles.left}>
-          <span className={styles.label}>inAction — How We Work</span>
+          <span className={styles.label}>{t('process.label')}</span>
           <h2 className={styles.title}>
-            Everything<br />
-            <span className={styles.titleAccent}>Under Control</span>
+            {t('process.title')}<br />
+            <span className={styles.titleAccent}>{t('process.title.accent')}</span>
           </h2>
-          <p className={styles.desc}>
-            Every stage of every project is under control — from the first briefing to
-            final deployment, with feedback loops at every checkpoint.
-          </p>
+          <p className={styles.desc}>{t('process.desc')}</p>
 
           <blockquote className={styles.quote}>
             <div className={styles.quoteBar} />
             <div>
-              <p className={styles.quoteText}>
-                "No great mind has ever existed without a touch of madness"
-              </p>
-              <cite className={styles.quoteAuthor}>— Seneca</cite>
+              <p className={styles.quoteText}>{t('process.quote')}</p>
+              <cite className={styles.quoteAuthor}>{t('process.quote.author')}</cite>
             </div>
           </blockquote>
 
-          {/* Large animated step number */}
           <div className={styles.bigNumWrap} aria-hidden="true">
             <div ref={bigNumRef} className={styles.bigNum}>
-              {STEPS[active].num}
+              {STEP_KEYS[active].num}
             </div>
-            <div className={styles.bigNumLabel}>{STEPS[active].title}</div>
+            <div className={styles.bigNumLabel}>{t(STEP_KEYS[active].titleKey)}</div>
           </div>
         </div>
 
-        {/* Right — accordion list */}
         <div className={styles.right}>
-          {STEPS.map((step, i) => (
+          {STEP_KEYS.map((step, i) => (
             <div
               key={step.num}
               className={`${styles.stepRow} ${active === i ? styles.stepActive : ''}`}
@@ -98,10 +90,10 @@ export default function Process() {
               </span>
               <div className={styles.stepContent}>
                 <div className={`${styles.stepTitle} ${active === i ? styles.stepTitleActive : ''}`}>
-                  {step.title}
+                  {t(step.titleKey)}
                 </div>
                 <div className={`${styles.stepDesc} ${active === i ? styles.stepDescActive : ''}`}>
-                  {step.desc}
+                  {t(step.descKey)}
                 </div>
               </div>
               <div className={`${styles.stepDot} ${active === i ? styles.stepDotActive : ''}`} />

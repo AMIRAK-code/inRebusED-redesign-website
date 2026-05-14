@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
-import { gsap, ScrollTrigger, SplitText } from '../../lib/gsap'
+import { gsap, ScrollTrigger } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './Hero.module.css'
 import HeroMedia from './HeroMedia'
 
@@ -10,10 +11,10 @@ interface HeroProps {
 }
 
 const STATS = [
-  { num: '2003', label: 'Founded in Turin' },
-  { num: `${new Date().getFullYear() - 2003}+`, label: 'Years of experience' },
-  { num: '40+',  label: 'Trusted clients' },
-  { num: '100%', label: 'Custom solutions' },
+  { key: 'founded',   num: '2003', labelKey: 'hero.stat.founded.label' },
+  { key: 'years',     num: `${new Date().getFullYear() - 2003}+`, labelKey: 'hero.stat.years.label' },
+  { key: 'clients',   num: '40+',  labelKey: 'hero.stat.clients.label' },
+  { key: 'solutions', num: '100%', labelKey: 'hero.stat.solutions.label' },
 ]
 
 function parseStatNum(s: string): { value: number; suffix: string } {
@@ -21,8 +22,100 @@ function parseStatNum(s: string): { value: number; suffix: string } {
   return m ? { value: parseInt(m[1]), suffix: m[2] } : { value: 0, suffix: s }
 }
 
+// ── Accent sweep flip ─────────────────────────────────────────────────────────
+
+function buildLetterSpans(container: HTMLSpanElement, word: string): HTMLSpanElement[] {
+  container.innerHTML = ''
+  return [...word].map(char => {
+    const s = document.createElement('span')
+    s.dataset.al = '1'
+    s.textContent = char
+    s.style.cssText = 'display:inline-block;transform-style:preserve-3d;will-change:transform;'
+    container.appendChild(s)
+    return s
+  })
+}
+
+function createBar(container: HTMLSpanElement): HTMLDivElement {
+  const bar = document.createElement('div')
+  bar.style.cssText = [
+    'position:absolute',
+    'bottom:-6px',
+    'left:0',
+    'width:100%',
+    'height:4px',
+    'background:var(--orange,#F58220)',
+    'border-radius:2px',
+    'transform:scaleX(0)',
+    'transform-origin:left center',
+  ].join(';')
+  container.appendChild(bar)
+  return bar
+}
+
+function sweepFlip(
+  letters: HTMLSpanElement[],
+  toWord: string,
+  bar: HTMLDivElement,
+  direction: 'ltr' | 'rtl',
+  onDone?: () => void,
+) {
+  const stagger  = 0.07
+  const exitDur  = 0.22
+  const enterDur = 0.28
+  // bar duration ≈ total letter flip time for visual sync
+  const barDur   = 0.1 + stagger * (letters.length - 1) + exitDur + stagger * (letters.length - 1) + enterDur
+
+  const tl = gsap.timeline({ onComplete: onDone })
+
+  // Bar: draws in ltr (LEARNING→CREATIVE) or erases rtl (CREATIVE→LEARNING)
+  if (direction === 'ltr') {
+    gsap.set(bar, { scaleX: 0, transformOrigin: 'left center' })
+    tl.to(bar, { scaleX: 1, duration: barDur, ease: 'power2.inOut' }, 0)
+  } else {
+    gsap.set(bar, { scaleX: 1, transformOrigin: 'right center' })
+    tl.to(bar, { scaleX: 0, duration: barDur, ease: 'power2.inOut' }, 0)
+  }
+
+  // Letters exit: roll top-forward to 90° (edge-on = invisible)
+  tl.to(letters, {
+    rotateX: 90, stagger, duration: exitDur,
+    ease: 'power2.in', transformPerspective: 520,
+  }, 0.1)
+
+  // Swap text content at the moment all letters are edge-on
+  const swapAt = 0.1 + stagger * (letters.length - 1) + exitDur
+  tl.call(() => {
+    ;[...toWord].forEach((ch, i) => { if (letters[i]) letters[i].textContent = ch })
+  }, [], swapAt)
+
+  // Letters enter: fromTo explicitly sets rotateX -90 for each element at its stagger start,
+  // preventing the race condition where tl.to reads stale rotateX: 90 from the exit phase.
+  tl.fromTo(
+    letters,
+    { rotateX: -90, transformPerspective: 520 },
+    { rotateX: 0, stagger, duration: enterDur, ease: 'back.out(1.3)', transformPerspective: 520 },
+    swapAt,
+  )
+
+  return tl
+}
+
+// ── Component ──────────────────────────────────────────────────────────────────
+
 export default function Hero({ scrollTo }: HeroProps) {
-  const sectionRef = useRef<HTMLElement>(null)
+  const { t } = useT()
+  const sectionRef   = useRef<HTMLElement>(null)
+  const accentRef    = useRef<HTMLSpanElement>(null)
+  const lettersRef   = useRef<HTMLSpanElement[]>([])
+  const barRef       = useRef<HTMLDivElement | null>(null)
+  const flipToutRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // 'LEARNING' | 'CREATIVE' — tracks which word is visible so scroll callbacks
+  // can guard against double-flipping.
+  const wordRef      = useRef<'LEARNING' | 'CREATIVE'>('LEARNING')
+  // Set to true once the letter spans are ready so ScrollTrigger callbacks
+  // don't fire before the entrance animation has finished.
+  const flipReadyRef = useRef(false)
 
   useGSAP(() => {
     // ── Entrance ─────────────────────────────────────────────────────────
@@ -30,6 +123,9 @@ export default function Hero({ scrollTo }: HeroProps) {
 
     tl.to(`.${styles.overline}`, { opacity: 1, y: 0, duration: 0.6 })
 
+    // Animate the 3 headline lines directly — no SplitText needed.
+    // headlineAccent (LEARNING), headlineLine2 (OUTSIDE), headlineOutline (THE BOX)
+    // are each inline-block spans so GSAP can apply y/rotateX per element.
     tl.set(`.${styles.headline}`, { opacity: 1 }, '<')
     tl.from(
       ['.hero-word-0', '.hero-word-1'],
@@ -41,8 +137,8 @@ export default function Hero({ scrollTo }: HeroProps) {
     tl.to(`.${styles.ctas}`,       { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
     tl.to(`.${styles.statsRow}`,   { opacity: 1, duration: 0.8 },        '-=0.2')
     tl.to(`.${styles.scrollHint}`, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+    tl.to(`.${styles.flipWord}`,   { opacity: 1, duration: 1.4 },        '-=0.3')
 
-    // Stat counters
     tl.add(() => {
       const els = Array.from(
         sectionRef.current!.querySelectorAll<HTMLElement>(`.${styles.statNum}`)
@@ -57,24 +153,59 @@ export default function Hero({ scrollTo }: HeroProps) {
       })
     }, '-=0.6')
 
-    // ── Sticky zoom-out exit ──────────────────────────────────────────────
-    // section is 200vh tall; sticky inner stays pinned at top:0.
-    // ScrollTrigger scrubs through that 200vh window.
+    // ── Flip setup — runs after entrance finishes ─────────────────────────
+    // Decoupled from SplitText: we revert the split first, then build our
+    // own letter spans.  Using eventCallback('onComplete') is the most
+    // reliable hook because it fires after EVERY tween in the timeline has
+    // finished, regardless of where prior tl.add() calls placed their cursor.
+    tl.eventCallback('onComplete', () => {
+      if (!accentRef.current) return
+      // accentRef always contains plain "LEARNING" text — React owns it,
+      // no SplitText manipulation needed before building letter spans.
+      lettersRef.current = buildLetterSpans(accentRef.current, 'LEARNING')
+      barRef.current     = createBar(accentRef.current)
+      wordRef.current    = 'LEARNING'
+      flipReadyRef.current = true
+
+      // First flip: LEARNING → CREATIVE after 3 s
+      flipToutRef.current = setTimeout(() => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        sweepFlip(lettersRef.current, 'CREATIVE', barRef.current, 'ltr', () => {
+          wordRef.current = 'CREATIVE'
+        })
+      }, 3000)
+    })
+
+    // ── Scroll flip ───────────────────────────────────────────────────────
+    // When the user scrolls ~20 % into the hero, CREATIVE flips back to
+    // LEARNING.  If they scroll back to the top, it flips to CREATIVE again.
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top+=20% top',
+      onEnter: () => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        if (flipToutRef.current) { clearTimeout(flipToutRef.current); flipToutRef.current = null }
+        if (wordRef.current === 'CREATIVE') {
+          sweepFlip(lettersRef.current, 'LEARNING', barRef.current, 'rtl', () => { wordRef.current = 'LEARNING' })
+        }
+      },
+      onLeaveBack: () => {
+        if (!flipReadyRef.current || !lettersRef.current.length || !barRef.current) return
+        if (wordRef.current === 'LEARNING') {
+          sweepFlip(lettersRef.current, 'CREATIVE', barRef.current, 'ltr', () => { wordRef.current = 'CREATIVE' })
+        }
+      },
+    })
+
+    // ── Scroll exit ───────────────────────────────────────────────────────
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
       end: 'bottom bottom',
       scrub: 1.4,
       animation: gsap.timeline()
-        // video pulls back (zoom out)
-        .to(`.${styles.heroBgMedia}`, {
-          scale: 0.86, opacity: 0.18, ease: 'none',
-        }, 0)
-        // orb glows fade
-        .to([`.${styles.orbOrange}`, `.${styles.orbSpicy}`, `.${styles.orbBlue}`], {
-          opacity: 0, ease: 'none',
-        }, 0)
-        // scroll hint disappears first
+        .to(`.${styles.heroBgMedia}`, { scale: 0.86, opacity: 0.18, ease: 'none' }, 0)
+        .to([`.${styles.orbOrange}`, `.${styles.orbSpicy}`, `.${styles.orbBlue}`], { opacity: 0, ease: 'none' }, 0)
         .to(`.${styles.scrollHint}`, { opacity: 0, ease: 'none' }, 0)
         // typewriter effect smoothly transiting text
         .to('.hero-word-0', { color: 'var(--orange)', duration: 0.15 }, 0.1)
@@ -92,9 +223,12 @@ export default function Hero({ scrollTo }: HeroProps) {
         .to(`.${styles.statsRow}`,   { opacity: 0, y: -24, ease: 'none' }, 0.95),
     })
 
+    return () => {
+      if (flipToutRef.current) clearTimeout(flipToutRef.current)
+      flipReadyRef.current = false
+    }
   }, { scope: sectionRef })
 
-  // Magnetic CTA
   const onMagMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - r.left - r.width / 2) * 0.3
@@ -107,7 +241,6 @@ export default function Hero({ scrollTo }: HeroProps) {
 
   return (
     <section ref={sectionRef} className={styles.section} aria-label="Hero">
-      {/* sticky viewport — 100vh, pinned while outer section scrolls 200vh */}
       <div className={styles.sticky}>
 
         <div className={styles.bg} aria-hidden="true">
@@ -121,7 +254,7 @@ export default function Hero({ scrollTo }: HeroProps) {
         <div className={styles.inner}>
           <p className={styles.overline}>
             <span className={styles.overlineDot}>●</span>
-            Digital Learning Solutions
+            {t('hero.overline')}
           </p>
 
           <h1 className={styles.headline}>
@@ -130,10 +263,7 @@ export default function Hero({ scrollTo }: HeroProps) {
             <br /><span className={`hero-word-2 ${styles.headlineOutline}`} style={{ minHeight: '1em', display: 'inline-block' }}></span>
           </h1>
 
-          <p className={styles.sub}>
-            Thinking outside the box with an innovative approach
-            <br />to deliver the right training, in the right way, at the right time.
-          </p>
+          <p className={styles.sub}>{t('hero.sub')}</p>
 
           <div className={styles.ctas}>
             <button
@@ -142,32 +272,34 @@ export default function Hero({ scrollTo }: HeroProps) {
               onMouseMove={onMagMove}
               onMouseLeave={onMagLeave}
             >
-              Explore Services
+              {t('hero.cta.services')}
             </button>
             <Link to="/work" className={styles.btnWork}>
-              See Our Work →
+              {t('hero.cta.work')}
             </Link>
             <button
               className={styles.btnSecondary}
               onClick={() => scrollTo('contact')}
             >
-              Download Brochure
+              {t('hero.cta.brochure')}
             </button>
           </div>
 
           <div className={styles.statsRow}>
-            {STATS.map(({ num, label }) => (
-              <div key={num} className={styles.stat}>
+            {STATS.map(({ key, num, labelKey }) => (
+              <div key={key} className={styles.stat}>
                 <div className={styles.statNum}>{num}</div>
-                <div className={styles.statLabel}>{label}</div>
+                <div className={styles.statLabel}>{t(labelKey)}</div>
               </div>
             ))}
           </div>
         </div>
 
+        <div className={styles.flipWord} aria-hidden="true">TORINO</div>
+
         <div className={styles.scrollHint} aria-hidden="true">
           <div className={styles.scrollLine} />
-          <span className={styles.scrollText}>scroll</span>
+          <span className={styles.scrollText}>{t('hero.scroll')}</span>
         </div>
 
       </div>
