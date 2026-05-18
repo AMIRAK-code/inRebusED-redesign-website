@@ -2,7 +2,7 @@
   min-height: 100vh;
   background: #0A1628;
   color: #F7F7F7;
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Avenir Next', system-ui, sans-serif;
 }
 
 .toolbar {
@@ -19,7 +19,7 @@
 }
 
 .toolbarBrand {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Avenir Next', system-ui, sans-serif;
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
@@ -39,7 +39,7 @@
 }
 
 .mappedCount {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Avenir Next', system-ui, sans-serif;
   font-size: 13px;
   color: rgba(247, 247, 247, 0.6);
   white-space: nowrap;
@@ -132,7 +132,7 @@
 }
 
 .filename {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Avenir Next', system-ui, sans-serif;
   font-size: 12px;
   color: rgba(247, 247, 247, 0.45);
 }
@@ -166,7 +166,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
   color: #F7F7F7;
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Avenir Next', system-ui, sans-serif;
   font-size: 13px;
   padding: 7px 10px;
   outline: none;

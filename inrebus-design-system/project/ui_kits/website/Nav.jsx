@@ -1,4 +1,4 @@
-// Nav.jsx — inRebus Educational Navigation
+// Nav.jsx — inRebus Digital Learning Navigation
 window.Nav = function Nav({ currentSection, onNavigate }) {
   const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -23,7 +23,7 @@ window.Nav = function Nav({ currentSection, onNavigate }) {
     <nav style={{...s.nav, ...(scrolled ? s.navScrolled : {})}}>
       <div style={s.logo}>
         <span style={s.logoIn}>in</span>Rebus
-        <span style={s.logoSub}> educational</span>
+        <span style={s.logoSub}> digital learning</span>
       </div>
       <div style={s.links}>
         {links.map(l => (

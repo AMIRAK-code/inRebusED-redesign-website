@@ -31,35 +31,20 @@
 
 /* ── Logo ──────────────────────────────────────── */
 .logo {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  color: var(--white);
   background: none;
   border: none;
   padding: 0;
   display: flex;
-  align-items: baseline;
-  gap: 0;
+  align-items: center;
   flex-shrink: 0;
-  line-height: 1;
   text-decoration: none;
   cursor: pointer;
 }
 
-.logoIn { color: var(--orange); }
-
-.logoSub {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: none;
-  color: var(--mid-grey);
-  margin-left: 6px;
-  align-self: center;
+.logoImg {
+  height: 44px;
+  width: auto;
+  display: block;
 }
 
 /* ── Desktop links ─────────────────────────────── */

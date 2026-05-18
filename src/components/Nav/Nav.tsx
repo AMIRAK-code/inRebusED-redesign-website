@@ -71,10 +71,11 @@ export default function Nav({ activeSection = '', scrollTo = () => {}, minimal =
   }
 
   const logoContent = (
-    <>
-      <span className={styles.logoIn}>in</span>Rebus
-      <span className={styles.logoSub}>educational</span>
-    </>
+    <img
+      src="/logo-light.png"
+      alt="inRebus Digital Learning"
+      className={styles.logoImg}
+    />
   )
 
   return (

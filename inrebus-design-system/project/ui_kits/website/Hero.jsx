@@ -1,4 +1,4 @@
-// Hero.jsx — inRebus Educational Hero Section
+// Hero.jsx — inRebus Digital Learning Hero Section
 window.Hero = function Hero({ onNavigate }) {
   const [visible, setVisible] = React.useState(false);
   React.useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);

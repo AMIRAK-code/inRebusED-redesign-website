@@ -2,7 +2,7 @@
 
 ## Overview
 
-**inRebus Educational** is a Turin-based (Italy) EdTech company founded in 2003, originally as a software house, that evolved to include a dedicated e-learning business line. Their tagline is **"E-Learning Outside the Box"** — which doubles as a brand philosophy: creative, unconventional, and professionally rigorous digital learning.
+**inRebus Digital Learning** is a Turin-based (Italy) EdTech company founded in 2003, originally as a software house, that evolved to include a dedicated e-learning business line. Their tagline is **"E-Learning Outside the Box"** — which doubles as a brand philosophy: creative, unconventional, and professionally rigorous digital learning.
 
 **Source:** Website scraped from https://www.inrebus.education/ (April 2026). No Figma link or codebase was provided — this design system is built from the live website content, brand copy analysis, and the editorial redesign brief supplied by the client.
 
