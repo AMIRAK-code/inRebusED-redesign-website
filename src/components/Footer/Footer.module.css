@@ -111,30 +111,18 @@
 }
 
 .logo {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--white);
   background: none;
   border: none;
   padding: 0;
   display: flex;
-  align-items: baseline;
-  gap: 0;
-  line-height: 1;
+  align-items: center;
+  cursor: pointer;
 }
 
-.logoIn { color: var(--orange); }
-
-.logoSub {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: none;
-  color: var(--mid-grey);
-  margin-left: 5px;
+.logoImg {
+  height: 60px;
+  width: auto;
+  display: block;
 }
 
 .address {

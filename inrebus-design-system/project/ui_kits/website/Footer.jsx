@@ -22,7 +22,7 @@ window.Footer = function Footer({ onNavigate }) {
         <div style={s.bottomInner}>
           <div style={s.logo}>
             <span style={s.logoIn}>in</span>Rebus
-            <span style={s.logoSub}> educational</span>
+            <span style={s.logoSub}> digital learning</span>
           </div>
           <div style={s.info}>
             <div style={s.infoLine}>Corso Vinzaglio 23, 10121 — Torino, Italy</div>

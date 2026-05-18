@@ -1,6 +1,6 @@
 # inRebus Website UI Kit
 
-A high-fidelity React component kit for the inRebus Educational marketing website, built to the modern editorial redesign brief.
+A high-fidelity React component kit for the inRebus Digital Learning marketing website, built to the modern editorial redesign brief.
 
 ## Design Width
 1440px desktop. Sections use `max-width: 1280px` containers with `48px` side padding.
