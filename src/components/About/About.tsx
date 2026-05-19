@@ -1,31 +1,33 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '../../lib/gsap'
+import { useT } from '../../i18n/LangContext'
 import styles from './About.module.css'
 
 interface AboutProps {
   scrollTo: (id: string) => void
 }
 
-const TIMELINE = [
-  { year: '2003', text: 'inRebus Technologies is founded in Turin as an IT software house and consulting firm.' },
-  { year: '2013', text: 'Founded inRebus Digital Learning as a dedicated business unit specialising in digital learning.' },
-  { year: '2020', text: 'inRebus joins Gruppo FOS S.p.A., an innovative technology consulting and research group.' },
-  { year: 'Today', text: 'A strategic business unit of Gruppo FOS S.p.A. / AUDENSIEL.' },
+const TIMELINE_KEYS = [
+  { year: '2003',  textKey: 'about.timeline.2003'  },
+  { year: '2013',  textKey: 'about.timeline.2013'  },
+  { year: '2020',  textKey: 'about.timeline.2020'  },
+  { year: 'Today', textKey: 'about.timeline.today' },
 ]
 
-const TEAM = [
-  { label: 'Project Manager',                color: '#F58220' },
-  { label: 'Instructional Designer',         color: '#E8451A' },
-  { label: 'Multimedia Designer',            color: '#0A1628' },
-  { label: 'Graphic & UX Designer',          color: '#202020' },
-  { label: 'Story & Copy Writer',            color: '#F58220' },
-  { label: 'Audio-Video Producer',           color: '#E8451A' },
-  { label: 'eLearning Developer',            color: '#0A1628' },
-  { label: 'Trainer',                        color: '#202020' },
+const TEAM_KEYS = [
+  { labelKey: 'about.team.pm',      color: '#F58220' },
+  { labelKey: 'about.team.id',      color: '#E8451A' },
+  { labelKey: 'about.team.mm',      color: '#0A1628' },
+  { labelKey: 'about.team.ux',      color: '#202020' },
+  { labelKey: 'about.team.copy',    color: '#F58220' },
+  { labelKey: 'about.team.av',      color: '#E8451A' },
+  { labelKey: 'about.team.dev',     color: '#0A1628' },
+  { labelKey: 'about.team.trainer', color: '#202020' },
 ]
 
 export default function About({ scrollTo }: AboutProps) {
+  const { t } = useT()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -41,12 +43,10 @@ export default function About({ scrollTo }: AboutProps) {
       opacity: 0, y: 24, stagger: 0.1, duration: 0.7, ease: 'expo', delay: 0.18,
       scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', once: true },
     })
-
     gsap.from(`.${styles.timelineItem}`, {
       opacity: 0, x: -24, stagger: 0.1, duration: 0.7, ease: 'expo',
       scrollTrigger: { trigger: `.${styles.timeline}`, start: 'top 85%', once: true },
     })
-
     gsap.from(`.${styles.teamCard}`, {
       opacity: 0, y: 36, scale: 0.96,
       stagger: 0.06, duration: 0.7, ease: 'expo',
@@ -57,49 +57,39 @@ export default function About({ scrollTo }: AboutProps) {
   return (
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
-        {/* Left — text + timeline */}
         <div className={styles.left}>
-          <span className={styles.label}>inSide — Who We Are</span>
+          <span className={styles.label}>{t('about.label')}</span>
           <h2 className={styles.title}>
-            Innovation<br />
-            <span className={styles.titleAccent}>Since 2003</span>
+            {t('about.title')}<br />
+            <span className={styles.titleAccent}>{t('about.title.accent')}</span>
           </h2>
-          <p className={styles.bodyText}>
-            inRebus Digital Learning is a strategic business unit of Gruppo FOS S.p.A. / AUDENSIEL,
-            with two decades of experience in designing and producing learning experiences that are
-            tailored, effective and engaging.
-          </p>
+          <p className={styles.bodyText}>{t('about.body')}</p>
 
           <ol className={styles.timeline}>
-            {TIMELINE.map(({ year, text }) => (
+            {TIMELINE_KEYS.map(({ year, textKey }) => (
               <li key={year} className={styles.timelineItem}>
                 <span className={styles.timelineYear}>{year}</span>
-                <span className={styles.timelineText}>{text}</span>
+                <span className={styles.timelineText}>{t(textKey)}</span>
               </li>
             ))}
           </ol>
 
           <button className={styles.btn} onClick={() => scrollTo('contact')}>
-            Download Brochure →
+            {t('about.btn')}
           </button>
         </div>
 
-        {/* Right — team grid */}
         <div className={styles.right}>
           <h3 className={styles.subTitle}>
-            A Team Of Expert Professionals<br />
-            <span className={styles.titleAccent}>Dedicated To Every Project</span>
+            {t('about.subtitle')}<br />
+            <span className={styles.titleAccent}>{t('about.subtitle.accent')}</span>
           </h3>
-          <p className={styles.bodyText}>
-            Every project is tailored and managed by a dedicated team capable of creating
-            innovative experiences and content always in line with the client's culture,
-            organisational model and business.
-          </p>
+          <p className={styles.bodyText}>{t('about.team.body')}</p>
           <div className={styles.teamGrid}>
-            {TEAM.map(({ label, color }) => (
-              <div key={label} className={styles.teamCard}>
+            {TEAM_KEYS.map(({ labelKey, color }) => (
+              <div key={labelKey} className={styles.teamCard}>
                 <div className={styles.teamBar} style={{ background: color }} />
-                <div className={styles.teamLabel}>{label}</div>
+                <div className={styles.teamLabel}>{t(labelKey)}</div>
               </div>
             ))}
           </div>
