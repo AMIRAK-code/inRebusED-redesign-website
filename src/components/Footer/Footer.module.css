@@ -76,6 +76,7 @@
   border: none;
   padding: 12px 28px;
   border-radius: var(--r-sm);
+  cursor: pointer;
   transition: background var(--dur-base), box-shadow var(--dur-base);
   will-change: transform;
 }
@@ -94,6 +95,95 @@
 }
 .ctaEmail:hover { color: var(--light-grey); }
 
+/* ── Find Us strip ───────────────────────────── */
+.findUs {
+  background: var(--off-white);
+  padding: 80px 48px;
+}
+
+.findUsInner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.findUsLabel {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 40px;
+}
+
+.findUsCols {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.findUsAddress {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.findUsRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: var(--leading-normal);
+}
+
+.findUsRow p { margin: 0; }
+
+.findUsIcon {
+  flex-shrink: 0;
+  color: var(--orange);
+  margin-top: 2px;
+}
+
+.findUsLink {
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: color var(--dur-base);
+}
+.findUsLink:hover { color: var(--orange); }
+
+.findUsDirections {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--orange);
+  text-decoration: none;
+  margin-top: 4px;
+  transition: gap var(--dur-base);
+}
+.findUsDirections:hover { gap: 10px; }
+
+.findUsMapWrap {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  height: 400px;
+  border: 1px solid var(--light-border);
+}
+
+.officeMap {
+  width: 100%;
+  height: 100%;
+}
+
 /* ── Footer bottom ───────────────────────────── */
 .bottom {
   padding: 48px;
@@ -103,11 +193,19 @@
 
 .bottomGrid {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr 1.4fr 1fr;
+  grid-template-columns: 2fr 1fr 1.2fr 1.2fr auto;
   gap: 32px;
   padding-bottom: 32px;
   border-bottom: 1px solid var(--border-dark);
   margin-bottom: 24px;
+  align-items: start;
+}
+
+/* ── Brand + partners ────────────────────────── */
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .logo {
@@ -125,6 +223,54 @@
   display: block;
 }
 
+/* ── Partners lockup ─────────────────────────── */
+.partners {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.partnersLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.partnerLogos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.partnerImg {
+  height: 22px;
+  width: auto;
+  opacity: 0.55;
+  filter: brightness(0) invert(1);
+  transition: opacity var(--dur-base);
+}
+
+.partnerImg:hover { opacity: 0.85; }
+
+.partnerFallback {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+}
+
+.partnerSep {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Address ─────────────────────────────────── */
 .address {
   font-family: var(--font-body);
   font-size: 12px;
@@ -140,6 +286,7 @@
 }
 .address a:hover { color: var(--light-grey); }
 
+/* ── Nav links ───────────────────────────────── */
 .columnTitle {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -172,11 +319,73 @@
 }
 .footLink:hover { color: var(--light-grey); }
 
+/* ── Newsletter ──────────────────────────────── */
+.newsletterCol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nlForm {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.nlInput {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  padding: 9px 12px;
+  outline: none;
+  min-width: 0;
+}
+
+.nlInput::placeholder { color: rgba(255, 255, 255, 0.22); }
+
+.nlBtn {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: var(--orange);
+  border: none;
+  padding: 9px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-base);
+  flex-shrink: 0;
+}
+.nlBtn:hover { background: var(--orange-light); }
+.nlBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.nlSuccess {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--orange);
+  margin: 0;
+}
+
+.nlError {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--spicy-light);
+  margin: 0;
+}
+
+/* ── Legal row ───────────────────────────────── */
 .copyBlock {
   font-family: var(--font-body);
   font-size: 11px;
   color: #333;
   line-height: 1.8;
+  white-space: nowrap;
 }
 
 .legal {
@@ -200,17 +409,22 @@
 .legalDot { color: #333; font-size: 11px; }
 
 /* ── Responsive ──────────────────────────────── */
-@media (max-width: 960px) {
-  .bottomGrid { grid-template-columns: 1fr 1fr; }
+@media (max-width: 1280px) {
+  .bottomGrid { grid-template-columns: 1.5fr 1fr 1.1fr 1.1fr; }
+  .copyBlock  { grid-column: 1 / -1; }
 }
 
-@media (max-width: 1200px) and (min-width: 961px) {
-  .bottomGrid { grid-template-columns: 2fr 1.5fr 1fr 1.4fr 1fr; }
+@media (max-width: 960px) {
+  .bottomGrid    { grid-template-columns: 1fr 1fr; }
+  .findUsCols    { grid-template-columns: 1fr; gap: 40px; }
+  .findUsMapWrap { height: 340px; }
 }
 
 @media (max-width: 768px) {
-  .ctaBanner { padding: 64px 24px; }
-  .bottom    { padding: 40px 24px; }
-  .bottomGrid { grid-template-columns: 1fr; gap: 24px; }
-  .ctaActions { flex-direction: column; align-items: flex-start; }
+  .ctaBanner     { padding: 64px 24px; }
+  .findUs        { padding: 60px 24px; }
+  .bottom        { padding: 40px 24px; }
+  .bottomGrid    { grid-template-columns: 1fr; gap: 24px; }
+  .ctaActions    { flex-direction: column; align-items: flex-start; }
+  .findUsMapWrap { height: 280px; }
 }
