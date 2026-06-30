@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--navy);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 600ms ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.25; transform: scale(0.75); }
+  to   { opacity: 1;    transform: scale(1);    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+    opacity: 0.6;
+    transform: none;
+  }
+}

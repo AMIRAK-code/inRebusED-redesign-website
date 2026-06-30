@@ -1,0 +1,97 @@
+/* ── Section: total scroll height ───────────────────────────────────── */
+.section {
+  height: calc((var(--card-count) + 1) * 100vh);
+  position: relative;
+}
+
+/* ── Sticky viewport ─────────────────────────────────────────────────── */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+/* ── Film-grain overlay (SVG fractal noise) ──────────────────────────── */
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.038;
+  pointer-events: none;
+  z-index: 60;
+}
+
+/* ── Title screen (sits at z-index 0, behind all cards) ──────────────── */
+.titleScreen {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(24px, 14vw, 200px);
+}
+
+.titleLabel {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 20px;
+}
+
+.titleHeading {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 8.5vw, 120px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 24px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.titleSub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mid-grey);
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 28px;
+}
+
+.viewAllLink {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  text-decoration: none;
+  border: 1px solid rgba(245, 130, 32, 0.35);
+  padding: 9px 18px;
+  border-radius: var(--r-full);
+  margin-bottom: 28px;
+  transition: background var(--dur-base), border-color var(--dur-base);
+}
+.viewAllLink:hover {
+  background: rgba(245, 130, 32, 0.1);
+  border-color: rgba(245, 130, 32, 0.6);
+}
+
+.titleArrow {
+  color: var(--orange);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}

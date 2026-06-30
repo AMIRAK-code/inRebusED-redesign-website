@@ -1,0 +1,53 @@
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--light-grey);
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: border-color var(--dur-base), background var(--dur-base), color var(--dur-base);
+}
+
+.radioLabel:hover {
+  border-color: rgba(245, 130, 32, 0.3);
+  color: var(--white);
+}
+
+.radioLabelActive {
+  border-color: var(--orange);
+  background: rgba(245, 130, 32, 0.08);
+  color: var(--white);
+}
+
+.radioLabelActive .radioDot { background: var(--orange); }
+
+.radioDot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: background var(--dur-base), border-color var(--dur-base);
+  position: relative;
+}
+
+.radioLabelActive .radioDot {
+  border-color: var(--orange);
+}

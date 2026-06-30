@@ -1,0 +1,30 @@
+.partners {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.partnersLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.partnerLogos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fosLogo {
+  height: 30px;
+  width: auto;
+  opacity: 0.9;
+  transition: opacity var(--dur-base);
+}
+
+.fosLogo:hover { opacity: 1; }

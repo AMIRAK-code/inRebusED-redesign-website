@@ -1,0 +1,94 @@
+/* ================================================================
+   inRebus — Brand Font: Avenir Next
+   Self-hosted from public/fonts/avenir-next/
+   ================================================================ */
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-UltraLight-11.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-UltraLightItalic-12.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-Regular-08.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-Italic-05.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-Medium-06.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-MediumItalic-07.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-DemiBold-03.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-DemiBoldItalic-04.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-Bold-01.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-BoldItalic-02.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-Heavy-09.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/avenir-next/AvenirNext-HeavyItalic-10.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}

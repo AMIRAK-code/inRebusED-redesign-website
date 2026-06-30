@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 60" fill="none" role="img" aria-label="inRebus Digital Learning">
+  <!-- Orange square with "in" -->
+  <rect x="0" y="0" width="60" height="60" fill="#F58220"/>
+  <text x="30" y="44" text-anchor="middle"
+        font-family="'Roboto Slab','Rockwell',Georgia,'Times New Roman',serif"
+        font-weight="700" font-size="34" fill="#FFFFFF">in</text>
+  <!-- Wordmark -->
+  <text x="70" y="44"
+        font-family="'Roboto Slab','Rockwell',Georgia,'Times New Roman',serif"
+        font-weight="700" font-size="34" fill="#FFFFFF">Rebus</text>
+  <!-- Tagline -->
+  <text x="0" y="58"
+        font-family="'Roboto Slab','Rockwell',Georgia,'Times New Roman',serif"
+        font-weight="400" font-size="7.2" letter-spacing="1.5" fill="#FFFFFF">DIGITAL LEARNING</text>
+</svg>

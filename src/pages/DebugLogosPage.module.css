@@ -1,0 +1,234 @@
+.page {
+  min-height: 100vh;
+  background: #0A1628;
+  color: #F7F7F7;
+  font-family: 'Lexend', sans-serif;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toolbarBrand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #F58220;
+  white-space: nowrap;
+}
+
+.toolbarTitle {
+  font-size: 14px;
+  color: rgba(247, 247, 247, 0.5);
+  white-space: nowrap;
+}
+
+.toolbarSpacer {
+  flex: 1;
+}
+
+.mappedCount {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: rgba(247, 247, 247, 0.6);
+  white-space: nowrap;
+}
+
+.mappedCountNum {
+  color: #F58220;
+  font-weight: 700;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.btnCopy {
+  background: rgba(255, 255, 255, 0.1);
+  color: #F7F7F7;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btnCopy:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.btnApply {
+  background: #F58220;
+  color: #0A1628;
+}
+
+.btnApply:hover:not(:disabled) {
+  background: #e07218;
+}
+
+.btnApply:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #F58220;
+  color: #0A1628;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 9999;
+  animation: fadeInUp 0.2s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 24px;
+}
+
+.tile {
+  background: #202020;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  transition: border-color 0.15s;
+}
+
+.tile:hover {
+  border-color: #F58220;
+}
+
+.tileSkipped {
+  opacity: 0.5;
+}
+
+.filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(247, 247, 247, 0.45);
+}
+
+.imgWrap {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140px;
+  overflow: hidden;
+}
+
+.imgWrap img {
+  max-height: 104px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.inputRow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nameInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #F7F7F7;
+  font-family: 'Lexend', sans-serif;
+  font-size: 13px;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.nameInput:focus {
+  border-color: #F58220;
+}
+
+.nameInput::placeholder {
+  color: rgba(247, 247, 247, 0.3);
+}
+
+.skipBtn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  color: rgba(247, 247, 247, 0.45);
+  font-size: 13px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.skipBtn:hover {
+  border-color: #F58220;
+  color: #F58220;
+}
+
+.skipLabel {
+  font-size: 13px;
+  color: rgba(247, 247, 247, 0.4);
+  font-style: italic;
+}
+
+.check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background: #F58220;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #0A1628;
+  font-weight: 700;
+}
+
+.prodBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 18px;
+  color: rgba(247, 247, 247, 0.5);
+}

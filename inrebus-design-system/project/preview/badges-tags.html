@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#F7F7F7;padding:20px;font-family:'Lexend',sans-serif}
+  .label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6B7480;margin-bottom:8px;margin-top:12px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+  .badge{display:inline-flex;align-items:center;font-weight:600;letter-spacing:0.04em}
+  /* solid */
+  .b-violet{background:#F58220;color:#fff;padding:3px 10px;border-radius:2px;font-size:10px}
+  .b-spicy{background:#E8451A;color:#fff;padding:3px 10px;border-radius:2px;font-size:10px}
+  .b-navy{background:#0A1628;color:#fff;padding:3px 10px;border-radius:2px;font-size:10px}
+  /* outline */
+  .b-out-v{background:transparent;color:#F58220;padding:3px 10px;border-radius:2px;font-size:10px;border:1.5px solid #F58220}
+  .b-out-s{background:transparent;color:#E8451A;padding:3px 10px;border-radius:2px;font-size:10px;border:1.5px solid #E8451A}
+  /* muted */
+  .b-muted-v{background:rgba(245,130,32,0.12);color:#F58220;padding:3px 10px;border-radius:4px;font-size:10px}
+  .b-muted-s{background:rgba(232,69,26,0.12);color:#E8451A;padding:3px 10px;border-radius:4px;font-size:10px}
+  .b-muted-n{background:rgba(10,22,40,0.08);color:#202020;padding:3px 10px;border-radius:4px;font-size:10px}
+  /* pill tags */
+  .tag{background:#fff;border:1px solid #E5E5E5;color:#202020;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:500}
+  .tag-active{background:#0A1628;color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600}
+  /* status */
+  .dot{width:6px;height:6px;border-radius:999px;display:inline-block;margin-right:5px}
+</style></head>
+<body>
+  <div class="label">Solid Badges</div>
+  <div class="row">
+    <span class="badge b-violet">inRebus</span>
+    <span class="badge b-spicy">SPICY</span>
+    <span class="badge b-navy">LMS</span>
+    <span class="badge b-violet">Smart Video</span>
+    <span class="badge b-spicy">NEW</span>
+  </div>
+  <div class="label">Outline Badges</div>
+  <div class="row">
+    <span class="badge b-out-v">inPractice</span>
+    <span class="badge b-out-s">Outside the Box</span>
+  </div>
+  <div class="label">Muted Badges</div>
+  <div class="row">
+    <span class="badge b-muted-v">Gamification</span>
+    <span class="badge b-muted-s">SCORM 2004</span>
+    <span class="badge b-muted-n">Multilingual</span>
+    <span class="badge b-muted-v">xAPI</span>
+    <span class="badge b-muted-n">E-Learning</span>
+  </div>
+  <div class="label">Pill Tags (Filters)</div>
+  <div class="row">
+    <span class="badge tag-active">All</span>
+    <span class="badge tag">Courses</span>
+    <span class="badge tag">LMS</span>
+    <span class="badge tag">Video</span>
+    <span class="badge tag">Assessment</span>
+  </div>
+  <div class="label">Status Indicators</div>
+  <div class="row">
+    <span class="badge b-muted-v"><span class="dot" style="background:#F58220"></span>Active</span>
+    <span class="badge b-muted-s"><span class="dot" style="background:#E8451A"></span>Urgent</span>
+    <span class="badge b-muted-n"><span class="dot" style="background:#A8ADB5"></span>Draft</span>
+  </div>
+</body></html>

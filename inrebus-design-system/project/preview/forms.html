@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#F7F7F7;padding:20px;font-family:'Lexend',sans-serif}
+  .label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6B7480;margin-bottom:8px;margin-top:12px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:180px}
+  .field label{font-size:11px;font-weight:600;color:#202020;letter-spacing:0.02em}
+  .field input,.field textarea,.field select{font-family:'Lexend',sans-serif;font-size:13px;padding:9px 12px;border-radius:6px;outline:none;width:100%;transition:border-color 0.2s,box-shadow 0.2s}
+  .input-default{background:#fff;border:1.5px solid #E5E5E5;color:#0A1628}
+  .input-default::placeholder{color:#A8ADB5}
+  .input-focus{background:#fff;border:1.5px solid #F58220;color:#0A1628;box-shadow:0 0 0 3px rgba(245,130,32,0.15)}
+  .input-error{background:#fff;border:1.5px solid #E8451A;color:#0A1628}
+  .hint{font-size:10px;color:#A8ADB5;margin-top:2px}
+  .error-msg{font-size:10px;color:#E8451A;margin-top:2px}
+  .input-dark{background:#202020;border:1.5px solid rgba(255,255,255,0.1);color:#fff}
+  .input-dark::placeholder{color:#6B7480}
+  .dark-bg{background:#0A1628;padding:16px;border-radius:8px;margin-top:8px}
+  .dark-label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#333333;margin-bottom:8px}
+</style></head>
+<body>
+  <div class="label">Text Inputs</div>
+  <div class="row">
+    <div class="field">
+      <label>Company Name</label>
+      <input class="input-default" type="text" placeholder="e.g. Fiat Group S.p.A.">
+      <span class="hint">As registered with your chamber of commerce</span>
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input class="input-focus" type="email" value="info@company.it">
+    </div>
+    <div class="field">
+      <label>Training Budget</label>
+      <input class="input-error" type="text" value="abc">
+      <span class="error-msg">Please enter a valid number</span>
+    </div>
+  </div>
+  <div class="label">Select & Textarea</div>
+  <div class="row">
+    <div class="field">
+      <label>Service Type</label>
+      <select class="input-default"><option>Customized Course</option><option>Ready-Made Course</option><option>LMS Solution</option></select>
+    </div>
+    <div class="field" style="flex:2">
+      <label>Project Brief</label>
+      <textarea class="input-default" rows="3" placeholder="Describe your training needs…"></textarea>
+    </div>
+  </div>
+  <div class="dark-bg">
+    <div class="dark-label">Dark Surface</div>
+    <div class="row">
+      <div class="field">
+        <label style="color:#A8ADB5;font-size:11px;font-weight:600">Full Name</label>
+        <input class="input-dark" type="text" placeholder="Marco Rossi">
+      </div>
+      <div class="field">
+        <label style="color:#A8ADB5;font-size:11px;font-weight:600">Email</label>
+        <input class="input-dark" type="email" placeholder="marco@inrebus.it">
+      </div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,289 @@
+.section {
+  background: var(--navy);
+  padding: 120px 48px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  margin-bottom: var(--section-header-gap);
+  max-width: 560px;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--white);
+  margin: 0 0 20px;
+}
+
+.titleAccent { color: var(--orange); }
+
+.desc {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* ── Pillars grid ────────────────────────────── */
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pillar {
+  position: relative;
+  isolation: isolate;
+  background: var(--charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-md);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color var(--dur-base), transform var(--dur-base);
+}
+
+.pillar:hover {
+  border-color: color-mix(in srgb, var(--pillar-accent) 55%, transparent);
+  transform: translateY(-4px);
+}
+
+/* ── Video layer (corner at rest → fills card on hover) ─── */
+.pillarVideoWrap {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  width: 120px;
+  height: 120px;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  transition:
+    top 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-radius 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pillar:hover .pillarVideoWrap {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-md);
+}
+
+.pillarVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Always-on accent tint: gives the corner box character even before the video loads. */
+.pillarVideoTint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--pillar-accent) 30%, transparent), transparent 70%),
+    rgba(255, 255, 255, 0.02);
+}
+
+/* Dark overlay: subtle at rest (text on corner box stays bright), strong on hover so list stays legible. */
+.pillarVideoOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--charcoal) 55%, transparent) 0%,
+      color-mix(in srgb, var(--charcoal) 85%, transparent) 60%,
+      var(--charcoal) 100%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.pillar:hover .pillarVideoOverlay { opacity: 1; }
+
+/* ── Pillar content (lifted above video layer) ────────── */
+.pillarHead {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.pillarNum {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--white);
+  letter-spacing: -0.04em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.3s ease;
+}
+
+.pillar:hover .pillarNum {
+  color: var(--pillar-accent);
+}
+
+.pillarHeadText {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.pillarTag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--spicy);
+  margin-bottom: 8px;
+}
+
+.pillarTitle {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.05;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.0);
+  transition: text-shadow 0.3s ease;
+}
+
+.pillar:hover .pillarTitle {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+.pillarIntro {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--mid-grey);
+  line-height: 1.6;
+  margin: 0 0 24px;
+  transition: color 0.3s ease;
+}
+
+.pillar:hover .pillarIntro { color: var(--white); }
+
+.pillarList {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 20px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.pillar:hover .pillarList {
+  border-color: color-mix(in srgb, var(--pillar-accent) 40%, transparent);
+}
+
+.pillarItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.pillarItemDot {
+  color: var(--pillar-accent, var(--orange));
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.pillarItemName {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.pillarItemDesc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  line-height: 1.45;
+  margin-top: 2px;
+  transition: color 0.3s ease;
+}
+
+.pillar:hover .pillarItemDesc { color: rgba(255, 255, 255, 0.85); }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .pillarsGrid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 80px 24px; }
+  .pillar { padding: 28px 24px; }
+  .pillarNum { width: 88px; height: 88px; font-size: 44px; }
+  .pillarVideoWrap {
+    top: 20px;
+    left: 20px;
+    width: 88px;
+    height: 88px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillarVideoWrap,
+  .pillarVideoOverlay,
+  .pillarNum,
+  .pillarTitle,
+  .pillarIntro,
+  .pillarItemDesc,
+  .pillarList {
+    transition: none;
+  }
+  .pillarVideo { display: none; }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /debug/
+Sitemap: https://www.inrebus.education/sitemap.xml

@@ -1,0 +1,38 @@
+.wrap {
+  position: relative;
+  overflow: hidden;
+  /* Caller controls sizing via width/height or className */
+}
+
+/* Blurred LQIP overlay — fades out once the real image loads */
+.blur {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 200ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.blurHidden {
+  opacity: 0;
+}
+
+/* The actual <img> */
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fade-in from transparent — only applied when a placeholder is provided */
+.imgFade {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.imgLoaded {
+  opacity: 1;
+}

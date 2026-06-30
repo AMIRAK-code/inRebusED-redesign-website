@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Lexend:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0A1628;padding:20px;font-family:'Lexend',sans-serif}
+  .label{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#333333;margin-bottom:10px}
+  .row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Lexend',sans-serif;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.02em}
+  .btn-primary{background:#F58220;color:#fff;padding:10px 22px;border-radius:6px}
+  .btn-primary:hover{background:#FFA04D}
+  .btn-secondary{background:transparent;color:#fff;padding:10px 22px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.2)}
+  .btn-ghost{background:transparent;color:#A8ADB5;padding:10px 22px;border-radius:6px}
+  .btn-spicy{background:#E8451A;color:#fff;padding:10px 22px;border-radius:6px}
+  .btn-pill{background:#F58220;color:#fff;padding:10px 24px;border-radius:999px}
+  .btn-sm{padding:6px 14px;font-size:11px;border-radius:5px}
+  .btn-lg{padding:14px 32px;font-size:15px;border-radius:8px}
+  .btn-icon{padding:10px;border-radius:6px;background:#202020;color:#A8ADB5;border:1px solid rgba(255,255,255,0.08)}
+  .disabled{opacity:0.38;pointer-events:none}
+</style></head>
+<body>
+  <div class="label">Primary</div>
+  <div class="row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Get Started</button>
+    <button class="btn btn-primary btn-lg">Book a Demo</button>
+  </div>
+  <div class="label">Secondary & Ghost</div>
+  <div class="row">
+    <button class="btn btn-secondary">Learn More</button>
+    <button class="btn btn-ghost">Explore Services</button>
+    <button class="btn btn-spicy">SPICY — New</button>
+  </div>
+  <div class="label">Pill &amp; Special</div>
+  <div class="row">
+    <button class="btn btn-pill">Download Brochure</button>
+    <button class="btn btn-primary disabled">Disabled</button>
+    <button class="btn btn-icon" title="icon">▶</button>
+  </div>
+</body></html>

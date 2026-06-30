@@ -1,0 +1,413 @@
+/* Hero is a 400vh block with a sticky 100vh inner — ScrollTrigger
+   scrubs the headline text-flip ("CREATIVE / LEARNING" → "LEARNING /
+   OUTSIDE / THE BOX") across three viewports of scroll. */
+.section {
+  position: relative;
+  min-height: 400vh;
+  background: var(--navy);
+  /* No overflow clip here — would break the sticky inner.
+     .sticky carries its own overflow:hidden to contain the orbs. */
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  /* Fluid inline padding avoids the crush around 800–900px viewports.
+     Top padding kept tight so the stats row stays in the visible 100vh
+     even on laptop-height viewports (~720–900px). */
+  padding: calc(var(--nav-h) + 4vh) clamp(24px, 4vw, 48px) clamp(72px, 9vh, 120px);
+}
+
+/* ── Background ──────────────────────────────── */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Video / GIF background ──────────────────── */
+.heroBgMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Shared styles for both <video> and <img> */
+.heroBgAsset {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * The <img> (GIF) is hidden while the <video> plays.
+ * If the video fails to load its onError handler hides it,
+ * which lets the stacked <img> show through instead.
+ *
+ * CSS trick: video + img — hide img by default; if video is hidden
+ * (display:none set by onError) the img becomes visible automatically
+ * because it's absolutely positioned below it.
+ */
+.heroBgGif {
+  /* sits behind the video layer — visible only when video is gone */
+  z-index: -1;
+}
+
+/* Dark gradient scrim — keeps text readable over any background */
+.heroBgScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgba(10, 22, 40, 0.82) 0%,
+      rgba(10, 22, 40, 0.55) 50%,
+      rgba(10, 22, 40, 0.30) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 22, 40, 0.40) 0%,
+      rgba(10, 22, 40, 0.10) 40%,
+      rgba(10, 22, 40, 0.55) 100%
+    );
+}
+
+/* ── Aurora drift keyframes ──────────────────── */
+@keyframes auroraDrift1 {
+  0%   { transform: translate(0%,   0%)  scale(1);    }
+  25%  { transform: translate(-4%,  7%)  scale(1.09); }
+  55%  { transform: translate(-7%,  2%)  scale(1.04); }
+  80%  { transform: translate(-2%,  9%)  scale(0.96); }
+  100% { transform: translate(0%,   0%)  scale(1);    }
+}
+
+@keyframes auroraDrift2 {
+  0%   { transform: translate(0%,  0%)   scale(1);    }
+  30%  { transform: translate(7%, -9%)   scale(1.11); }
+  65%  { transform: translate(-5%, 4%)   scale(0.94); }
+  100% { transform: translate(0%,  0%)   scale(1);    }
+}
+
+@keyframes auroraDrift3 {
+  0%   { transform: translate(0%,  0%)   scale(1);    }
+  40%  { transform: translate(-9%,-6%)   scale(1.07); }
+  80%  { transform: translate(6%,  8%)   scale(0.97); }
+  100% { transform: translate(0%,  0%)   scale(1);    }
+}
+
+/* Parallax wrappers carry the positioning + cursor offset.
+   Inner orb retains the radial gradient and the ambient aurora drift —
+   the two transforms compose, never fight each other. */
+.orbWrap {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.orbOrangeWrap { top: -10%; right: -5%; width: 680px; height: 680px; }
+.orbSpicyWrap  { bottom: 0%; left: 25%; width: 480px; height: 480px; }
+.orbBlueWrap   { top: 35%;  left: -8%; width: 560px; height: 560px; }
+
+.orbOrange,
+.orbSpicy,
+.orbBlue {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.orbOrange {
+  background: radial-gradient(circle, rgba(245, 130, 32, 0.20) 0%, transparent 68%);
+  animation: auroraDrift1 22s ease-in-out infinite;
+}
+
+.orbSpicy {
+  background: radial-gradient(circle, rgba(232, 69, 26, 0.10) 0%, transparent 68%);
+  animation: auroraDrift2 16s ease-in-out infinite;
+}
+
+/* Third orb — cool blue depth layer */
+.orbBlue {
+  background: radial-gradient(circle, rgba(40, 100, 220, 0.07) 0%, transparent 65%);
+  animation: auroraDrift3 28s ease-in-out infinite;
+}
+
+.gridLines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  z-index: 2;
+}
+
+/* ── Content ─────────────────────────────────── */
+.inner {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  width: 100%;
+}
+
+/* Overline */
+.overline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1);   opacity: 1;   }
+  50%       { transform: scale(2.2); opacity: 0.3; }
+}
+
+.overlineDot {
+  color: var(--spicy);
+  font-size: 8px;
+  animation: dotPulse 2.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Headline */
+.headline {
+  font-family: var(--font-display);
+  /* Scales with both viewport width and height so short laptop viewports
+     (~720–800px tall) don't push the stats row past the 100vh sticky edge. */
+  font-size: clamp(56px, min(10vw, 13vh), 120px);
+  font-weight: 900;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0 0 24px;
+  opacity: 0; /* animated in */
+}
+
+/* Headline scroll-flip spans. Each word is an inline-block so GSAP can
+   apply y / rotateX / color independently. TextPlugin swaps the
+   textContent during the scroll-scrub timeline. */
+.word0 {
+  display: inline-block;
+  color: inherit; /* white initially; flips to orange on scrub */
+}
+
+.word1 {
+  display: inline-block;
+  color: var(--orange); /* orange initially; flips to inherit on scrub */
+}
+
+.headlineOutline {
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.28);
+  color: transparent;
+  display: inline-block;
+  min-height: 1em; /* reserves vertical space while empty */
+}
+
+/* Sub — fluid sizing + native 2-line balance to match the headline band.
+   max-width is capped to the headline's visual band on wide screens and
+   collapses to the container on narrow ones. */
+.sub {
+  font-family: var(--font-body);
+  font-weight: 400;
+  /* Higher floor so 1024-1280px laptops don't collapse to a single line. */
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.45;
+  word-spacing: 0.02em;
+  color: var(--mid-grey);
+  margin: 0 0 40px;
+  opacity: 0;
+  transform: translateY(20px);
+  /* Tracks the visual width of the headline word block ("LEARNING") so the
+     two lines feel hung off the same column. */
+  max-width: min(720px, 100%);
+  text-wrap: pretty;     /* fallback for engines without balance */
+  text-wrap: balance;    /* preferred — native 2-line balance */
+}
+
+/* CTAs */
+.ctas {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.btnPrimary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 14px 32px;
+  border-radius: var(--r-sm);
+  transition: background var(--dur-base), box-shadow var(--dur-base);
+  will-change: transform;
+}
+.btnPrimary:hover {
+  background: var(--orange-light);
+  box-shadow: var(--glow-orange);
+}
+.btnPrimary:active { transform: scale(0.97); }
+
+.btnWork {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  padding: 14px 32px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
+  white-space: nowrap;
+}
+.btnWork:hover {
+  background: var(--white);
+  color: var(--navy);
+  border-color: var(--white);
+}
+
+.btnSecondary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--light-grey);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  padding: 14px 32px;
+  border-radius: var(--r-sm);
+  transition: border-color var(--dur-base), color var(--dur-base);
+}
+.btnSecondary:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  color: var(--white);
+}
+
+/* Stats */
+.statsRow {
+  display: flex;
+  gap: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 24px;
+  opacity: 0;
+}
+
+.stat {}
+
+.statNum {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mid-grey);
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* Scroll hint */
+.scrollHint {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50%       { opacity: 0.4; transform: scaleY(0.6); }
+}
+
+.scrollText {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: #333;
+}
+
+/* ── Brand stamp (vertical) ──────────────────── */
+.flipWord {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.13);
+  z-index: 3;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+  opacity: 0;
+}
+
+/* ── Short viewports — hide scroll hint when it would overlap stats ── */
+@media (max-height: 960px) {
+  .scrollHint { display: none; }
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .sticky { padding: 100px 24px 80px; }
+  .headline { font-size: clamp(52px, 14vw, 80px); }
+  .sub {
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 100%;
+    text-wrap: pretty; /* balance reads odd on narrow widths */
+  }
+  .statsRow { gap: 28px; flex-wrap: wrap; }
+  .ctas { flex-wrap: wrap; }
+  .orbOrangeWrap { width: 350px; height: 350px; }
+  .orbSpicyWrap  { width: 250px; height: 250px; }
+  .flipWord  { display: none; }
+}

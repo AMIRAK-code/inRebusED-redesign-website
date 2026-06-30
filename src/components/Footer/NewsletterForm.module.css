@@ -1,0 +1,52 @@
+.nlForm {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.nlInput {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  padding: 9px 12px;
+  outline: none;
+  min-width: 0;
+}
+
+.nlInput::placeholder { color: rgba(255, 255, 255, 0.22); }
+
+.nlBtn {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: var(--orange);
+  border: none;
+  padding: 9px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-base);
+  flex-shrink: 0;
+}
+.nlBtn:hover { background: var(--orange-light); }
+.nlBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.nlSuccess {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--orange);
+  margin: 0;
+}
+
+.nlError {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--spicy-light);
+  margin: 0;
+}

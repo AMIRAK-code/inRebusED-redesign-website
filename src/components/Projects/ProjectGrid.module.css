@@ -1,0 +1,321 @@
+/* ── Left flank ──────────────────────────────────────────────────────── */
+.leftFlank {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(60px, 11vw, 148px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  pointer-events: none;
+}
+
+.counterBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.counterNum {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 900;
+  color: var(--orange);
+  letter-spacing: -0.03em;
+  display: block;
+}
+
+.counterTotal {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.06em;
+  display: block;
+  margin-top: 4px;
+}
+
+.flankLabel {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* ── Right flank ─────────────────────────────────────────────────────── */
+.rightFlank {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(60px, 11vw, 148px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pips {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pip {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.3s ease, height 0.25s ease;
+}
+
+/* ── Card wrappers ────────────────────────────────────────────────────── */
+.cardWrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  pointer-events: none;
+  transform: translateY(calc(var(--ty, 115) * 1%)) scale(var(--sc, 1)) rotate(calc(var(--rot, 0) * 1deg));
+  will-change: transform;
+}
+
+/* ── The physical card ───────────────────────────────────────────────── */
+.card {
+  position: relative;
+  width: clamp(300px, 68vw, 840px);
+  height: clamp(380px, 84vh, 860px);
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: transform;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 2px  6px  rgba(0, 0, 0, 0.18),
+    0 10px 28px  rgba(0, 0, 0, 0.30),
+    0 28px 64px  rgba(0, 0, 0, 0.40),
+    0 48px 96px  rgba(0, 0, 0, 0.28);
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 22, 40, 0.18)  0%,
+    transparent              22%,
+    transparent              42%,
+    rgba(10, 22, 40, 0.52)   65%,
+    rgba(10, 22, 40, 0.90)   100%
+  );
+  pointer-events: none;
+}
+
+.cardContent {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 3vh, 40px) clamp(20px, 3.5vw, 48px);
+  pointer-events: none;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(245, 130, 32, 0.12);
+  border: 1px solid rgba(245, 130, 32, 0.30);
+  padding: 5px 12px;
+  border-radius: 40px;
+}
+
+.cardCount {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.08em;
+}
+
+.cardBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardClient {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.8vw, 72px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  line-height: 0.88;
+  margin: 0;
+}
+
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.1vw, 15px);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 420px;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--orange);
+  pointer-events: auto;
+}
+
+.dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.85);
+  opacity: var(--dim, 0);
+  pointer-events: none;
+  z-index: 10;
+  border-radius: 18px;
+}
+
+/* ── Progress bar ────────────────────────────────────────────────────── */
+.progressTrack {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  z-index: 40;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0%;
+  background: var(--orange);
+  border-radius: 1px;
+}
+
+/* ── CTA card ────────────────────────────────────────────────────────── */
+.ctaCard {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--spicy) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8vh 6vw;
+  box-shadow:
+    0 2px  6px  rgba(0, 0, 0, 0.18),
+    0 10px 28px  rgba(0, 0, 0, 0.30),
+    0 28px 64px  rgba(0, 0, 0, 0.40),
+    0 48px 96px  rgba(0, 0, 0, 0.28);
+}
+
+.ctaHeading {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 11vw, 140px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.85;
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 24px;
+}
+
+.ctaSub {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 36px;
+  line-height: 1.5;
+}
+
+.ctaArrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  padding: 12px 24px;
+  border-radius: var(--r-full);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ctaCard:hover .ctaArrow {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--white);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .leftFlank,
+  .rightFlank {
+    width: 48px;
+  }
+
+  .counterNum  { font-size: 28px; }
+  .counterTotal,
+  .flankLabel  { display: none; }
+
+  .card {
+    width: 86vw;
+    height: 76vh;
+  }
+
+  .cardTitle { font-size: clamp(24px, 7vw, 40px); }
+  .cardDesc  { display: none; }
+}

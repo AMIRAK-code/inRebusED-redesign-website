@@ -1,0 +1,213 @@
+.banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9000;
+  background: var(--navy);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
+  will-change: transform, opacity;
+}
+
+.bannerInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.copy { flex: 1; min-width: 0; }
+
+.title {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 6px;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ───────────────────────────────────── */
+
+.btnAccept {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-base), box-shadow var(--dur-base);
+}
+.btnAccept:hover {
+  background: var(--orange-light);
+  box-shadow: var(--glow-orange);
+}
+
+.btnReject {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--light-grey);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  padding: 9px 22px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--dur-base), color var(--dur-base);
+}
+.btnReject:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--white);
+}
+
+.btnCustomize {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--mid-grey);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--dur-base);
+}
+.btnCustomize:hover { color: var(--light-grey); }
+
+/* ── Modal overlay ─────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-lg);
+  padding: 40px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--shadow-xl);
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  margin: 0 0 24px;
+}
+
+/* ── Toggle rows ───────────────────────────────── */
+
+.toggleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.toggleRow:last-of-type { border-bottom: none; }
+
+.toggleInfo { flex: 1; min-width: 0; }
+
+.toggleLabel {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.toggleDesc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mid-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* Toggle switch */
+.toggleTrack {
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--r-full);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  transition: background var(--dur-base);
+  display: flex;
+  align-items: center;
+}
+.toggleTrack[data-active='true'] { background: var(--orange); }
+.toggleTrack[data-disabled='true'] { opacity: 0.5; cursor: not-allowed; }
+
+.toggleThumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: transform var(--dur-base) var(--ease-out);
+  flex-shrink: 0;
+}
+.toggleTrack[data-active='true'] .toggleThumb { transform: translateX(20px); }
+
+.modalActions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Responsive ────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .bannerInner {
+    flex-direction: column;
+    padding: 20px 24px;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .actions { width: 100%; }
+  .btnAccept, .btnReject {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+  .modal { padding: 28px 20px; }
+}

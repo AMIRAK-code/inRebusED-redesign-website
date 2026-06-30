@@ -1,0 +1,43 @@
+{
+  "name": "inrebus-website",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "sitemap": "tsx scripts/generate-sitemap.ts",
+    "build": "tsc -b && npm run sitemap && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.1",
+    "@types/leaflet": "^1.9.21",
+    "gsap": "^3.12.5",
+    "leaflet": "^1.9.4",
+    "lenis": "^1.3.23",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.8.3",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "sharp": "^0.34.5",
+    "tsx": "^4.22.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}
